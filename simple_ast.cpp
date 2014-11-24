@@ -1,5 +1,5 @@
 
-#include "simple_ast.cpp"
+#include "simple_ast.h"
 
 // Ref methods
 
