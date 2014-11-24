@@ -1,10 +1,10 @@
+// Interned String type, 100% interned on creation. Comparisons are always just a pointer comparison
+
 #include <unordered_set>
 
 #include <string.h>
 #include <stdint.h>
 #include <assert.h>
-
-// Interned String type, 100% interned on creation. Comparisons are always just a pointer comparison
 
 namespace cashew {
 
@@ -36,7 +36,7 @@ struct IString {
   static StringSet strings;
 
   IString() : str(nullptr) {}
-  IString(const char *s) {
+  IString(const char *s) { // input is assumed to remain alive; not copied
     set(s);
   }
 
