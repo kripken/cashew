@@ -73,3 +73,22 @@ struct IString {
 
 } // namespace cashew
 
+
+// Utilities for creating hashmaps/sets over IStrings
+
+namespace std {
+
+template <> struct hash<IString> : public unary_function<IString, size_t> {
+  size_t operator()(const IString& str) const {
+    return IString::hash_c(str.c_str());
+  }
+};
+
+template <> struct equal_to<IString> : public binary_function<IString, IString, bool> {
+  bool operator()(const IString& x, const IString& y) const {
+    return x == y;
+  }
+};
+
+} // namespace std
+
