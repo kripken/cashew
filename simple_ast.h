@@ -513,5 +513,22 @@ struct Value {
 // cashew builder
 
 struct ValueBuilder {
+  static Ref makeString(const IString& s) {
+    return &arena.alloc()->setString(s);
+  }
+
+  static Ref makeArray() {
+    return &arena.alloc()->setArray();
+  }
+
+  static Ref makeToplevel() {
+    return &makeArray()->push_back(makeString(TOPLEVEL))
+                        .push_back(makeArray());
+  }
+
+  static Ref makeBlock() {
+    return &makeArray()->push_back(makeString(BLOCK))
+                        .push_back(makeArray());
+  }
 };
 
