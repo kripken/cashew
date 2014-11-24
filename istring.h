@@ -78,14 +78,14 @@ struct IString {
 
 namespace std {
 
-template <> struct hash<IString> : public unary_function<IString, size_t> {
-  size_t operator()(const IString& str) const {
-    return IString::hash_c(str.c_str());
+template <> struct hash<cashew::IString> : public unary_function<cashew::IString, size_t> {
+  size_t operator()(const cashew::IString& str) const {
+    return cashew::IString::hash_c(str.c_str());
   }
 };
 
-template <> struct equal_to<IString> : public binary_function<IString, IString, bool> {
-  bool operator()(const IString& x, const IString& y) const {
+template <> struct equal_to<cashew::IString> : public binary_function<cashew::IString, cashew::IString, bool> {
+  bool operator()(const cashew::IString& x, const cashew::IString& y) const {
     return x == y;
   }
 };

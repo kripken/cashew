@@ -1,6 +1,40 @@
 
 #include "simple_ast.cpp"
 
+// Ref methods
+
+Ref& Ref::operator[](unsigned x) {
+  return (*get())[x];
+}
+
+Ref& Ref::operator[](IString x) {
+  return (*get())[x];
+}
+
+bool Ref::operator==(const char *str) {
+  return get()->isString() && !strcmp(get()->str.str, str);
+}
+
+bool Ref::operator!=(const char *str) {
+  return get()->isString() ? strcmp(get()->str.str, str) : true;
+}
+
+bool Ref::operator==(const IString &str) {
+  return get()->isString() && get()->str == str;
+}
+
+bool Ref::operator!=(const IString &str) {
+  return get()->isString() && get()->str != str;
+}
+
+bool Ref::operator==(Ref other) {
+  return **this == *other;
+}
+
+bool Ref::operator!() {
+  return !get() || get()->isNull();
+}
+
 // Arena methods
 
 Ref Arena::alloc() {
