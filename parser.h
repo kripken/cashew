@@ -70,11 +70,30 @@ extern IString TOPLEVEL,
                F0,
                EMPTY;
 
-#define is_space(x) (x == 32 || x == 9 || x == 10 || x == 13) /* space, tab, linefeed/newline, or return */
-#define skip_space(curr) { while (*curr && is_space(*curr)) curr++; }
-
 template<class NodeRef, class Builder>
-struct Parser {
+class Parser {
+
+  static bool isSpace(char x) { return x == 32 || x == 9 || x == 10 || x == 13; } /* space, tab, linefeed/newline, or return */
+  static char* skipSpace(char* curr) { while (*curr && isSpace(*curr)) curr++; return curr; }
+
+  static bool isIdentInit(char x) { return (x >= 'a' && x <= 'z') || (x >= 'A' && x <= 'Z') || x == '_' || x == '$'; }
+  static bool isIdentPart(char x) { return isIdentInit(x) || (x >= '0' && x <= '9'); }
+
+  // An atomic fragment of something. Stops at a natural boundary.
+  struct Fragment {
+    IString text;
+    int size;
+
+    Fragment(char* src) {
+      assert(!isSpace(*src));
+      size = 0;
+      while (*src && !isSpace(*src)) {
+        size++;
+      }
+    }
+  };
+
+public:
   // Highest-level parsing, as of a JavaScript script file.
   NodeRef parseToplevel(char* src) {
     return parseBlock(src, Builder::makeToplevel());
@@ -83,8 +102,10 @@ struct Parser {
   // Parses a block of code (e.g. a bunch of statements inside {,}, or the top level of o file)
   NodeRef parseBlock(char* src, NodeRef block=nullptr) {
     if (!block) block = Builder::makeBlock();
-    skip_space(src);
-    return nullptr;
+    src = skipSpace(src);
+
+
+    return block;
   }
 };
 
