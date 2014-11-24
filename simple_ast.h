@@ -60,7 +60,7 @@ struct Arena {
   Ref alloc();
 };
 
-Arena arena;
+extern Arena arena;
 
 // Main value type
 struct Value {

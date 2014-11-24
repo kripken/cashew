@@ -35,7 +35,9 @@ bool Ref::operator!() {
   return !get() || get()->isNull();
 }
 
-// Arena methods
+// Arena
+
+Arena arena;
 
 Ref Arena::alloc() {
   if (chunks.size() == 0 || index == CHUNK_SIZE) {
