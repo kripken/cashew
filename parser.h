@@ -93,6 +93,10 @@ class Parser {
     }
   };
 
+  NodeRef parseElement(char*& src) {
+    return nullptr;
+  }
+
 public:
   // Highest-level parsing, as of a JavaScript script file.
   NodeRef parseToplevel(char* src) {
@@ -102,9 +106,12 @@ public:
   // Parses a block of code (e.g. a bunch of statements inside {,}, or the top level of o file)
   NodeRef parseBlock(char* src, NodeRef block=nullptr) {
     if (!block) block = Builder::makeBlock();
-    src = skipSpace(src);
-
-
+    while (*src) {
+      src = skipSpace(src);
+      if (!*src) break;
+      NodeRef element = parseElement(src);
+      Builder::appendToBlock(block, element);
+    }
     return block;
   }
 };

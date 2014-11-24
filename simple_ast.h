@@ -530,5 +530,10 @@ struct ValueBuilder {
     return &makeArray()->push_back(makeString(BLOCK))
                         .push_back(makeArray());
   }
+
+  static void appendToBlock(Ref block, Ref element) {
+    assert(block[0] == BLOCK);
+    block[1]->push_back(element);
+  }
 };
 
