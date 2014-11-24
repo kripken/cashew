@@ -1,7 +1,7 @@
 
 #include "parser.h"
 
-using namespace cashew;
+namespace cashew {
 
 // common strings
 
@@ -65,4 +65,6 @@ IString TOPLEVEL("toplevel"),
         HEAPF64("HEAPF64"),
         F0("f0"),
         EMPTY("");
+
+} // namespace cashew
 
