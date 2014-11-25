@@ -180,7 +180,6 @@ class Parser {
   }
 
   NodeRef parseExpression(NodeRef initial, char*&src, const char* seps) {
-    dump("parseExpression", src);
     src = skipSpace(src);
     if (*src == 0 || hasChar(seps, *src)) return initial;
     assert(0); // look for an operator, start a tree, etc.
@@ -196,7 +195,7 @@ class Parser {
     for (int i = 0; i < allSize; i++) printf("%c", allSource[i] ? allSource[i] : '?');
     printf("\n");
     for (int i = 0; i < (curr - allSource); i++) printf(" ");
-    printf("^\n=============");
+    printf("^\n=============\n");
   }
 
 public:
@@ -217,6 +216,8 @@ public:
       src = skipSpace(src);
       if (!*src) break;
       NodeRef element = parseElement(src);
+      src = skipSpace(src);
+      if (*src && *src == ';') element = Builder::makeStatement(element);
       Builder::appendToBlock(block, element);
     }
     return block;

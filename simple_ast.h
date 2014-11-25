@@ -537,7 +537,7 @@ struct ValueBuilder {
   }
 
   static void appendToBlock(Ref block, Ref element) {
-    assert(block[0] == BLOCK);
+    assert(block[0] == BLOCK ||  block[0] == TOPLEVEL);
     block[1]->push_back(element);
   }
 
@@ -550,6 +550,11 @@ struct ValueBuilder {
   static void appendToCall(Ref call, Ref element) {
     assert(call[0] == CALL);
     call[2]->push_back(element);
+  }
+
+  static Ref makeStatement(Ref contents) {
+    return &makeArray()->push_back(makeString(STAT))
+                        .push_back(contents);
   }
 };
 
