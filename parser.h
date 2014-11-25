@@ -1,7 +1,7 @@
 // Pure parsing. Calls methods on a Builder (template argument) to actually construct the AST
 //
-// All parsing methods assume they take ownership of the input string. This lets them reuse
-// parts of it.
+// XXX All parsing methods assume they take ownership of the input string. This lets them reuse
+//     parts of it. You will segfault if the input string cannot be reused and written to.
 
 #include <stdio.h>
 
