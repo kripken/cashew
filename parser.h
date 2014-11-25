@@ -119,12 +119,36 @@ class Parser {
   };
 
   NodeRef parseElement(char*& src) {
-    Frag curr(src);
-    printf("parseElement frag %s\n", curr.str.str);
-    if (curr.type == KEYWORD) {
-      return parseKeyword(curr, src);
+    Frag frag(src);
+    src += frag.size;
+    printf("parseElement frag %s %d\n", frag.str.str, frag.type);
+    switch (frag.type) {
+      case KEYWORD: {
+        return parseAfterKeyword(frag, src);
+      }
+      case IDENT: {
+        return parseAfterIdent(frag, src);
+      }
+      default: assert(0);
+    }
+  }
+
+  NodeRef parseAfterKeyword(Frag& frag, char*& src) {
+    assert(0);
+  }
+
+  NodeRef parseAfterIdent(Frag& frag, char*& src) {
+    src = skipSpace(src);
+    if (*src == ';' || *src == 0) {
+      return Builder::makeName(frag.str);
+    } else if (*src == '(') {
+      return parseCall(frag.str, src);
     }
     assert(0);
+  }
+
+  NodeRef parseCall(IString target, char*& src) {
+    return nullptr;
   }
 
 public:
