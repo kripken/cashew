@@ -1,0 +1,26 @@
+[
+  "toplevel", 
+  [
+    [
+      "stat", 
+      [
+        "call", 
+        "print", 
+        [
+          "hello world"
+        ]
+      ]
+    ], 
+    [
+      "stat", 
+      [
+        "call", 
+        "print", 
+        [
+          "hello world"
+        ]
+      ]
+    ]
+  ]
+]
+

@@ -217,7 +217,10 @@ public:
       if (!*src) break;
       NodeRef element = parseElement(src);
       src = skipSpace(src);
-      if (*src && *src == ';') element = Builder::makeStatement(element);
+      if (*src && *src == ';') {
+        element = Builder::makeStatement(element);
+        src++;
+      }
       Builder::appendToBlock(block, element);
     }
     return block;
