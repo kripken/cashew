@@ -4,6 +4,14 @@
 import os, sys, difflib
 from subprocess import Popen, PIPE, STDOUT
 
+print 'building'
+
+proc = Popen(['sh', './build.sh'], stdout=PIPE)
+proc.communicate()
+assert proc.returncode == 0, 'failed to build'
+
+print 'testing'
+
 for i in os.listdir('samples'):
   if i.endswith('.js'):
     print i

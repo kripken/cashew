@@ -131,7 +131,6 @@ class Parser {
   NodeRef parseElement(char*& src, const char* seps=";") {
     Frag frag(src);
     src += frag.size;
-    printf("parseElement frag %s %d\n", frag.str.str, frag.type);
     switch (frag.type) {
       case KEYWORD: {
         return parseAfterKeyword(frag, src, seps);
