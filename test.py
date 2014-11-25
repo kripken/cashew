@@ -30,3 +30,4 @@ for i in os.listdir('samples'):
     assert out == expected, ''.join([a.rstrip()+'\n' for a in difflib.unified_diff(expected.split('\n'), out.split('\n'), fromfile='expected', tofile='actual')])
 
 print 'ok.'
+
