@@ -86,7 +86,6 @@ struct IString {
 
 } // namespace cashew
 
-
 // Utilities for creating hashmaps/sets over IStrings
 
 namespace std {
@@ -104,4 +103,31 @@ template <> struct equal_to<cashew::IString> : public binary_function<cashew::IS
 };
 
 } // namespace std
+
+namespace cashew {
+
+// StringSet
+
+class StringSet : public std::unordered_set<IString> {
+public:
+  StringSet() {}
+  StringSet(const char *init) { // comma-delimited list
+    int size = strlen(init);
+    char *curr = (char*)malloc(size+1); // leaked!
+    strcpy(curr, init);
+    while (1) {
+      char *end = strchr(curr, ' ');
+      if (end) *end = 0;
+      insert(curr);
+      if (!end) break;
+      curr = end + 1;
+    }
+  }
+
+  bool has(const IString& str) {
+    return count(str) > 0;
+  }
+};
+
+} // namespace cashew
 

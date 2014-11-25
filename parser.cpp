@@ -66,5 +66,7 @@ IString TOPLEVEL("toplevel"),
         F0("f0"),
         EMPTY("");
 
+StringSet keywords("var function if else do while for break continue return switch case default throw try catch finally true false null");
+
 } // namespace cashew
 

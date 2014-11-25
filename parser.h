@@ -72,6 +72,8 @@ extern IString TOPLEVEL,
                F0,
                EMPTY;
 
+extern StringSet keywords;
+
 template<class NodeRef, class Builder>
 class Parser {
 
@@ -82,14 +84,22 @@ class Parser {
   static bool isIdentPart(char x) { return isIdentInit(x) || (x >= '0' && x <= '9'); }
 
   // An atomic fragment of something. Stops at a natural boundary.
-  struct Fragment {
+  enum FragType {
+    KEYWORD = 0,
+    OPERATOR = 1,
+    IDENT = 2
+  };
+
+  struct Frag {
     IString str;
     int size;
+    FragType type;
 
-    Fragment(char* src) {
+    Frag(char* src) {
       assert(!isSpace(*src));
       char *start = src;
       if (isIdentInit(*src)) {
+        // read an identifier or a keyword
         src++;
         while (isIdentPart(*src)) {
           src++;
@@ -103,15 +113,18 @@ class Parser {
           str.set(start, false);
           *src = temp;
         }
+        type = keywords.has(str) ? KEYWORD : IDENT;
       } else assert(0);
     }
   };
 
   NodeRef parseElement(char*& src) {
-    Fragment curr(src);
+    Frag curr(src);
     printf("parseElement frag %s\n", curr.str.str);
-
-    return nullptr;
+    if (curr.type == KEYWORD) {
+      return parseKeyword(curr, src);
+    }
+    assert(0);
   }
 
 public:
