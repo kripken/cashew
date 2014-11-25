@@ -52,6 +52,8 @@ struct IString {
         char *copy = (char*)malloc(strlen(s)+1); // XXX leaked
         strcpy(copy, s);
         s = copy;
+      } else {
+        s = *existing;
       }
       strings.insert(s);
       str = s;
