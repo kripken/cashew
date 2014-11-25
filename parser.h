@@ -3,6 +3,8 @@
 // All parsing methods assume they take ownership of the input string. This lets them reuse
 // parts of it.
 
+#include <stdio.h>
+
 #include "istring.h"
 
 namespace cashew {
@@ -81,19 +83,34 @@ class Parser {
 
   // An atomic fragment of something. Stops at a natural boundary.
   struct Fragment {
-    IString text;
+    IString str;
     int size;
 
     Fragment(char* src) {
       assert(!isSpace(*src));
-      size = 0;
-      while (*src && !isSpace(*src)) {
-        size++;
-      }
+      char *start = src;
+      if (isIdentInit(*src)) {
+        src++;
+        while (isIdentPart(*src)) {
+          src++;
+        }
+        size = src - start;
+        if (*src == 0) {
+          str.set(start);
+        } else {
+          char temp = *src;
+          *src = 0;
+          str.set(start, false);
+          *src = temp;
+        }
+      } else assert(0);
     }
   };
 
   NodeRef parseElement(char*& src) {
+    Fragment curr(src);
+    printf("parseElement frag %s\n", curr.str.str);
+
     return nullptr;
   }
 

@@ -4,6 +4,8 @@
 
 #include <string.h>
 #include <stdint.h>
+#include <stdlib.h>
+#include <stdio.h>
 #include <assert.h>
 
 namespace cashew {
@@ -36,13 +38,24 @@ struct IString {
   static StringSet strings;
 
   IString() : str(nullptr) {}
-  IString(const char *s) { // input is assumed to remain alive; not copied
-    set(s);
+  IString(const char *s, bool reuse=true) { // if reuse=true, then input is assumed to remain alive; not copied
+    set(s, reuse);
   }
 
-  void set(const char *s) {
-    auto result = strings.insert(s); // if already present, does nothing
-    str = *(result.first);
+  void set(const char *s, bool reuse=true) {
+    if (reuse) {
+      auto result = strings.insert(s); // if already present, does nothing
+      str = *(result.first);
+    } else {
+      auto existing = strings.find(s);
+      if (existing == strings.end()) {
+        char *copy = (char*)malloc(strlen(s)+1); // XXX leaked
+        strcpy(copy, s);
+        s = copy;
+      }
+      strings.insert(s);
+      str = s;
+    }
   }
 
   void set(const IString &s) {

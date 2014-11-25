@@ -3,7 +3,8 @@
 
 int main() {
   cashew::Parser<Ref, ValueBuilder> builder;
-  Ref ast = builder.parseToplevel("print('hello world')");
+  char input[] = "print('hello world')";
+  Ref ast = builder.parseToplevel(input);
   ast->stringify(std::cout);
 }
 
