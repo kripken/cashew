@@ -6,7 +6,7 @@ int main() {
   char input[] = "print('hello world')";
   Ref ast = builder.parseToplevel(input);
   std::cout << "output:\n";
-  ast->stringify(std::cout);
+  ast->stringify(std::cout, true);
   std::cout << "\n";
 }
 
