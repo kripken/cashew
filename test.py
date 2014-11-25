@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 # -*- Mode: python -*-
 
-import os, sys
+import os, sys, difflib
 from subprocess import Popen, PIPE, STDOUT
 
 for i in os.listdir('samples'):
@@ -15,6 +15,6 @@ for i in os.listdir('samples'):
     #print out
     #print '^v'
     #print expected
-    assert out == expected, [out, expected]
+    assert out == expected, ''.join([a.rstrip()+'\n' for a in difflib.unified_diff(expected.split('\n'), out.split('\n'), fromfile='expected', tofile='actual')])
 
 print 'ok.'
