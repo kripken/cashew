@@ -118,26 +118,26 @@ class Parser {
     }
   };
 
-  NodeRef parseElement(char*& src) {
+  NodeRef parseElement(char*& src, char sep=';') {
     Frag frag(src);
     src += frag.size;
     printf("parseElement frag %s %d\n", frag.str.str, frag.type);
     switch (frag.type) {
       case KEYWORD: {
-        return parseAfterKeyword(frag, src);
+        return parseAfterKeyword(frag, src, sep);
       }
       case IDENT: {
-        return parseAfterIdent(frag, src);
+        return parseAfterIdent(frag, src, sep);
       }
       default: assert(0);
     }
   }
 
-  NodeRef parseAfterKeyword(Frag& frag, char*& src) {
+  NodeRef parseAfterKeyword(Frag& frag, char*& src, char sep) {
     assert(0);
   }
 
-  NodeRef parseAfterIdent(Frag& frag, char*& src) {
+  NodeRef parseAfterIdent(Frag& frag, char*& src, char sep) {
     src = skipSpace(src);
     if (*src == ';' || *src == 0) {
       return Builder::makeName(frag.str);
@@ -148,6 +148,14 @@ class Parser {
   }
 
   NodeRef parseCall(IString target, char*& src) {
+    assert(*src == '(');
+    src++;
+    NodeRef params = Builder::makeList();
+    while (*src != ')') {
+      src = skipSpace(src);
+      if (*src == ')') break;
+      Builder::appendToList(params, parseElement(src, ','));
+    }
     return nullptr;
   }
 

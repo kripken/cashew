@@ -540,5 +540,13 @@ struct ValueBuilder {
     assert(block[0] == BLOCK);
     block[1]->push_back(element);
   }
+
+  static Ref makeList() {
+    return makeArray();
+  }
+
+  static void appendToList(Ref array, Ref element) {
+    array->push_back(element);
+  }
 };
 
