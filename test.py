@@ -15,10 +15,14 @@ print 'testing'
 for i in os.listdir('samples'):
   if i.endswith('.js'):
     print i
-    expected = open(os.path.join('samples', i + '.txt')).read()
     out, err = Popen(['./a.out', os.path.join('samples', i)], stdout=PIPE).communicate()
     out = out.split('output:\n')[1]
     out = out.replace('\n\n', '\n')
+    try:
+      expected = open(os.path.join('samples', i + '.txt')).read()
+    except:
+      print 'no expected output for:\n', out
+      raise
     expected = expected.replace('\n\n', '\n')
     #print out
     #print '^v'

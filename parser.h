@@ -83,6 +83,8 @@ class Parser {
   static bool isIdentInit(char x) { return (x >= 'a' && x <= 'z') || (x >= 'A' && x <= 'Z') || x == '_' || x == '$'; }
   static bool isIdentPart(char x) { return isIdentInit(x) || (x >= '0' && x <= '9'); }
 
+  static bool isDigit(char x) { return x >= '0' && x <= '9'; }
+
   static bool hasChar(const char* list, char x) { while (*list) if (*list++ == x) return true; return false; }
 
   // An atomic fragment of something. Stops at a natural boundary.
@@ -90,11 +92,15 @@ class Parser {
     KEYWORD = 0,
     OPERATOR = 1,
     IDENT = 2,
-    STRING = 3 // without quotes
+    STRING = 3, // without quotes
+    NUMBER = 4
   };
 
   struct Frag {
-    IString str;
+    union {
+      IString str;
+      double num;
+    };
     int size;
     FragType type;
 
@@ -122,6 +128,9 @@ class Parser {
         str.set(src+1);
         src = end+1;
         type = STRING;
+      } else if (isDigit(*src)) {
+        num = strtod(start, &src);
+        type = NUMBER;
       } else assert(0);
       size = src - start;
     }
@@ -136,7 +145,8 @@ class Parser {
         return parseAfterKeyword(frag, src, seps);
       }
       case IDENT:
-      case STRING: {
+      case STRING:
+      case NUMBER: {
         src = skipSpace(src);
         if (*src == 0 || hasChar(seps, *src)) return parseFrag(frag); // all done
         if (frag.type == IDENT) return parseAfterIdent(frag, src, seps);
@@ -150,6 +160,7 @@ class Parser {
     switch (frag.type) {
       case IDENT:  return Builder::makeName(frag.str);
       case STRING: return Builder::makeString(frag.str);
+      case NUMBER: return Builder::makeNumber(frag.num);
       default: assert(0);
     }
   }

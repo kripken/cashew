@@ -556,5 +556,10 @@ struct ValueBuilder {
     return &makeArray()->push_back(makeString(STAT))
                         .push_back(contents);
   }
+
+  static Ref makeNumber(double num) {
+    return &makeArray()->push_back(makeString(NUM))
+                        .push_back(&arena.alloc()->setNumber(num));
+  }
 };
 
