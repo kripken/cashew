@@ -5,7 +5,10 @@
       "call", 
       "print", 
       [
-        "hello world"
+        [
+          "string", 
+          "hello world"
+        ]
       ]
     ]
   ]
