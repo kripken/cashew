@@ -83,6 +83,8 @@ class Parser {
   static bool isIdentInit(char x) { return (x >= 'a' && x <= 'z') || (x >= 'A' && x <= 'Z') || x == '_' || x == '$'; }
   static bool isIdentPart(char x) { return isIdentInit(x) || (x >= '0' && x <= '9'); }
 
+  static bool hasChar(const char* list, char x) { while (*list) if (*list++ == x) return true; return false; }
+
   // An atomic fragment of something. Stops at a natural boundary.
   enum FragType {
     KEYWORD = 0,
@@ -125,29 +127,41 @@ class Parser {
     }
   };
 
-  NodeRef parseElement(char*& src, char sep=';') {
+  // Parses an element in a list of such elements, e.g. list of statements in a block, or list of parameters in a call
+  NodeRef parseElement(char*& src, const char* seps=";") {
     Frag frag(src);
     src += frag.size;
     printf("parseElement frag %s %d\n", frag.str.str, frag.type);
     switch (frag.type) {
       case KEYWORD: {
-        return parseAfterKeyword(frag, src, sep);
+        return parseAfterKeyword(frag, src, seps);
       }
-      case IDENT: {
-        return parseAfterIdent(frag, src, sep);
-      }
+      case IDENT:
       case STRING: {
+        src = skipSpace(src);
+        if (*src == 0 || hasChar(seps, *src)) return parseFrag(frag); // all done
+        // TODO: start expression here, if operator, etc.
+        // if (frag.type == IDENT)
+        //    return parseAfterIdent(frag, src, sep);
         assert(0);
       }
       default: assert(0);
     }
   }
 
-  NodeRef parseAfterKeyword(Frag& frag, char*& src, char sep) {
+  NodeRef parseFrag(Frag& frag) {
+    switch (frag.type) {
+      case IDENT:  return Builder::makeName(frag.str);
+      case STRING: return Builder::makeString(frag.str);
+      default: assert(0);
+    }
+  }
+
+  NodeRef parseAfterKeyword(Frag& frag, char*& src, const char* seps) {
     assert(0);
   }
 
-  NodeRef parseAfterIdent(Frag& frag, char*& src, char sep) {
+  NodeRef parseAfterIdent(Frag& frag, char*& src, const char* seps) {
     src = skipSpace(src);
     if (*src == ';' || *src == 0) {
       return Builder::makeName(frag.str);
@@ -164,7 +178,7 @@ class Parser {
     while (*src != ')') {
       src = skipSpace(src);
       if (*src == ')') break;
-      Builder::appendToList(params, parseElement(src, ','));
+      Builder::appendToList(params, parseElement(src, ",)"));
     }
     return nullptr;
   }
