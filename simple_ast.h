@@ -541,12 +541,15 @@ struct ValueBuilder {
     block[1]->push_back(element);
   }
 
-  static Ref makeList() {
-    return makeArray();
+  static Ref makeCall(IString target) {
+    return &makeArray()->push_back(makeString(CALL))
+                        .push_back(makeString(target))
+                        .push_back(makeArray());
   }
 
-  static void appendToList(Ref array, Ref element) {
-    array->push_back(element);
+  static void appendToCall(Ref call, Ref element) {
+    assert(call[0] == CALL);
+    call[2]->push_back(element);
   }
 };
 

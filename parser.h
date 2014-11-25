@@ -174,13 +174,13 @@ class Parser {
   NodeRef parseCall(IString target, char*& src) {
     assert(*src == '(');
     src++;
-    NodeRef params = Builder::makeList();
+    NodeRef ret = Builder::makeCall(target);
     while (*src != ')') {
       src = skipSpace(src);
       if (*src == ')') break;
-      Builder::appendToList(params, parseElement(src, ",)"));
+      Builder::appendToCall(ret, parseElement(src, ",)"));
     }
-    return nullptr;
+    return ret;
   }
 
 public:
