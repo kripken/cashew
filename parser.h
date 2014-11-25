@@ -140,9 +140,7 @@ class Parser {
       case STRING: {
         src = skipSpace(src);
         if (*src == 0 || hasChar(seps, *src)) return parseFrag(frag); // all done
-        // TODO: start expression here, if operator, etc.
-        // if (frag.type == IDENT)
-        //    return parseAfterIdent(frag, src, sep);
+        if (frag.type == IDENT) return parseAfterIdent(frag, src, seps);
         assert(0);
       }
       default: assert(0);
@@ -162,12 +160,9 @@ class Parser {
   }
 
   NodeRef parseAfterIdent(Frag& frag, char*& src, const char* seps) {
-    src = skipSpace(src);
-    if (*src == ';' || *src == 0) {
-      return Builder::makeName(frag.str);
-    } else if (*src == '(') {
-      return parseCall(frag.str, src);
-    }
+    assert(!isSpace(*src));
+    assert(!hasChar(seps, *src));
+    if (*src == '(') return parseExpression(parseCall(frag.str, src), src, seps);
     assert(0);
   }
 
@@ -180,12 +175,38 @@ class Parser {
       if (*src == ')') break;
       Builder::appendToCall(ret, parseElement(src, ",)"));
     }
+    src++;
     return ret;
   }
 
+  NodeRef parseExpression(NodeRef initial, char*&src, const char* seps) {
+    dump("parseExpression", src);
+    src = skipSpace(src);
+    if (*src == 0 || hasChar(seps, *src)) return initial;
+    assert(0); // look for an operator, start a tree, etc.
+  }
+
+  // Debugging
+
+  char *allSource;
+  int allSize;
+
+  void dump(const char *where, char* curr) {
+    printf("%s\n=============\n", where);
+    for (int i = 0; i < allSize; i++) printf("%c", allSource[i] ? allSource[i] : '?');
+    printf("\n");
+    for (int i = 0; i < (curr - allSource); i++) printf(" ");
+    printf("^\n=============");
+  }
+
 public:
+
+  Parser() : allSource(nullptr), allSize(0) {}
+  
   // Highest-level parsing, as of a JavaScript script file.
   NodeRef parseToplevel(char* src) {
+    allSource = src;
+    allSize = strlen(src);
     return parseBlock(src, Builder::makeToplevel());
   }
 
