@@ -513,7 +513,7 @@ struct Value {
 // cashew builder
 
 struct ValueBuilder {
-  static Ref makeString(const IString& s) {
+  static Ref makeRawString(const IString& s) {
     return &arena.alloc()->setString(s);
   }
 
@@ -522,18 +522,23 @@ struct ValueBuilder {
   }
 
   static Ref makeToplevel() {
-    return &makeArray()->push_back(makeString(TOPLEVEL))
+    return &makeArray()->push_back(makeRawString(TOPLEVEL))
                         .push_back(makeArray());
   }
 
+  static Ref makeString(IString str) {
+    return &makeArray()->push_back(makeRawString(STRING))
+                        .push_back(makeRawString(str));
+  }
+
   static Ref makeBlock() {
-    return &makeArray()->push_back(makeString(BLOCK))
+    return &makeArray()->push_back(makeRawString(BLOCK))
                         .push_back(makeArray());
   }
 
   static Ref makeName(IString name) {
-    return &makeArray()->push_back(makeString(NAME))
-                        .push_back(makeString(name));
+    return &makeArray()->push_back(makeRawString(NAME))
+                        .push_back(makeRawString(name));
   }
 
   static void appendToBlock(Ref block, Ref element) {
@@ -542,8 +547,8 @@ struct ValueBuilder {
   }
 
   static Ref makeCall(IString target) {
-    return &makeArray()->push_back(makeString(CALL))
-                        .push_back(makeString(target))
+    return &makeArray()->push_back(makeRawString(CALL))
+                        .push_back(makeRawString(target))
                         .push_back(makeArray());
   }
 
@@ -553,12 +558,12 @@ struct ValueBuilder {
   }
 
   static Ref makeStatement(Ref contents) {
-    return &makeArray()->push_back(makeString(STAT))
+    return &makeArray()->push_back(makeRawString(STAT))
                         .push_back(contents);
   }
 
   static Ref makeNumber(double num) {
-    return &makeArray()->push_back(makeString(NUM))
+    return &makeArray()->push_back(makeRawString(NUM))
                         .push_back(&arena.alloc()->setNumber(num));
   }
 };
