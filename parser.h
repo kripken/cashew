@@ -131,7 +131,10 @@ class Parser {
       } else if (isDigit(*src)) {
         num = strtod(start, &src);
         type = NUMBER;
-      } else assert(0);
+      } else {
+        fprintf(stderr, "Frag parsing failed on %s\n", src);
+        assert(0);
+      }
       size = src - start;
     }
   };
@@ -180,10 +183,17 @@ class Parser {
     assert(*src == '(');
     src++;
     NodeRef ret = Builder::makeCall(target);
-    while (*src != ')') {
+    while (1) {
       src = skipSpace(src);
       if (*src == ')') break;
       Builder::appendToCall(ret, parseElement(src, ",)"));
+      src = skipSpace(src);
+      if (*src && *src == ')') break;
+      if (*src && *src == ',') {
+        src++;
+        continue;
+      }
+      assert(0);
     }
     src++;
     return ret;
