@@ -87,7 +87,8 @@ class Parser {
   enum FragType {
     KEYWORD = 0,
     OPERATOR = 1,
-    IDENT = 2
+    IDENT = 2,
+    STRING = 3 // without quotes
   };
 
   struct Frag {
@@ -104,7 +105,6 @@ class Parser {
         while (isIdentPart(*src)) {
           src++;
         }
-        size = src - start;
         if (*src == 0) {
           str.set(start);
         } else {
@@ -114,7 +114,14 @@ class Parser {
           *src = temp;
         }
         type = keywords.has(str) ? KEYWORD : IDENT;
+      } else if (*src == '"' || *src == '\'') {
+        char *end = strchr(src+1, *src);
+        *end = 0;
+        str.set(src+1);
+        src = end+1;
+        type = STRING;
       } else assert(0);
+      size = src - start;
     }
   };
 
@@ -128,6 +135,9 @@ class Parser {
       }
       case IDENT: {
         return parseAfterIdent(frag, src, sep);
+      }
+      case STRING: {
+        assert(0);
       }
       default: assert(0);
     }
