@@ -80,13 +80,13 @@ extern IString TOPLEVEL,
                COMMA,
                SET;
 
-extern StringSet keywords, operators;
+extern StringSet keywords, allOperators, binaryOperators, prefixOperators, postfixOperators, tertiaryOperators;
 
 extern const char *OPERATOR_INITS, *SEPARATORS;
 
-extern int MAX_OPERATOR_SIZE;
+extern int MAX_OPERATOR_SIZE, LOWEST_PREC;
 
-extern StringIntMap operatorPrec;
+extern StringIntMap binaryPrec, prefixPrec, postfixPrec, tertiaryPrec;
 
 // parser
 
@@ -174,7 +174,7 @@ class Parser {
           if (!start[i]) break;
           char temp = start[i+1];
           start[i+1] = 0;
-          if (operators.has(start)) {
+          if (allOperators.has(start)) {
             str.set(start, false);
             src = start + i + 1;
           }
@@ -378,6 +378,15 @@ class Parser {
     };
     ExpressionElement(NodeRef n) : isNode(true), node(n) {}
     ExpressionElement(IString o) : isNode(false), op(o) {}
+
+    NodeRef getNode() {
+      assert(isNode);
+      return node;
+    }
+    IString getOp() {
+      assert(!isNode);
+      return op;
+    }
   };
 
   // This is a list of the current stack of node-operator-node-operator-etc.
@@ -389,8 +398,8 @@ class Parser {
     printf("expressionparts: %d,%d\n", parts.size(), parts.size());
     printf("|");
     for (int i = 0; i < parts.size(); i++) {
-      if (parts[i].isNode) parts[i].node->stringify(std::cout);
-      else printf(" _%s_ ", parts[i].op.str);
+      if (parts[i].isNode) parts[i].getNode()->stringify(std::cout);
+      else printf(" _%s_ ", parts[i].getOp().str);
     }
     printf("|\n");
   }
@@ -403,8 +412,7 @@ class Parser {
       if (parts.size() > 0) {
         parts.push_back(initial); // cherry on top of the cake
       }
-      assert(initial.isNode);
-      return initial.node;
+      return initial.getNode();
     }
     bool top = parts.size() == 0;
     parts.push_back(initial);
@@ -415,36 +423,31 @@ class Parser {
       parts.push_back(next.str);
     }
     NodeRef last = parseElement(src, seps);
-    if (!top) return last; // XXX
+    if (!top) return last;
     {
       ExpressionParts& parts = expressionPartsStack.back(); // |parts| may have been invalidated by that call
       // we are the toplevel. sort it all out
       // collapse right to left, highest priority first
-      int highest = 100, lowest = -1;
-      for (int i = 0; i < parts.size(); i++) {
-        if (parts[i].isNode) continue;
-        int curr = operatorPrec[parts[i].op];
-        highest = std::min(highest, curr);
-        lowest = std::max(lowest, curr);
-      }
-      assert(highest <= lowest);
-      auto merge = [](NodeRef left, IString op, NodeRef right) {
-        return Builder::makeBinary(left, op, right);
-      };
-      for (int prec = highest; prec <= lowest; prec++) {
+      //dumpParts(parts);
+      for (int prec = 0; prec <= LOWEST_PREC; prec++) {
         for (int i = parts.size()-1; i >= 0; i--) {
           if (parts[i].isNode) continue;
-          int curr = operatorPrec[parts[i].op];
-          if (curr == prec) {
-            assert(i > 0);
-            parts[i] = merge(parts[i-1].node, parts[i].op, parts[i+1].node);
+          IString op = parts[i].getOp();
+          if (i > 0 && i < parts.size()-1 && binaryOperators.has(op) && binaryPrec[op] == prec) {
+            parts[i] = Builder::makeBinary(parts[i-1].getNode(), op, parts[i+1].getNode());
             parts.erase(parts.begin() + i + 1);
             parts.erase(parts.begin() + i - 1);
+          } else if (i < parts.size()-1 && prefixOperators.has(op) && prefixPrec[op] == prec) { // TODO: postfix
+            if (i > 0 && parts[i-1].isNode) continue; // cannot apply prefix operator if it would join two nodes
+            parts[i] = Builder::makePrefix(op, parts[i+1].getNode());
+            parts.erase(parts.begin() + i + 1);
+          } else if (tertiaryOperators.has(op) && tertiaryPrec[op] == prec) {
+            assert(0);
           }
         }
       }
-      assert(parts.size() == 1 && parts[0].isNode);
-      NodeRef ret = parts[0].node;
+      assert(parts.size() == 1);
+      NodeRef ret = parts[0].getNode();
       parts.clear();
       return ret;
     }

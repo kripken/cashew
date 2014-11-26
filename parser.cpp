@@ -72,31 +72,36 @@ IString TOPLEVEL("toplevel"),
         SET("=");
 
 StringSet keywords("var function if else do while for break continue return switch case default throw try catch finally true false null"),
-          operators(". ! ~ - + * / % + - << >> >>> < <= > >= == != & ^ | ? = ,");
+          allOperators(". ! ~ - + * / % + - << >> >>> < <= > >= == != & ^ | ? = ,"),
+          binaryOperators(". - + * / % << >> >>> < <= > >= == != & ^ | = ,"),
+          prefixOperators("! ~ - +"),
+          postfixOperators(""),
+          tertiaryOperators("? :");
 
 const char *OPERATOR_INITS = "+-*/%<>&^|~=!,",
            *SEPARATORS = "([";
 
-int MAX_OPERATOR_SIZE = 3;
+int MAX_OPERATOR_SIZE = 3,
+    LOWEST_PREC = 12;
 
-StringIntMap operatorPrec;
+StringIntMap binaryPrec, prefixPrec, postfixPrec, tertiaryPrec;
 
 struct Init {
   Init() {
     // highest
-    operatorPrec["."] = 0;
-    operatorPrec["!"] = operatorPrec["~"] = operatorPrec["-"] = operatorPrec["+"] = 1;
-    operatorPrec["*"] = operatorPrec["/"] = operatorPrec["%"] = 2;
-    operatorPrec["+"] = operatorPrec["-"] = 3;
-    operatorPrec["<<"] = operatorPrec[">>"] = operatorPrec[">>>"] = 4;
-    operatorPrec["<"] = operatorPrec["<="] = operatorPrec[">="] = operatorPrec[">"] = 5;
-    operatorPrec["=="] = operatorPrec["!="] = 6;
-    operatorPrec["&"] = 7;
-    operatorPrec["^"] = 8;
-    operatorPrec["|"] = 9;
-    operatorPrec["?"] = 10;
-    operatorPrec["="] = 11;
-    operatorPrec[","] = 12;
+    binaryPrec["."] = 0;
+    prefixPrec["!"] = prefixPrec["~"] = prefixPrec["-"] = prefixPrec["+"] = 1;
+    binaryPrec["*"] = binaryPrec["/"] = binaryPrec["%"] = 2;
+    binaryPrec["+"] = binaryPrec["-"] = 3;
+    binaryPrec["<<"] = binaryPrec[">>"] = binaryPrec[">>>"] = 4;
+    binaryPrec["<"] = binaryPrec["<="] = binaryPrec[">="] = binaryPrec[">"] = 5;
+    binaryPrec["=="] = binaryPrec["!="] = 6;
+    binaryPrec["&"] = 7;
+    binaryPrec["^"] = 8;
+    binaryPrec["|"] = 9;
+    tertiaryPrec["?"] = tertiaryPrec[":"] = 10;
+    binaryPrec["="] = 11;
+    binaryPrec[","] = 12;
     // lowest
   }
 };

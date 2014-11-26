@@ -592,6 +592,12 @@ struct ValueBuilder {
     }
   }
 
+  static Ref makePrefix(IString op, Ref right) {
+    return &makeArray()->push_back(makeRawString(UNARY_PREFIX))
+                        .push_back(makeRawString(op))
+                        .push_back(right);
+  }
+
   static Ref makeFunction(IString name) {
     return &makeArray()->push_back(makeRawString(DEFUN))
                         .push_back(makeRawString(name))
