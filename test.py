@@ -14,8 +14,9 @@ print 'testing'
 
 for i in os.listdir('samples'):
   if i.endswith('.js'):
-    print i
-    out, err = Popen(['./a.out', os.path.join('samples', i)], stdout=PIPE).communicate()
+    command = ['./a.out', os.path.join('samples', i)]
+    print ' '.join(command)
+    out, err = Popen(command, stdout=PIPE).communicate()
     out = out.split('output:\n')[1]
     out = out.replace('\n\n', '\n')
     try:

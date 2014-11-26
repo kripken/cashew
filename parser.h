@@ -3,6 +3,9 @@
 // XXX All parsing methods assume they take ownership of the input string. This lets them reuse
 //     parts of it. You will segfault if the input string cannot be reused and written to.
 
+#include <vector>
+#include <iostream>
+
 #include <stdio.h>
 
 #include "istring.h"
@@ -217,12 +220,34 @@ class Parser {
     return ret;
   }
 
+
   NodeRef parseExpression(NodeRef initial, char*&src, const char* seps) {
+    static std::vector<NodeRef> nodeStack; // XXX these are *static* lists of the current stack of node-operator-node-operator-etc. This is not threadsafe!!1
+    static std::vector<IString> strStack;  //     this works by each parseExpression call appending to the vector; then recursing out, and the toplevel sorts it all
     src = skipSpace(src);
-    if (*src == 0 || hasChar(seps, *src)) return initial;
+    if (*src == 0 || hasChar(seps, *src)) {
+      if (nodeStack.size() > 0) {
+        nodeStack.push_back(initial); // cherry on top of the cake
+      }
+      return initial;
+    }
     Frag next(src);
     if (next.type == OPERATOR) {
       src += next.size;
+      bool top = nodeStack.size() == 0;
+      nodeStack.push_back(initial);
+      strStack.push_back(next.str);
+      NodeRef last = parseElement(src, seps);
+      if (!top) return last; // XXX
+      // we are the toplevel. sort it all out
+      assert(nodeStack.size() == strStack.size()+1);
+      for (int i = 0; i < strStack.size(); i++) {
+        nodeStack[i]->stringify(std::cout);
+        printf(" %s ", strStack[i].str);
+      }
+      nodeStack.back()->stringify(std::cout);
+      nodeStack.clear();
+      strStack.clear();
       assert(0);//return parseExpression(parseOperation(frag.str, next.str, src), src, seps);
     }
     assert(0);
