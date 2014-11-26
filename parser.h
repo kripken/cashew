@@ -228,7 +228,7 @@ class Parser {
     src = skipSpace(src);
     assert(*src == '{');
     src++;
-    parseBlock(src, ret, "}");
+    parseBlock(src, ret, ";}"); // the two are not symmetrical, ; is just internally separating, } is the final one - parseBlock knows all this
     assert(*src == '}');
     src++;
     // TODO: parse expression?

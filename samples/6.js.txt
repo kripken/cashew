@@ -1,0 +1,46 @@
+[
+  "toplevel",
+  [
+    [
+      "defun",
+      "func",
+      [
+      ],
+      [
+        [
+          "stat",
+          [
+            "call",
+            "print",
+            [
+              [
+                "num",
+                10
+              ]
+            ]
+          ]
+        ]
+      ]
+    ],
+    [
+      "defun",
+      "another",
+      [
+        "x",
+        "y"
+      ],
+      [
+        [
+          "stat",
+          [
+            "call",
+            "func",
+            [
+            ]
+          ]
+        ]
+      ]
+    ]
+  ]
+]
+
