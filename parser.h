@@ -139,19 +139,18 @@ class Parser {
         num = strtod(start, &src);
         type = NUMBER;
       } else if (hasChar(OPERATOR_INITS, *src)) {
-        IString op;
         for (int i = 0; i < MAX_OPERATOR_SIZE; i++) {
           if (!start[i]) break;
           char temp = start[i+1];
           start[i+1] = 0;
           if (operators.has(start)) {
-            op.set(start, false);
+            str.set(start, false);
             src = start + i + 1;
           }
           start[i+1] = temp;
         }
         type = OPERATOR;
-        assert(!!op);
+        assert(!str.isNull());
       } else {
         fprintf(stderr, "Frag parsing failed on %s\n", src);
         assert(0);
@@ -162,6 +161,8 @@ class Parser {
 
   // Parses an element in a list of such elements, e.g. list of statements in a block, or list of parameters in a call
   NodeRef parseElement(char*& src, const char* seps=";") {
+    //dump("parseElement", src);
+    src = skipSpace(src);
     Frag frag(src);
     src += frag.size;
     switch (frag.type) {
@@ -172,9 +173,8 @@ class Parser {
       case STRING:
       case NUMBER: {
         src = skipSpace(src);
-        if (*src == 0 || hasChar(seps, *src)) return parseFrag(frag); // all done
         if (frag.type == IDENT) return parseAfterIdent(frag, src, seps);
-        assert(0);
+        else return parseExpression(parseFrag(frag), src, seps);
       }
       default: assert(0);
     }
@@ -195,7 +195,6 @@ class Parser {
 
   NodeRef parseAfterIdent(Frag& frag, char*& src, const char* seps) {
     assert(!isSpace(*src));
-    assert(!hasChar(seps, *src));
     if (*src == '(') return parseExpression(parseCall(frag.str, src), src, seps);
     return parseExpression(parseFrag(frag), src, seps);
   }
@@ -240,12 +239,15 @@ class Parser {
       NodeRef last = parseElement(src, seps);
       if (!top) return last; // XXX
       // we are the toplevel. sort it all out
+      printf("stacks: %d,%d\n", nodeStack.size(), strStack.size());
       assert(nodeStack.size() == strStack.size()+1);
+      printf("|");
       for (int i = 0; i < strStack.size(); i++) {
         nodeStack[i]->stringify(std::cout);
         printf(" %s ", strStack[i].str);
       }
       nodeStack.back()->stringify(std::cout);
+      printf("|\n");
       nodeStack.clear();
       strStack.clear();
       assert(0);//return parseExpression(parseOperation(frag.str, next.str, src), src, seps);
