@@ -6,5 +6,6 @@ function another(x, y) {
 }
 function varr() {
   var x;
+  var a = 5, b, c = func(a, b), d;
 }
 
