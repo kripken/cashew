@@ -227,6 +227,7 @@ class Parser {
     src++;
     src = skipSpace(src);
     assert(*src == '{');
+    src++;
     parseBlock(src, ret, "}");
     assert(*src == '}');
     src++;
