@@ -218,6 +218,9 @@ class Parser {
         if (frag.str == OPEN_PAREN) return parseExpression(parseAfterParen(src), src, seps);
         assert(0);
       }
+      case OPERATOR: {
+        return parseExpression(frag.str, src, seps);
+      }
       default: dump("parseElement", src); printf("bad frag type: %d\n", frag.type); assert(0);
     }
   }
@@ -392,7 +395,7 @@ class Parser {
     printf("|\n");
   }
 
-  NodeRef parseExpression(NodeRef initial, char*&src, const char* seps) {
+  NodeRef parseExpression(ExpressionElement initial, char*&src, const char* seps) {
     //dump("parseExpression", src);
     ExpressionParts& parts = expressionPartsStack.back();
     src = skipSpace(src);
@@ -400,7 +403,8 @@ class Parser {
       if (parts.size() > 0) {
         parts.push_back(initial); // cherry on top of the cake
       }
-      return initial;
+      assert(initial.isNode);
+      return initial.node;
     }
     Frag next(src);
     if (next.type == OPERATOR) {
