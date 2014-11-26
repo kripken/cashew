@@ -566,5 +566,19 @@ struct ValueBuilder {
     return &makeArray()->push_back(makeRawString(NUM))
                         .push_back(&arena.alloc()->setNumber(num));
   }
+
+  static Ref makeBinary(Ref left, IString op, Ref right) {
+    if (op == SET) {
+      return &makeArray()->push_back(makeRawString(ASSIGN))
+                          .push_back(&arena.alloc()->setBool(true))
+                          .push_back(left)
+                          .push_back(right);
+    } else {
+      return &makeArray()->push_back(makeRawString(BINARY))
+                          .push_back(makeRawString(op))
+                          .push_back(left)
+                          .push_back(right);
+    }
+  }
 };
 

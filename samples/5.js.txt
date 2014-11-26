@@ -1,0 +1,21 @@
+[
+  "toplevel", 
+  [
+    [
+      "stat", 
+      [
+        "assign", 
+        true, 
+        [
+          "name", 
+          "x"
+        ], 
+        [
+          "num", 
+          10
+        ]
+      ]
+    ]
+  ]
+]
+

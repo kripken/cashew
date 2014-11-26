@@ -254,9 +254,32 @@ class Parser {
       nodeStack.back()->stringify(std::cout);
       printf("|\n");
       */
+      // collapse right to left, highest priority first
+      int highest = 100, lowest = -1;
+      for (int i = 0; i < strStack.size(); i++) {
+        int curr = operatorPrec[strStack[i]];
+        highest = std::min(highest, curr);
+        lowest = std::max(lowest, curr);
+      }
+      assert(highest <= lowest);
+      auto merge = [](NodeRef left, IString op, NodeRef right) {
+        return Builder::makeBinary(left, op, right);
+      };
+      for (int prec = highest; prec <= lowest; prec++) {
+        for (int i = strStack.size()-1; i >= 0; i--) {
+          int curr = operatorPrec[strStack[i]];
+          if (curr == prec) {
+            nodeStack[i] = merge(nodeStack[i], strStack[i], nodeStack[i+1]);
+            nodeStack.erase(nodeStack.begin() + i + 1);
+            strStack.erase(strStack.begin() + i);
+          }
+        }
+      }
+      assert(nodeStack.size() == 1 && strStack.size() == 0);
+      NodeRef ret = nodeStack[0];
       nodeStack.clear();
       strStack.clear();
-      assert(0);//return parseExpression(parseOperation(frag.str, next.str, src), src, seps);
+      return ret;
     }
     assert(0);
   }
