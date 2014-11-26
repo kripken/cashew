@@ -3,9 +3,11 @@ function func() {
 }
 function another(x, y) {
   func();
+  return;
 }
 function varr() {
   var x;
   var a = 5, b, c = func(a, b), d;
+  return 20;
 }
 

@@ -611,5 +611,11 @@ struct ValueBuilder {
     if (!!value) array->push_back(value);
     var[1]->push_back(array);
   }
+
+  static Ref makeReturn(Ref value) {
+    Ref ret = &makeArray()->push_back(makeRawString(RETURN));
+    if (!!value) ret->push_back(value);
+    return ret;
+  }
 };
 

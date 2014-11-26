@@ -209,6 +209,7 @@ class Parser {
     src = skipSpace(src);
     if (frag.str == FUNCTION) return parseFunction(frag, src, seps);
     else if (frag.str == VAR) return parseVar(frag, src, seps);
+    else if (frag.str == RETURN) return parseReturn(frag, src, seps);
     assert(0);
   }
 
@@ -274,6 +275,15 @@ class Parser {
     assert(*src == ';');
     src++;
     return ret;
+  }
+
+  NodeRef parseReturn(Frag& frag, char*& src, const char* seps) {
+    src = skipSpace(src);
+    NodeRef value = *src != ';' ? parseElement(src, ";") : nullptr;
+    src = skipSpace(src);
+    assert(*src == ';');
+    src++;
+    return Builder::makeReturn(value);
   }
 
   NodeRef parseAfterIdent(Frag& frag, char*& src, const char* seps) {
