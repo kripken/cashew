@@ -223,41 +223,51 @@ class Parser {
     return ret;
   }
 
+  struct ExpressionElement {
+    bool isNode;
+    union {
+      NodeRef node;
+      IString op;
+    };
+    ExpressionElement(NodeRef n) : isNode(true), node(n) {}
+    ExpressionElement(IString o) : isNode(false), op(o) {}
+  };
 
   NodeRef parseExpression(NodeRef initial, char*&src, const char* seps) {
-    static std::vector<NodeRef> nodeStack; // XXX these are *static* lists of the current stack of node-operator-node-operator-etc. This is not threadsafe!!1
-    static std::vector<IString> strStack;  //     this works by each parseExpression call appending to the vector; then recursing out, and the toplevel sorts it all
+    static std::vector<ExpressionElement> stack; // XXX this is a *static* list of the current stack of node-operator-node-operator-etc. This is not threadsafe!!1
+                                                 //     this works by each parseExpression call appending to the vector; then recursing out, and the toplevel sorts it all
     src = skipSpace(src);
     if (*src == 0 || hasChar(seps, *src)) {
-      if (nodeStack.size() > 0) {
-        nodeStack.push_back(initial); // cherry on top of the cake
+      if (stack.size() > 0) {
+        stack.push_back(initial); // cherry on top of the cake
       }
       return initial;
     }
     Frag next(src);
     if (next.type == OPERATOR) {
       src += next.size;
-      bool top = nodeStack.size() == 0;
-      nodeStack.push_back(initial);
-      strStack.push_back(next.str);
+      bool top = stack.size() == 0;
+      stack.push_back(initial);
+      stack.push_back(next.str);
       NodeRef last = parseElement(src, seps);
       if (!top) return last; // XXX
       // we are the toplevel. sort it all out
       /*
-      printf("stacks: %d,%d\n", nodeStack.size(), strStack.size());
-      assert(nodeStack.size() == strStack.size()+1);
+      printf("stacks: %d,%d\n", stack.size(), stack.size());
+      assert(stack.size() == stack.size()+1);
       printf("|");
-      for (int i = 0; i < strStack.size(); i++) {
-        nodeStack[i]->stringify(std::cout);
-        printf(" %s ", strStack[i].str);
+      for (int i = 0; i < stack.size(); i++) {
+        stack[i]->stringify(std::cout);
+        printf(" %s ", stack[i].str);
       }
-      nodeStack.back()->stringify(std::cout);
+      stack.back()->stringify(std::cout);
       printf("|\n");
       */
       // collapse right to left, highest priority first
       int highest = 100, lowest = -1;
-      for (int i = 0; i < strStack.size(); i++) {
-        int curr = operatorPrec[strStack[i]];
+      for (int i = 0; i < stack.size(); i++) {
+        if (stack[i].isNode) continue;
+        int curr = operatorPrec[stack[i].op];
         highest = std::min(highest, curr);
         lowest = std::max(lowest, curr);
       }
@@ -266,19 +276,20 @@ class Parser {
         return Builder::makeBinary(left, op, right);
       };
       for (int prec = highest; prec <= lowest; prec++) {
-        for (int i = strStack.size()-1; i >= 0; i--) {
-          int curr = operatorPrec[strStack[i]];
+        for (int i = stack.size()-1; i >= 0; i--) {
+          if (stack[i].isNode) continue;
+          int curr = operatorPrec[stack[i].op];
           if (curr == prec) {
-            nodeStack[i] = merge(nodeStack[i], strStack[i], nodeStack[i+1]);
-            nodeStack.erase(nodeStack.begin() + i + 1);
-            strStack.erase(strStack.begin() + i);
+            assert(i > 0);
+            stack[i] = merge(stack[i-1].node, stack[i].op, stack[i+1].node);
+            stack.erase(stack.begin() + i + 1);
+            stack.erase(stack.begin() + i - 1);
           }
         }
       }
-      assert(nodeStack.size() == 1 && strStack.size() == 0);
-      NodeRef ret = nodeStack[0];
-      nodeStack.clear();
-      strStack.clear();
+      assert(stack.size() == 1);
+      NodeRef ret = stack[0].node;
+      stack.clear();
       return ret;
     }
     assert(0);
