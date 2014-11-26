@@ -272,6 +272,7 @@ class Parser {
   }
 
   NodeRef parseCall(IString target, char*& src) {
+    expressionPartsStack.resize(expressionPartsStack.size()+1);
     assert(*src == '(');
     src++;
     NodeRef ret = Builder::makeCall(target);
@@ -288,6 +289,8 @@ class Parser {
       assert(0);
     }
     src++;
+    assert(expressionPartsStack.back().size() == 0);
+    expressionPartsStack.pop_back();
     return ret;
   }
 
@@ -306,6 +309,16 @@ class Parser {
   typedef std::vector<ExpressionElement> ExpressionParts;
   std::vector<ExpressionParts> expressionPartsStack;
 
+  void dumpParts(ExpressionParts& parts) {
+    printf("expressionparts: %d,%d\n", parts.size(), parts.size());
+    printf("|");
+    for (int i = 0; i < parts.size(); i++) {
+      if (parts[i].isNode) parts[i].node->stringify(std::cout);
+      else printf(" _%s_ ", parts[i].op.str);
+    }
+    printf("|\n");
+  }
+
   NodeRef parseExpression(NodeRef initial, char*&src, const char* seps) {
     ExpressionParts& parts = expressionPartsStack.back();
     src = skipSpace(src);
@@ -323,46 +336,38 @@ class Parser {
       parts.push_back(next.str);
       NodeRef last = parseElement(src, seps);
       if (!top) return last; // XXX
-      // we are the toplevel. sort it all out
-      /*
-      printf("partss: %d,%d\n", parts.size(), parts.size());
-      assert(parts.size() == parts.size()+1);
-      printf("|");
-      for (int i = 0; i < parts.size(); i++) {
-        parts[i]->stringify(std::cout);
-        printf(" %s ", parts[i].str);
-      }
-      parts.back()->stringify(std::cout);
-      printf("|\n");
-      */
-      // collapse right to left, highest priority first
-      int highest = 100, lowest = -1;
-      for (int i = 0; i < parts.size(); i++) {
-        if (parts[i].isNode) continue;
-        int curr = operatorPrec[parts[i].op];
-        highest = std::min(highest, curr);
-        lowest = std::max(lowest, curr);
-      }
-      assert(highest <= lowest);
-      auto merge = [](NodeRef left, IString op, NodeRef right) {
-        return Builder::makeBinary(left, op, right);
-      };
-      for (int prec = highest; prec <= lowest; prec++) {
-        for (int i = parts.size()-1; i >= 0; i--) {
+      {
+        ExpressionParts& parts = expressionPartsStack.back(); // |parts| may have been invalidated by that call
+        // we are the toplevel. sort it all out
+        // collapse right to left, highest priority first
+        int highest = 100, lowest = -1;
+        for (int i = 0; i < parts.size(); i++) {
           if (parts[i].isNode) continue;
           int curr = operatorPrec[parts[i].op];
-          if (curr == prec) {
-            assert(i > 0);
-            parts[i] = merge(parts[i-1].node, parts[i].op, parts[i+1].node);
-            parts.erase(parts.begin() + i + 1);
-            parts.erase(parts.begin() + i - 1);
+          highest = std::min(highest, curr);
+          lowest = std::max(lowest, curr);
+        }
+        assert(highest <= lowest);
+        auto merge = [](NodeRef left, IString op, NodeRef right) {
+          return Builder::makeBinary(left, op, right);
+        };
+        for (int prec = highest; prec <= lowest; prec++) {
+          for (int i = parts.size()-1; i >= 0; i--) {
+            if (parts[i].isNode) continue;
+            int curr = operatorPrec[parts[i].op];
+            if (curr == prec) {
+              assert(i > 0);
+              parts[i] = merge(parts[i-1].node, parts[i].op, parts[i+1].node);
+              parts.erase(parts.begin() + i + 1);
+              parts.erase(parts.begin() + i - 1);
+            }
           }
         }
+        assert(parts.size() == 1 && parts[0].isNode);
+        NodeRef ret = parts[0].node;
+        parts.clear();
+        return ret;
       }
-      assert(parts.size() == 1 && parts[0].isNode);
-      NodeRef ret = parts[0].node;
-      parts.clear();
-      return ret;
     }
     assert(0);
   }
