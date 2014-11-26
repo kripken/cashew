@@ -64,9 +64,14 @@ IString TOPLEVEL("toplevel"),
         HEAPU32("HEAPU32"),
         HEAPF64("HEAPF64"),
         F0("f0"),
-        EMPTY("");
+        EMPTY(""),
+        SET("=");
 
-StringSet keywords("var function if else do while for break continue return switch case default throw try catch finally true false null");
+StringSet keywords("var function if else do while for break continue return switch case default throw try catch finally true false null"),
+          operators(". ! ~ - + * / % + - << >> >>> < <= > >= == != & ^ | ? = ,");
+
+const char* OPERATOR_INITS = "+-*/%<>&^|~=!";
+int MAX_OPERATOR_SIZE = 3;
 
 } // namespace cashew
 

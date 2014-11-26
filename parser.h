@@ -70,9 +70,13 @@ extern IString TOPLEVEL,
                HEAPU32,
                HEAPF64,
                F0,
-               EMPTY;
+               EMPTY,
+               SET;
 
-extern StringSet keywords;
+extern StringSet keywords, operators;
+
+extern const char* OPERATOR_INITS;
+extern int MAX_OPERATOR_SIZE;
 
 template<class NodeRef, class Builder>
 class Parser {
@@ -131,6 +135,20 @@ class Parser {
       } else if (isDigit(*src)) {
         num = strtod(start, &src);
         type = NUMBER;
+      } else if (hasChar(OPERATOR_INITS, *src)) {
+        IString op;
+        for (int i = 0; i < MAX_OPERATOR_SIZE; i++) {
+          if (!start[i]) break;
+          char temp = start[i+1];
+          start[i+1] = 0;
+          if (operators.has(start)) {
+            op.set(start, false);
+            src = start + i + 1;
+          }
+          start[i+1] = temp;
+        }
+        type = OPERATOR;
+        assert(!!op);
       } else {
         fprintf(stderr, "Frag parsing failed on %s\n", src);
         assert(0);
@@ -176,7 +194,7 @@ class Parser {
     assert(!isSpace(*src));
     assert(!hasChar(seps, *src));
     if (*src == '(') return parseExpression(parseCall(frag.str, src), src, seps);
-    assert(0);
+    return parseExpression(parseFrag(frag), src, seps);
   }
 
   NodeRef parseCall(IString target, char*& src) {
@@ -202,7 +220,12 @@ class Parser {
   NodeRef parseExpression(NodeRef initial, char*&src, const char* seps) {
     src = skipSpace(src);
     if (*src == 0 || hasChar(seps, *src)) return initial;
-    assert(0); // look for an operator, start a tree, etc.
+    Frag next(src);
+    if (next.type == OPERATOR) {
+      src += next.size;
+      assert(0);//return parseExpression(parseOperation(frag.str, next.str, src), src, seps);
+    }
+    assert(0);
   }
 
   // Debugging
