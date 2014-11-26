@@ -595,5 +595,17 @@ struct ValueBuilder {
     assert(func[0] == DEFUN);
     func[2]->push_back(makeRawString(arg));
   }
+
+  static Ref makeVar() {
+    return &makeArray()->push_back(makeRawString(VAR))
+                        .push_back(makeArray());
+  }
+
+  static void appendToVar(Ref var, IString name, Ref value) {
+    assert(var[0] == VAR);
+    Ref array = &makeArray()->push_back(makeRawString(name));
+    if (!!value) array->push_back(value);
+    var[1]->push_back(array);
+  }
 };
 

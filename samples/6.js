@@ -4,4 +4,7 @@ function func() {
 function another(x, y) {
   func();
 }
+function varr() {
+  var x;
+}
 

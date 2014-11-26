@@ -197,6 +197,7 @@ class Parser {
   NodeRef parseAfterKeyword(Frag& frag, char*& src, const char* seps) {
     src = skipSpace(src);
     if (frag.str == FUNCTION) return parseFunction(frag, src, seps);
+    else if (frag.str == VAR) return parseVar(frag, src, seps);
     assert(0);
   }
 
@@ -232,6 +233,35 @@ class Parser {
     assert(*src == '}');
     src++;
     // TODO: parse expression?
+    return ret;
+  }
+
+  NodeRef parseVar(Frag& frag, char*& src, const char* seps) {
+    NodeRef ret = Builder::makeVar();
+    while (1) {
+      src = skipSpace(src);
+      if (*src == ';') break;
+      Frag name(src);
+      assert(name.type == IDENT);
+      NodeRef value;
+      src += name.size;
+      src = skipSpace(src);
+      if (*src == '=') {
+        src++;
+        src = skipSpace(src);
+        value = parseElement(src, ";,");
+      }
+      Builder::appendToVar(ret, name.str, value);
+      src = skipSpace(src);
+      if (*src && *src == ';') break;
+      if (*src && *src == ',') {
+        src++;
+        continue;
+      }
+      assert(0);
+    }
+    assert(*src == ';');
+    src++;
     return ret;
   }
 
