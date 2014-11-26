@@ -92,7 +92,28 @@ template<class NodeRef, class Builder>
 class Parser {
 
   static bool isSpace(char x) { return x == 32 || x == 9 || x == 10 || x == 13; } /* space, tab, linefeed/newline, or return */
-  static char* skipSpace(char* curr) { while (*curr && isSpace(*curr)) curr++; return curr; }
+  static char* skipSpace(char* curr) {
+    while (*curr) {
+      if (isSpace(*curr)) {
+        curr++;
+        continue;
+      }
+      if (curr[0] == '/' && curr[1] == '/') {
+        curr += 2;
+        while (*curr && *curr != '\n') curr++;
+        curr++;
+        continue;
+      }
+      if (curr[0] == '/' && curr[1] == '*') {
+        curr += 2;
+        while (*curr && (curr[0] != '*' || curr[1] != '/')) curr++;
+        curr += 2;
+        continue;
+      }
+      break;
+    }
+    return curr;
+  }
 
   static bool isIdentInit(char x) { return (x >= 'a' && x <= 'z') || (x >= 'A' && x <= 'Z') || x == '_' || x == '$'; }
   static bool isIdentPart(char x) { return isIdentInit(x) || (x >= '0' && x <= '9'); }
@@ -192,7 +213,7 @@ class Parser {
         if (frag.str == OPEN_PAREN) return parseExpression(parseAfterParen(src), src, seps);
         assert(0);
       }
-      default: assert(0);
+      default: dump("parseElement", src); printf("bad frag type: %d\n", frag.type); assert(0);
     }
   }
 
