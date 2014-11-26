@@ -617,5 +617,11 @@ struct ValueBuilder {
     if (!!value) ret->push_back(value);
     return ret;
   }
+
+  static Ref makeIndexing(IString target, Ref index) {
+    return &makeArray()->push_back(makeRawString(SUB))
+                        .push_back(makeRawString(target))
+                        .push_back(index);
+  }
 };
 

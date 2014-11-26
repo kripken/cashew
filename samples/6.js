@@ -15,4 +15,7 @@ function varr() {
   var a = 5, b, c = func(a, b), d;
   return 20;
 }
+function sub() {
+  x[10];
+}
 

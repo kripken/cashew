@@ -76,12 +76,14 @@ extern IString TOPLEVEL,
                EMPTY,
                FUNCTION,
                OPEN_PAREN,
+               OPEN_BRACE,
                COMMA,
                SET;
 
 extern StringSet keywords, operators;
 
-extern const char* OPERATOR_INITS;
+extern const char *OPERATOR_INITS, *SEPARATORS;
+
 extern int MAX_OPERATOR_SIZE;
 
 extern StringIntMap operatorPrec;
@@ -180,10 +182,13 @@ class Parser {
         }
         type = OPERATOR;
         assert(!str.isNull());
-      } else if (*src == '(') {
+      } else if (hasChar(SEPARATORS, *src)) {
         type = SEPARATOR;
+        char temp = src[1];
+        src[1] = 0;
+        str.set(src, false);
+        src[1] = temp;
         src++;
-        str = OPEN_PAREN;
       } else {
         fprintf(stderr, "Frag parsing failed on %c |%s|\n", *src, src);
         assert(0);
@@ -310,6 +315,7 @@ class Parser {
   NodeRef parseAfterIdent(Frag& frag, char*& src, const char* seps) {
     assert(!isSpace(*src));
     if (*src == '(') return parseExpression(parseCall(frag.str, src), src, seps);
+    if (*src == '[') return parseExpression(parseIndexing(frag.str, src), src, seps);
     return parseExpression(parseFrag(frag), src, seps);
   }
 
@@ -330,6 +336,19 @@ class Parser {
       }
       assert(0);
     }
+    src++;
+    assert(expressionPartsStack.back().size() == 0);
+    expressionPartsStack.pop_back();
+    return ret;
+  }
+
+  NodeRef parseIndexing(IString target, char*& src) {
+    expressionPartsStack.resize(expressionPartsStack.size()+1);
+    assert(*src == '[');
+    src++;
+    NodeRef ret = Builder::makeIndexing(target, parseElement(src, "]"));
+    src = skipSpace(src);
+    assert(*src == ']');
     src++;
     assert(expressionPartsStack.back().size() == 0);
     expressionPartsStack.pop_back();
