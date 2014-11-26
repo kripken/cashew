@@ -301,41 +301,45 @@ class Parser {
     ExpressionElement(IString o) : isNode(false), op(o) {}
   };
 
+  // This is a list of the current stack of node-operator-node-operator-etc.
+  // this works by each parseExpression call appending to the vector; then recursing out, and the toplevel sorts it all
+  typedef std::vector<ExpressionElement> ExpressionParts;
+  std::vector<ExpressionParts> expressionPartsStack;
+
   NodeRef parseExpression(NodeRef initial, char*&src, const char* seps) {
-    static std::vector<ExpressionElement> stack; // XXX this is a *static* list of the current stack of node-operator-node-operator-etc. This is not threadsafe!!1
-                                                 //     this works by each parseExpression call appending to the vector; then recursing out, and the toplevel sorts it all
+    ExpressionParts& parts = expressionPartsStack.back();
     src = skipSpace(src);
     if (*src == 0 || hasChar(seps, *src)) {
-      if (stack.size() > 0) {
-        stack.push_back(initial); // cherry on top of the cake
+      if (parts.size() > 0) {
+        parts.push_back(initial); // cherry on top of the cake
       }
       return initial;
     }
     Frag next(src);
     if (next.type == OPERATOR) {
       src += next.size;
-      bool top = stack.size() == 0;
-      stack.push_back(initial);
-      stack.push_back(next.str);
+      bool top = parts.size() == 0;
+      parts.push_back(initial);
+      parts.push_back(next.str);
       NodeRef last = parseElement(src, seps);
       if (!top) return last; // XXX
       // we are the toplevel. sort it all out
       /*
-      printf("stacks: %d,%d\n", stack.size(), stack.size());
-      assert(stack.size() == stack.size()+1);
+      printf("partss: %d,%d\n", parts.size(), parts.size());
+      assert(parts.size() == parts.size()+1);
       printf("|");
-      for (int i = 0; i < stack.size(); i++) {
-        stack[i]->stringify(std::cout);
-        printf(" %s ", stack[i].str);
+      for (int i = 0; i < parts.size(); i++) {
+        parts[i]->stringify(std::cout);
+        printf(" %s ", parts[i].str);
       }
-      stack.back()->stringify(std::cout);
+      parts.back()->stringify(std::cout);
       printf("|\n");
       */
       // collapse right to left, highest priority first
       int highest = 100, lowest = -1;
-      for (int i = 0; i < stack.size(); i++) {
-        if (stack[i].isNode) continue;
-        int curr = operatorPrec[stack[i].op];
+      for (int i = 0; i < parts.size(); i++) {
+        if (parts[i].isNode) continue;
+        int curr = operatorPrec[parts[i].op];
         highest = std::min(highest, curr);
         lowest = std::max(lowest, curr);
       }
@@ -344,20 +348,20 @@ class Parser {
         return Builder::makeBinary(left, op, right);
       };
       for (int prec = highest; prec <= lowest; prec++) {
-        for (int i = stack.size()-1; i >= 0; i--) {
-          if (stack[i].isNode) continue;
-          int curr = operatorPrec[stack[i].op];
+        for (int i = parts.size()-1; i >= 0; i--) {
+          if (parts[i].isNode) continue;
+          int curr = operatorPrec[parts[i].op];
           if (curr == prec) {
             assert(i > 0);
-            stack[i] = merge(stack[i-1].node, stack[i].op, stack[i+1].node);
-            stack.erase(stack.begin() + i + 1);
-            stack.erase(stack.begin() + i - 1);
+            parts[i] = merge(parts[i-1].node, parts[i].op, parts[i+1].node);
+            parts.erase(parts.begin() + i + 1);
+            parts.erase(parts.begin() + i - 1);
           }
         }
       }
-      assert(stack.size() == 1);
-      NodeRef ret = stack[0].node;
-      stack.clear();
+      assert(parts.size() == 1 && parts[0].isNode);
+      NodeRef ret = parts[0].node;
+      parts.clear();
       return ret;
     }
     assert(0);
@@ -395,8 +399,10 @@ class Parser {
 
 public:
 
-  Parser() : allSource(nullptr), allSize(0) {}
-  
+  Parser() : allSource(nullptr), allSize(0) {
+    expressionPartsStack.resize(1);
+  }
+
   // Highest-level parsing, as of a JavaScript script file.
   NodeRef parseToplevel(char* src) {
     allSource = src;
