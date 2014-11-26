@@ -1,12 +1,12 @@
 [
-  "toplevel", 
+  "toplevel",
   [
     [
-      "call", 
-      "print", 
+      "call",
+      "print",
       [
         [
-          "string", 
+          "string",
           "hello world"
         ]
       ]

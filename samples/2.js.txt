@@ -1,27 +1,27 @@
 [
-  "toplevel", 
+  "toplevel",
   [
     [
-      "stat", 
+      "stat",
       [
-        "call", 
-        "print", 
+        "call",
+        "print",
         [
           [
-            "string", 
+            "string",
             "hello world"
           ]
         ]
       ]
-    ], 
+    ],
     [
-      "stat", 
+      "stat",
       [
-        "call", 
-        "print", 
+        "call",
+        "print",
         [
           [
-            "string", 
+            "string",
             "hello world"
           ]
         ]

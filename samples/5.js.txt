@@ -1,17 +1,17 @@
 [
-  "toplevel", 
+  "toplevel",
   [
     [
-      "stat", 
+      "stat",
       [
-        "assign", 
-        true, 
+        "assign",
+        true,
         [
-          "name", 
+          "name",
           "x"
-        ], 
+        ],
         [
-          "num", 
+          "num",
           10
         ]
       ]

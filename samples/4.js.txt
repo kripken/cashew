@@ -1,26 +1,26 @@
 [
-  "toplevel", 
+  "toplevel",
   [
     [
-      "stat", 
+      "stat",
       [
-        "call", 
-        "print", 
+        "call",
+        "print",
         [
           [
-            "num", 
+            "num",
             10
-          ], 
+          ],
           [
-            "string", 
+            "string",
             "hello"
-          ], 
+          ],
           [
-            "string", 
+            "string",
             "world"
-          ], 
+          ],
           [
-            "name", 
+            "name",
             "cheez"
           ]
         ]

@@ -351,8 +351,8 @@ struct Value {
         }
         for (unsigned i = 0; i < arr->size(); i++) {
           if (i > 0) {
-            os << ", ";
-            if (pretty) os << std::endl;
+            if (pretty) os << "," << std::endl;
+            else os << ", ";
           }
           indentify();
           (*arr)[i]->stringify(os, pretty);
