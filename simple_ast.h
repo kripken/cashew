@@ -553,9 +553,9 @@ struct ValueBuilder {
     } else assert(0);
   }
 
-  static Ref makeCall(IString target) {
+  static Ref makeCall(Ref target) {
     return &makeArray()->push_back(makeRawString(CALL))
-                        .push_back(makeName(target))
+                        .push_back(target)
                         .push_back(makeArray());
   }
 
@@ -628,9 +628,9 @@ struct ValueBuilder {
     return ret;
   }
 
-  static Ref makeIndexing(IString target, Ref index) {
+  static Ref makeIndexing(Ref target, Ref index) {
     return &makeArray()->push_back(makeRawString(SUB))
-                        .push_back(makeName(target))
+                        .push_back(target)
                         .push_back(index);
   }
 };

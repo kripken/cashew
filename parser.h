@@ -317,12 +317,12 @@ class Parser {
 
   NodeRef parseAfterIdent(Frag& frag, char*& src, const char* seps) {
     assert(!isSpace(*src));
-    if (*src == '(') return parseExpression(parseCall(frag.str, src), src, seps);
-    if (*src == '[') return parseExpression(parseIndexing(frag.str, src), src, seps);
+    if (*src == '(') return parseExpression(parseCall(parseFrag(frag), src), src, seps);
+    if (*src == '[') return parseExpression(parseIndexing(parseFrag(frag), src), src, seps);
     return parseExpression(parseFrag(frag), src, seps);
   }
 
-  NodeRef parseCall(IString target, char*& src) {
+  NodeRef parseCall(NodeRef target, char*& src) {
     expressionPartsStack.resize(expressionPartsStack.size()+1);
     assert(*src == '(');
     src++;
@@ -345,7 +345,7 @@ class Parser {
     return ret;
   }
 
-  NodeRef parseIndexing(IString target, char*& src) {
+  NodeRef parseIndexing(NodeRef target, char*& src) {
     expressionPartsStack.resize(expressionPartsStack.size()+1);
     assert(*src == '[');
     src++;
@@ -405,7 +405,7 @@ class Parser {
   }
 
   NodeRef parseExpression(ExpressionElement initial, char*&src, const char* seps) {
-    //dump("parseExpression", src);
+    dump("parseExpression", src);
     ExpressionParts& parts = expressionPartsStack.back();
     src = skipSpace(src);
     if (*src == 0 || hasChar(seps, *src)) {
@@ -415,12 +415,22 @@ class Parser {
       return initial.getNode();
     }
     bool top = parts.size() == 0;
-    parts.push_back(initial);
     if (initial.isNode) {
       Frag next(src);
-      assert(next.type == OPERATOR);
-      src += next.size;
-      parts.push_back(next.str);
+      if (next.type == OPERATOR) {
+        parts.push_back(initial);
+        src += next.size;
+        parts.push_back(next.str);
+      } else {
+        if (*src == '(') {
+          initial = parseCall(initial.getNode(), src);
+        } else if (*src == '[') {
+          initial = parseIndexing(initial.getNode(), src);
+        } else assert(0);
+        parts.push_back(initial);
+      }
+    } else {
+      parts.push_back(initial);
     }
     NodeRef last = parseElement(src, seps);
     if (!top) return last;
