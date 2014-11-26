@@ -542,8 +542,11 @@ struct ValueBuilder {
   }
 
   static void appendToBlock(Ref block, Ref element) {
-    assert(block[0] == BLOCK ||  block[0] == TOPLEVEL);
-    block[1]->push_back(element);
+    if (block[0] == BLOCK || block[0] == TOPLEVEL) {
+      block[1]->push_back(element);
+    } else if (block[0] == DEFUN) {
+      block[3]->push_back(element);
+    } else assert(0);
   }
 
   static Ref makeCall(IString target) {
@@ -579,6 +582,18 @@ struct ValueBuilder {
                           .push_back(left)
                           .push_back(right);
     }
+  }
+
+  static Ref makeFunction(IString name) {
+    return &makeArray()->push_back(makeRawString(DEFUN))
+                        .push_back(makeRawString(name))
+                        .push_back(makeArray())
+                        .push_back(makeArray());
+  }
+
+  static void appendArgumentToFunction(Ref func, IString arg) {
+    assert(func[0] == DEFUN);
+    func[2]->push_back(makeRawString(arg));
   }
 };
 

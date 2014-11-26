@@ -74,6 +74,7 @@ extern IString TOPLEVEL,
                HEAPF64,
                F0,
                EMPTY,
+               FUNCTION,
                SET;
 
 extern StringSet keywords, operators;
@@ -194,7 +195,43 @@ class Parser {
   }
 
   NodeRef parseAfterKeyword(Frag& frag, char*& src, const char* seps) {
+    src = skipSpace(src);
+    if (frag.str == FUNCTION) return parseFunction(frag, src, seps);
     assert(0);
+  }
+
+  NodeRef parseFunction(Frag& frag, char*& src, const char* seps) {
+    Frag name(src);
+    assert(name.type == IDENT);
+    src += name.size;
+    NodeRef ret = Builder::makeFunction(name.str);
+    src = skipSpace(src);
+    assert(*src == '(');
+    src++;
+    while (1) {
+      src = skipSpace(src);
+      if (*src == ')') break;
+      Frag arg(src);
+      assert(arg.type == IDENT);
+      src += arg.size;
+      Builder::appendArgumentToFunction(ret, arg.str);
+      src = skipSpace(src);
+      if (*src && *src == ')') break;
+      if (*src && *src == ',') {
+        src++;
+        continue;
+      }
+      assert(0);
+    }
+    assert(*src == ')');
+    src++;
+    src = skipSpace(src);
+    assert(*src == '{');
+    parseBlock(src, ret, "}");
+    assert(*src == '}');
+    src++;
+    // TODO: parse expression?
+    return ret;
   }
 
   NodeRef parseAfterIdent(Frag& frag, char*& src, const char* seps) {
@@ -295,6 +332,23 @@ class Parser {
     assert(0);
   }
 
+  // Parses a block of code (e.g. a bunch of statements inside {,}, or the top level of o file)
+  NodeRef parseBlock(char*& src, NodeRef block=nullptr, const char* seps=";") {
+    if (!block) block = Builder::makeBlock();
+    while (*src) {
+      src = skipSpace(src);
+      if (*src == 0 || hasChar(seps, *src)) break; // XXX handle ;;
+      NodeRef element = parseElement(src, seps);
+      src = skipSpace(src);
+      if (*src && *src == ';') {
+        element = Builder::makeStatement(element);
+        src++;
+      }
+      Builder::appendToBlock(block, element);
+    }
+    return block;
+  }
+
   // Debugging
 
   char *allSource;
@@ -317,23 +371,6 @@ public:
     allSource = src;
     allSize = strlen(src);
     return parseBlock(src, Builder::makeToplevel());
-  }
-
-  // Parses a block of code (e.g. a bunch of statements inside {,}, or the top level of o file)
-  NodeRef parseBlock(char* src, NodeRef block=nullptr) {
-    if (!block) block = Builder::makeBlock();
-    while (*src) {
-      src = skipSpace(src);
-      if (!*src) break;
-      NodeRef element = parseElement(src);
-      src = skipSpace(src);
-      if (*src && *src == ';') {
-        element = Builder::makeStatement(element);
-        src++;
-      }
-      Builder::appendToBlock(block, element);
-    }
-    return block;
   }
 };
 

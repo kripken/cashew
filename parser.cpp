@@ -65,6 +65,7 @@ IString TOPLEVEL("toplevel"),
         HEAPF64("HEAPF64"),
         F0("f0"),
         EMPTY(""),
+        FUNCTION("function"),
         SET("=");
 
 StringSet keywords("var function if else do while for break continue return switch case default throw try catch finally true false null"),
