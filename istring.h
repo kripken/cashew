@@ -1,6 +1,7 @@
 // Interned String type, 100% interned on creation. Comparisons are always just a pointer comparison
 
 #include <unordered_set>
+#include <unordered_map>
 
 #include <string.h>
 #include <stdint.h>
@@ -130,6 +131,8 @@ public:
     return count(str) > 0;
   }
 };
+
+typedef std::unordered_map<IString, int> StringIntMap;
 
 } // namespace cashew
 

@@ -73,5 +73,29 @@ StringSet keywords("var function if else do while for break continue return swit
 const char* OPERATOR_INITS = "+-*/%<>&^|~=!";
 int MAX_OPERATOR_SIZE = 3;
 
+StringIntMap operatorPrec;
+
+struct Init {
+  Init() {
+    // highest
+    operatorPrec["."] = 0;
+    operatorPrec["!"] = operatorPrec["~"] = operatorPrec["-"] = operatorPrec["+"] = 1;
+    operatorPrec["*"] = operatorPrec["/"] = operatorPrec["%"] = 2;
+    operatorPrec["+"] = operatorPrec["-"] = 3;
+    operatorPrec["<<"] = operatorPrec[">>"] = operatorPrec[">>>"] = 4;
+    operatorPrec["<"] = operatorPrec["<="] = operatorPrec[">="] = operatorPrec[">"] = 5;
+    operatorPrec["=="] = operatorPrec["!="] = 6;
+    operatorPrec["&"] = 7;
+    operatorPrec["^"] = 8;
+    operatorPrec["|"] = 9;
+    operatorPrec["?"] = 10;
+    operatorPrec["="] = 11;
+    operatorPrec[","] = 12;
+    // lowest
+  }
+};
+
+Init init;
+
 } // namespace cashew
 

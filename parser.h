@@ -81,6 +81,10 @@ extern StringSet keywords, operators;
 extern const char* OPERATOR_INITS;
 extern int MAX_OPERATOR_SIZE;
 
+extern StringIntMap operatorPrec;
+
+// parser
+
 template<class NodeRef, class Builder>
 class Parser {
 
@@ -239,6 +243,7 @@ class Parser {
       NodeRef last = parseElement(src, seps);
       if (!top) return last; // XXX
       // we are the toplevel. sort it all out
+      /*
       printf("stacks: %d,%d\n", nodeStack.size(), strStack.size());
       assert(nodeStack.size() == strStack.size()+1);
       printf("|");
@@ -248,6 +253,7 @@ class Parser {
       }
       nodeStack.back()->stringify(std::cout);
       printf("|\n");
+      */
       nodeStack.clear();
       strStack.clear();
       assert(0);//return parseExpression(parseOperation(frag.str, next.str, src), src, seps);
