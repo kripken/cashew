@@ -76,6 +76,7 @@ extern IString TOPLEVEL,
                EMPTY,
                FUNCTION,
                OPEN_PAREN,
+               COMMA,
                SET;
 
 extern StringSet keywords, operators;

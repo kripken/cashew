@@ -576,6 +576,10 @@ struct ValueBuilder {
                           .push_back(&arena.alloc()->setBool(true))
                           .push_back(left)
                           .push_back(right);
+    } else if (op == COMMA) {
+      return &makeArray()->push_back(makeRawString(SEQ))
+                          .push_back(left)
+                          .push_back(right);
     } else {
       return &makeArray()->push_back(makeRawString(BINARY))
                           .push_back(makeRawString(op))

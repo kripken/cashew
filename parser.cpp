@@ -67,6 +67,7 @@ IString TOPLEVEL("toplevel"),
         EMPTY(""),
         FUNCTION("function"),
         OPEN_PAREN("("),
+        COMMA(","),
         SET("=");
 
 StringSet keywords("var function if else do while for break continue return switch case default throw try catch finally true false null"),
