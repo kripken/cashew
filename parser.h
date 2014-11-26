@@ -75,6 +75,7 @@ extern IString TOPLEVEL,
                F0,
                EMPTY,
                FUNCTION,
+               OPEN_PAREN,
                SET;
 
 extern StringSet keywords, operators;
@@ -105,7 +106,8 @@ class Parser {
     OPERATOR = 1,
     IDENT = 2,
     STRING = 3, // without quotes
-    NUMBER = 4
+    NUMBER = 4,
+    SEPARATOR = 5
   };
 
   struct Frag {
@@ -156,8 +158,12 @@ class Parser {
         }
         type = OPERATOR;
         assert(!str.isNull());
+      } else if (*src == '(') {
+        type = SEPARATOR;
+        src++;
+        str = OPEN_PAREN;
       } else {
-        fprintf(stderr, "Frag parsing failed on %s\n", src);
+        fprintf(stderr, "Frag parsing failed on %c |%s|\n", *src, src);
         assert(0);
       }
       size = src - start;
@@ -180,6 +186,10 @@ class Parser {
         src = skipSpace(src);
         if (frag.type == IDENT) return parseAfterIdent(frag, src, seps);
         else return parseExpression(parseFrag(frag), src, seps);
+      }
+      case SEPARATOR: {
+        if (frag.str == OPEN_PAREN) return parseExpression(parseAfterParen(src), src, seps);
+        assert(0);
       }
       default: assert(0);
     }
@@ -294,6 +304,18 @@ class Parser {
     return ret;
   }
 
+  NodeRef parseAfterParen(char*& src) {
+    expressionPartsStack.resize(expressionPartsStack.size()+1);
+    src = skipSpace(src);
+    NodeRef ret = parseElement(src, ")");
+    src = skipSpace(src);
+    assert(*src == ')');
+    src++;
+    assert(expressionPartsStack.back().size() == 0);
+    expressionPartsStack.pop_back();
+    return ret;
+  }
+
   struct ExpressionElement {
     bool isNode;
     union {
@@ -320,6 +342,7 @@ class Parser {
   }
 
   NodeRef parseExpression(NodeRef initial, char*&src, const char* seps) {
+    //dump("parseExpression", src);
     ExpressionParts& parts = expressionPartsStack.back();
     src = skipSpace(src);
     if (*src == 0 || hasChar(seps, *src)) {
@@ -395,11 +418,14 @@ class Parser {
   int allSize;
 
   void dump(const char *where, char* curr) {
-    printf("%s\n=============\n", where);
+    /*
+    printf("%s:\n=============\n", where);
     for (int i = 0; i < allSize; i++) printf("%c", allSource[i] ? allSource[i] : '?');
     printf("\n");
     for (int i = 0; i < (curr - allSource); i++) printf(" ");
     printf("^\n=============\n");
+    */
+    printf("%s:\n==========\n%s\n==========\n", where, curr);
   }
 
 public:

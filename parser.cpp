@@ -66,12 +66,13 @@ IString TOPLEVEL("toplevel"),
         F0("f0"),
         EMPTY(""),
         FUNCTION("function"),
+        OPEN_PAREN("("),
         SET("=");
 
 StringSet keywords("var function if else do while for break continue return switch case default throw try catch finally true false null"),
           operators(". ! ~ - + * / % + - << >> >>> < <= > >= == != & ^ | ? = ,");
 
-const char* OPERATOR_INITS = "+-*/%<>&^|~=!";
+const char* OPERATOR_INITS = "+-*/%<>&^|~=!,";
 int MAX_OPERATOR_SIZE = 3;
 
 StringIntMap operatorPrec;
