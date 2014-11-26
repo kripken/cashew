@@ -406,48 +406,48 @@ class Parser {
       assert(initial.isNode);
       return initial.node;
     }
-    Frag next(src);
-    if (next.type == OPERATOR) {
+    bool top = parts.size() == 0;
+    parts.push_back(initial);
+    if (initial.isNode) {
+      Frag next(src);
+      assert(next.type == OPERATOR);
       src += next.size;
-      bool top = parts.size() == 0;
-      parts.push_back(initial);
       parts.push_back(next.str);
-      NodeRef last = parseElement(src, seps);
-      if (!top) return last; // XXX
-      {
-        ExpressionParts& parts = expressionPartsStack.back(); // |parts| may have been invalidated by that call
-        // we are the toplevel. sort it all out
-        // collapse right to left, highest priority first
-        int highest = 100, lowest = -1;
-        for (int i = 0; i < parts.size(); i++) {
+    }
+    NodeRef last = parseElement(src, seps);
+    if (!top) return last; // XXX
+    {
+      ExpressionParts& parts = expressionPartsStack.back(); // |parts| may have been invalidated by that call
+      // we are the toplevel. sort it all out
+      // collapse right to left, highest priority first
+      int highest = 100, lowest = -1;
+      for (int i = 0; i < parts.size(); i++) {
+        if (parts[i].isNode) continue;
+        int curr = operatorPrec[parts[i].op];
+        highest = std::min(highest, curr);
+        lowest = std::max(lowest, curr);
+      }
+      assert(highest <= lowest);
+      auto merge = [](NodeRef left, IString op, NodeRef right) {
+        return Builder::makeBinary(left, op, right);
+      };
+      for (int prec = highest; prec <= lowest; prec++) {
+        for (int i = parts.size()-1; i >= 0; i--) {
           if (parts[i].isNode) continue;
           int curr = operatorPrec[parts[i].op];
-          highest = std::min(highest, curr);
-          lowest = std::max(lowest, curr);
-        }
-        assert(highest <= lowest);
-        auto merge = [](NodeRef left, IString op, NodeRef right) {
-          return Builder::makeBinary(left, op, right);
-        };
-        for (int prec = highest; prec <= lowest; prec++) {
-          for (int i = parts.size()-1; i >= 0; i--) {
-            if (parts[i].isNode) continue;
-            int curr = operatorPrec[parts[i].op];
-            if (curr == prec) {
-              assert(i > 0);
-              parts[i] = merge(parts[i-1].node, parts[i].op, parts[i+1].node);
-              parts.erase(parts.begin() + i + 1);
-              parts.erase(parts.begin() + i - 1);
-            }
+          if (curr == prec) {
+            assert(i > 0);
+            parts[i] = merge(parts[i-1].node, parts[i].op, parts[i+1].node);
+            parts.erase(parts.begin() + i + 1);
+            parts.erase(parts.begin() + i - 1);
           }
         }
-        assert(parts.size() == 1 && parts[0].isNode);
-        NodeRef ret = parts[0].node;
-        parts.clear();
-        return ret;
       }
+      assert(parts.size() == 1 && parts[0].isNode);
+      NodeRef ret = parts[0].node;
+      parts.clear();
+      return ret;
     }
-    assert(0);
   }
 
   // Parses a block of code (e.g. a bunch of statements inside {,}, or the top level of o file)
