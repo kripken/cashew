@@ -6,6 +6,10 @@ from subprocess import Popen, PIPE, STDOUT
 
 print 'building'
 
+try:
+  os.unlink('a.out')
+except:
+  print '(no existing file)'
 proc = Popen(['sh', './build.sh'], stdout=PIPE)
 proc.communicate()
 assert proc.returncode == 0, 'failed to build'
