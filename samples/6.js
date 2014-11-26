@@ -18,7 +18,7 @@ function varr() {
 function sub() {
   x[10];
   x[y + 20];
-  //x[30]();
+  x[30]();
   //x[40] = 50;
 }
 

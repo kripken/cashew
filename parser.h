@@ -427,7 +427,7 @@ class Parser {
         } else if (*src == '[') {
           initial = parseIndexing(initial.getNode(), src);
         } else assert(0);
-        parts.push_back(initial);
+        return parseExpression(initial, src, seps);
       }
     } else {
       parts.push_back(initial);
