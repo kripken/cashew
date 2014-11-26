@@ -5,7 +5,10 @@
       "stat",
       [
         "call",
-        "print",
+        [
+          "name",
+          "print"
+        ],
         [
           [
             "num",

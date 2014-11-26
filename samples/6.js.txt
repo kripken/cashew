@@ -4,14 +4,16 @@
     [
       "defun",
       "func",
-      [
-      ],
+      [],
       [
         [
           "stat",
           [
             "call",
-            "print",
+            [
+              "name",
+              "print"
+            ],
             [
               [
                 "num",
@@ -34,9 +36,11 @@
           "stat",
           [
             "call",
-            "func",
             [
-            ]
+              "name",
+              "func"
+            ],
+            []
           ]
         ],
         [
@@ -47,8 +51,7 @@
     [
       "defun",
       "varr",
-      [
-      ],
+      [],
       [
         [
           "var",
@@ -75,7 +78,10 @@
               "c",
               [
                 "call",
-                "func",
+                [
+                  "name",
+                  "func"
+                ],
                 [
                   [
                     "name",
@@ -105,14 +111,16 @@
     [
       "defun",
       "sub",
-      [
-      ],
+      [],
       [
         [
           "stat",
           [
             "sub",
-            "x",
+            [
+              "name",
+              "x"
+            ],
             [
               "num",
               10

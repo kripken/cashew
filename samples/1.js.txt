@@ -3,7 +3,10 @@
   [
     [
       "call",
-      "print",
+      [
+        "name",
+        "print"
+      ],
       [
         [
           "string",

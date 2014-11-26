@@ -344,6 +344,10 @@ struct Value {
         os << std::setprecision(17) << num; // doubles can have 17 digits of precision
         break;
       case Array:
+        if (arr->size() == 0) {
+          os << "[]";
+          break;
+        }
         os << '[';
         if (pretty) {
           os << std::endl;
@@ -551,7 +555,7 @@ struct ValueBuilder {
 
   static Ref makeCall(IString target) {
     return &makeArray()->push_back(makeRawString(CALL))
-                        .push_back(makeRawString(target))
+                        .push_back(makeName(target))
                         .push_back(makeArray());
   }
 
@@ -620,7 +624,7 @@ struct ValueBuilder {
 
   static Ref makeIndexing(IString target, Ref index) {
     return &makeArray()->push_back(makeRawString(SUB))
-                        .push_back(makeRawString(target))
+                        .push_back(makeName(target))
                         .push_back(index);
   }
 };
