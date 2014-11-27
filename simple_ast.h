@@ -633,5 +633,12 @@ struct ValueBuilder {
                         .push_back(target)
                         .push_back(index);
   }
+
+  static Ref makeIf(Ref condition, Ref ifTrue, Ref ifFalse) {
+    return &makeArray()->push_back(makeRawString(IF))
+                        .push_back(condition)
+                        .push_back(ifTrue)
+                        .push_back(ifFalse);
+  }
 };
 

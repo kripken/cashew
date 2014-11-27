@@ -25,6 +25,7 @@ extern IString TOPLEVEL,
                BINARY,
                RETURN,
                IF,
+               ELSE,
                WHILE,
                DO,
                FOR,
@@ -239,6 +240,7 @@ class Parser {
     if (frag.str == FUNCTION) return parseFunction(frag, src, seps);
     else if (frag.str == VAR) return parseVar(frag, src, seps);
     else if (frag.str == RETURN) return parseReturn(frag, src, seps);
+    else if (frag.str == IF) return parseIf(frag, src, seps);
     assert(0);
   }
 
@@ -267,12 +269,7 @@ class Parser {
     }
     assert(*src == ')');
     src++;
-    src = skipSpace(src);
-    assert(*src == '{');
-    src++;
-    parseBlock(src, ret, ";}"); // the two are not symmetrical, ; is just internally separating, } is the final one - parseBlock knows all this
-    assert(*src == '}');
-    src++;
+    parseBracketedBlock(src, ret);
     // TODO: parse expression?
     return ret;
   }
@@ -313,6 +310,27 @@ class Parser {
     assert(*src == ';');
     src++;
     return Builder::makeReturn(value);
+  }
+
+  NodeRef parseIf(Frag& frag, char*& src, const char* seps) {
+    src = skipSpace(src);
+    assert(*src == '(');
+    src++;
+    NodeRef condition = parseElement(src, ")");
+    src = skipSpace(src);
+    assert(*src == ')');
+    src++;
+    src = skipSpace(src);
+    NodeRef ifTrue = *src == '{' ? parseBracketedBlock(src) : parseElement(src, seps);
+    src = skipSpace(src);
+    Frag next(src);
+    NodeRef ifFalse;
+    if (next.type == KEYWORD && next.str == ELSE) {
+      src += frag.size;
+      src = skipSpace(src);
+      ifFalse = *src == '{' ? parseBracketedBlock(src) : parseElement(src, seps);
+    }
+    return Builder::makeIf(condition, ifTrue, ifFalse);
   }
 
   NodeRef parseAfterIdent(Frag& frag, char*& src, const char* seps) {
@@ -477,6 +495,17 @@ class Parser {
       }
       Builder::appendToBlock(block, element);
     }
+    return block;
+  }
+
+  NodeRef parseBracketedBlock(char*& src, NodeRef block=nullptr) {
+    if (!block) block = Builder::makeBlock();
+    src = skipSpace(src);
+    assert(*src == '{');
+    src++;
+    parseBlock(src, block, ";}"); // the two are not symmetrical, ; is just internally separating, } is the final one - parseBlock knows all this
+    assert(*src == '}');
+    src++;
     return block;
   }
 
