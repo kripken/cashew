@@ -258,6 +258,8 @@ class Parser {
     else if (frag.str == VAR) return parseVar(frag, src, seps);
     else if (frag.str == RETURN) return parseReturn(frag, src, seps);
     else if (frag.str == IF) return parseIf(frag, src, seps);
+    //else if (frag.str == DO) return parseDo(frag, src, seps);
+    //else if (frag.str == WHILE) return parseWhile(frag, src, seps);
     dump(frag.str.str, src);
     assert(0);
   }
@@ -331,13 +333,7 @@ class Parser {
   }
 
   NodeRef parseIf(Frag& frag, char*& src, const char* seps) {
-    src = skipSpace(src);
-    assert(*src == '(');
-    src++;
-    NodeRef condition = parseElement(src, ")");
-    src = skipSpace(src);
-    assert(*src == ')');
-    src++;
+    NodeRef condition = parseParenned(src);
     NodeRef ifTrue = parseMaybeBracketedBlock(src, seps);
     src = skipSpace(src);
     NodeRef ifFalse;
@@ -559,6 +555,17 @@ class Parser {
   NodeRef parseMaybeBracketedBlock(char*& src, const char *seps) {
     src = skipSpace(src);
     return *src == '{' ? parseBracketedBlock(src) : parseElement(src, seps);
+  }
+
+  NodeRef parseParenned(char*& src) {
+    src = skipSpace(src);
+    assert(*src == '(');
+    src++;
+    NodeRef ret = parseElement(src, ")");
+    src = skipSpace(src);
+    assert(*src == ')');
+    src++;
+    return ret;
   }
 
   // Debugging
