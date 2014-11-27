@@ -635,10 +635,11 @@ struct ValueBuilder {
   }
 
   static Ref makeIf(Ref condition, Ref ifTrue, Ref ifFalse) {
-    return &makeArray()->push_back(makeRawString(IF))
-                        .push_back(condition)
-                        .push_back(ifTrue)
-                        .push_back(ifFalse);
+    Ref ret = &makeArray()->push_back(makeRawString(IF))
+                           .push_back(condition)
+                          .push_back(ifTrue);
+    if (!!ifFalse) ret->push_back(ifFalse);
+    return ret;
   }
 };
 

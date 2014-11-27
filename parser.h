@@ -423,7 +423,7 @@ class Parser {
   }
 
   NodeRef parseExpression(ExpressionElement initial, char*&src, const char* seps) {
-    dump("parseExpression", src);
+    //dump("parseExpression", src);
     ExpressionParts& parts = expressionPartsStack.back();
     src = skipSpace(src);
     if (*src == 0 || hasChar(seps, *src)) {
