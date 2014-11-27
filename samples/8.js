@@ -22,4 +22,59 @@ function a() {
  $56 = (_fcntl() | 0) | 1;
  FUNCTION_TABLE_ii[55 & 127]() | 0;
 }
+function b($this, $__n) {
+ $this = $this | 0;
+ $__n = $__n | 0;
+ var $4 = 0, $5 = 0, $10 = 0, $13 = 0, $14 = 0, $15 = 0, $23 = 0, $30 = 0, $38 = 0, $40 = 0;
+ if (($__n | 0) == 0) {
+  return;
+ }
+ $4 = $this;
+ $5 = HEAP8[$4 & 16777215] | 0;
+ if (($5 & 1) << 24 >> 24 == 0) {
+  $14 = 10;
+  $13 = $5;
+ } else {
+  $10 = HEAP32[(($this | 0) & 16777215) >> 2] | 0;
+  $14 = ($10 & -2) - 1 | 0;
+  $13 = $10 & 255;
+ }
+ $15 = $13 & 255;
+ if (($15 & 1 | 0) == 0) {
+  $23 = $15 >>> 1;
+ } else {
+  $23 = HEAP32[(($this + 4 | 0) & 16777215) >> 2] | 0;
+ }
+ if (($14 - $23 | 0) >>> 0 < $__n >>> 0) {
+  __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE9__grow_byEjjjjjj($this, $14, ($__n - $14 | 0) + $23 | 0, $23, $23);
+  $30 = HEAP8[$4 & 16777215] | 0;
+ } else {
+  $30 = $13;
+ }
+ if (($30 & 1) << 24 >> 24 == 0) {
+  $38 = $this + 1 | 0;
+ } else {
+  $38 = HEAP32[(($this + 8 | 0) & 16777215) >> 2] | 0;
+ }
+ _memset($38 + $23 | 0 | 0 | 0, 0 | 0 | 0, $__n | 0 | 0, 1 | 0 | 0, 1213141516);
+ $40 = $23 + $__n | 0;
+ if (((HEAP8[$4 & 16777215] | 0) & 1) << 24 >> 24 == 0) {
+  HEAP8[$4 & 16777215] = $40 << 1 & 255;
+ } else {
+  HEAP32[(($this + 4 | 0) & 16777215) >> 2] = $40;
+ }
+ HEAP8[($38 + $40 | 0) & 16777215] = 0;
+ // Eliminate the |0.
+ HEAP32[$4] = ((~(HEAP32[$5]|0))|0);
+ // Eliminate the &255
+ HEAP8[$4] = HEAP32[$5]&255;
+ // Eliminate the &65535
+ HEAP16[$4] = HEAP32[$5]&65535;
+ // Rewrite to ~.
+ HEAP32[$4] = HEAP32[$5]^-1;
+ // Rewrite to ~ and eliminate the |0.
+ HEAP32[$4] = ((HEAP32[$5]|0)^-1)|0;
+ h((~~g) ^ -1); // do NOT convert this, as it would lead to ~~~ which is confusing in asm, given the role of ~~
+ return;
+}
 

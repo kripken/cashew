@@ -191,7 +191,7 @@ class Parser {
         src[1] = temp;
         src++;
       } else {
-        fprintf(stderr, "Frag parsing failed on %c |%s|\n", *src, src);
+        dump("frag parsing", src);
         assert(0);
       }
       size = src - start;
@@ -326,7 +326,7 @@ class Parser {
     Frag next(src);
     NodeRef ifFalse;
     if (next.type == KEYWORD && next.str == ELSE) {
-      src += frag.size;
+      src += next.size;
       src = skipSpace(src);
       ifFalse = *src == '{' ? parseBracketedBlock(src) : parseElement(src, seps);
     }
@@ -514,7 +514,7 @@ class Parser {
   char *allSource;
   int allSize;
 
-  void dump(const char *where, char* curr) {
+  static void dump(const char *where, char* curr) {
     /*
     printf("%s:\n=============\n", where);
     for (int i = 0; i < allSize; i++) printf("%c", allSource[i] ? allSource[i] : '?');
@@ -522,7 +522,16 @@ class Parser {
     for (int i = 0; i < (curr - allSource); i++) printf(" ");
     printf("^\n=============\n");
     */
-    printf("%s:\n==========\n%s\n==========\n", where, curr);
+    printf("%s:\n==========\n", where);
+    int newlinesLeft = 2;
+    while (*curr) {
+      if (*curr == '\n') {
+        newlinesLeft--;
+        if (newlinesLeft == 0) break;
+      }
+      printf("%c", *curr++);
+    }
+    printf("\n\n");
   }
 
 public:
