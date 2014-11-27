@@ -648,5 +648,17 @@ struct ValueBuilder {
                         .push_back(ifTrue)
                         .push_back(ifFalse);
   }
+
+  static Ref makeDo(Ref body, Ref condition) {
+    return &makeArray()->push_back(makeRawString(DO))
+                        .push_back(condition)
+                        .push_back(body);
+  }
+
+  static Ref makeWhile(Ref condition, Ref body) {
+    return &makeArray()->push_back(makeRawString(WHILE))
+                        .push_back(condition)
+                        .push_back(body);
+  }
 };
 

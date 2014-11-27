@@ -258,8 +258,8 @@ class Parser {
     else if (frag.str == VAR) return parseVar(frag, src, seps);
     else if (frag.str == RETURN) return parseReturn(frag, src, seps);
     else if (frag.str == IF) return parseIf(frag, src, seps);
-    //else if (frag.str == DO) return parseDo(frag, src, seps);
-    //else if (frag.str == WHILE) return parseWhile(frag, src, seps);
+    else if (frag.str == DO) return parseDo(frag, src, seps);
+    else if (frag.str == WHILE) return parseWhile(frag, src, seps);
     dump(frag.str.str, src);
     assert(0);
   }
@@ -345,6 +345,22 @@ class Parser {
       }
     }
     return Builder::makeIf(condition, ifTrue, ifFalse);
+  }
+
+  NodeRef parseDo(Frag& frag, char*& src, const char* seps) {
+    NodeRef body = parseMaybeBracketedBlock(src, seps);
+    src = skipSpace(src);
+    Frag next(src);
+    assert(next.type == KEYWORD && next.str == WHILE);
+    src += frag.size;
+    NodeRef condition = parseParenned(src);
+    return Builder::makeDo(body, condition);
+  }
+
+  NodeRef parseWhile(Frag& frag, char*& src, const char* seps) {
+    NodeRef condition = parseParenned(src);
+    NodeRef body = parseMaybeBracketedBlock(src, seps);
+    return Builder::makeWhile(condition, body);
   }
 
   NodeRef parseAfterIdent(Frag& frag, char*& src, const char* seps) {
