@@ -323,12 +323,14 @@ class Parser {
     src = skipSpace(src);
     NodeRef ifTrue = *src == '{' ? parseBracketedBlock(src) : parseElement(src, seps);
     src = skipSpace(src);
-    Frag next(src);
     NodeRef ifFalse;
-    if (next.type == KEYWORD && next.str == ELSE) {
-      src += next.size;
-      src = skipSpace(src);
-      ifFalse = *src == '{' ? parseBracketedBlock(src) : parseElement(src, seps);
+    if (*src && !hasChar(seps, *src)) {
+      Frag next(src);
+      if (next.type == KEYWORD && next.str == ELSE) {
+        src += next.size;
+        src = skipSpace(src);
+        ifFalse = *src == '{' ? parseBracketedBlock(src) : parseElement(src, seps);
+      }
     }
     return Builder::makeIf(condition, ifTrue, ifFalse);
   }

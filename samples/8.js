@@ -77,4 +77,25 @@ function b($this, $__n) {
  h((~~g) ^ -1); // do NOT convert this, as it would lead to ~~~ which is confusing in asm, given the role of ~~
  return;
 }
+function i32_8() {
+ if (((HEAP8[$4 & 16777215] | 0) << 24 >> 24) == 0) {
+  print(5);
+ }
+ if ((HEAP8[$5 & 16777215] << 24 >> 24) == 0) {
+  print(5);
+ }
+ if (((HEAPU8[$6 & 16777215] | 0) << 24 >> 24) == 0) {
+  print(5);
+ }
+ if ((HEAPU8[$7 & 16777215] << 24 >> 24) == 0) {
+  print(5);
+ }
+ // non-valid
+ if ((HEAPU8[$8 & 16777215] << 24 >> 16) == 0) {
+  print(5);
+ }
+ if ((HEAPU8[$9 & 16777215] << 16 >> 16) == 0) {
+  print(5);
+ }
+}
 
