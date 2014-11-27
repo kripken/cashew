@@ -184,8 +184,9 @@ class Parser {
         str.set(src+1);
         src = end+1;
         type = STRING;
-      } else if (isDigit(*src)) {
+      } else if (isDigit(*src) || (src[0] == '.' && isDigit(src[1]))) {
         num = strtod(start, &src);
+        assert(src > start);
         type = NUMBER;
       } else if (hasChar(OPERATOR_INITS, *src)) {
         for (int i = 0; i < MAX_OPERATOR_SIZE; i++) {
