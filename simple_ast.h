@@ -660,5 +660,17 @@ struct ValueBuilder {
                         .push_back(condition)
                         .push_back(body);
   }
+
+  static Ref makeBreak(IString label) {
+    Ref ret = &makeArray()->push_back(makeRawString(BREAK));
+    if (!!label) ret->push_back(makeRawString(label));
+    return ret;
+  }
+
+  static Ref makeContinue(IString label) {
+    Ref ret = &makeArray()->push_back(makeRawString(CONTINUE));
+    if (!!label) ret->push_back(makeRawString(label));
+    return ret;
+  }
 };
 

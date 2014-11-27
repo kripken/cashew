@@ -260,6 +260,8 @@ class Parser {
     else if (frag.str == IF) return parseIf(frag, src, seps);
     else if (frag.str == DO) return parseDo(frag, src, seps);
     else if (frag.str == WHILE) return parseWhile(frag, src, seps);
+    else if (frag.str == BREAK) return parseBreak(frag, src, seps);
+    else if (frag.str == CONTINUE) return parseContinue(frag, src, seps);
     dump(frag.str.str, src);
     assert(0);
   }
@@ -361,6 +363,18 @@ class Parser {
     NodeRef condition = parseParenned(src);
     NodeRef body = parseMaybeBracketedBlock(src, seps);
     return Builder::makeWhile(condition, body);
+  }
+
+  NodeRef parseBreak(Frag& frag, char*& src, const char* seps) {
+    src = skipSpace(src);
+    Frag next(src);
+    return Builder::makeBreak(next.type == IDENT ? next.str : IString());
+  }
+
+  NodeRef parseContinue(Frag& frag, char*& src, const char* seps) {
+    src = skipSpace(src);
+    Frag next(src);
+    return Builder::makeContinue(next.type == IDENT ? next.str : IString());
   }
 
   NodeRef parseAfterIdent(Frag& frag, char*& src, const char* seps) {
