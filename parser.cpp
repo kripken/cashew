@@ -78,7 +78,7 @@ StringSet keywords("var function if else do while for break continue return swit
           allOperators(". ! ~ - + * / % + - << >> >>> < <= > >= == != & ^ | ? : = ,");
 
 const char *OPERATOR_INITS = "+-*/%<>&^|~=!,?:",
-           *SEPARATORS = "([";
+           *SEPARATORS = "([;";
 
 int MAX_OPERATOR_SIZE = 3;
 

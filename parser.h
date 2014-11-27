@@ -354,7 +354,7 @@ class Parser {
     src = skipSpace(src);
     Frag next(src);
     assert(next.type == KEYWORD && next.str == WHILE);
-    src += frag.size;
+    src += next.size;
     NodeRef condition = parseParenned(src);
     return Builder::makeDo(body, condition);
   }
