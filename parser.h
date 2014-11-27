@@ -79,6 +79,8 @@ extern IString TOPLEVEL,
                OPEN_PAREN,
                OPEN_BRACE,
                COMMA,
+               QUESTION,
+               COLON,
                SET;
 
 extern StringSet keywords, allOperators;
@@ -206,7 +208,7 @@ class Parser {
         src[1] = temp;
         src++;
       } else {
-        //dump("frag parsing", src);
+        dump("frag parsing", src);
         assert(0);
       }
       size = src - start;
@@ -429,8 +431,8 @@ class Parser {
   typedef std::vector<ExpressionElement> ExpressionParts;
   std::vector<ExpressionParts> expressionPartsStack;
 
-  void dumpParts(ExpressionParts& parts) {
-    printf("expressionparts: %d,%d\n", parts.size(), parts.size());
+  void dumpParts(ExpressionParts& parts, int i) {
+    printf("expressionparts: %d,%d (at %d)\n", parts.size(), parts.size(), i);
     printf("|");
     for (int i = 0; i < parts.size(); i++) {
       if (parts[i].isNode) parts[i].getNode()->stringify(std::cout);
@@ -480,27 +482,38 @@ class Parser {
           for (int i = parts.size()-1; i >= 0; i--) {
             if (parts[i].isNode) continue;
             IString op = parts[i].getOp();
-            if (ops.type == OperatorClass::Binary && i > 0 && i < parts.size()-1 && ops.ops.has(op)) {
+            if (!ops.ops.has(op)) continue;
+            if (ops.type == OperatorClass::Binary && i > 0 && i < parts.size()-1) {
               parts[i] = Builder::makeBinary(parts[i-1].getNode(), op, parts[i+1].getNode());
               parts.erase(parts.begin() + i + 1);
               parts.erase(parts.begin() + i - 1);
-            } else if (ops.type == OperatorClass::Prefix && i < parts.size()-1 && ops.ops.has(op)) {
+            } else if (ops.type == OperatorClass::Prefix && i < parts.size()-1) {
               if (i > 0 && parts[i-1].isNode) continue; // cannot apply prefix operator if it would join two nodes
               parts[i] = Builder::makePrefix(op, parts[i+1].getNode());
               parts.erase(parts.begin() + i + 1);
-            } // TODO: tertiary, postfix
+            } else if (ops.type == OperatorClass::Tertiary) {
+              // we must be at  X ? Y : Z
+              //                      ^
+              assert(op == COLON);
+              assert(i < parts.size()-1 && i >= 3);
+              assert(parts[i-2].getOp() == QUESTION);
+              parts[i-3] = Builder::makeConditional(parts[i-3].getNode(), parts[i-1].getNode(), parts[i+1].getNode());
+              parts.erase(parts.begin() + i - 2, parts.begin() + i + 2);
+              i -= 2; // with the other i--, that puts us right on the result here
+            } // TODO: postfix
           }
         } else {
           // left to right
           for (int i = 0; i < parts.size(); i++) {
             if (parts[i].isNode) continue;
             IString op = parts[i].getOp();
-            if (ops.type == OperatorClass::Binary && i > 0 && i < parts.size()-1 && ops.ops.has(op)) {
+            if (!ops.ops.has(op)) continue;
+            if (ops.type == OperatorClass::Binary && i > 0 && i < parts.size()-1) {
               parts[i] = Builder::makeBinary(parts[i-1].getNode(), op, parts[i+1].getNode());
               parts.erase(parts.begin() + i + 1);
               parts.erase(parts.begin() + i - 1);
               i--;
-            } else if (ops.type == OperatorClass::Prefix && i < parts.size()-1 && ops.ops.has(op)) {
+            } else if (ops.type == OperatorClass::Prefix && i < parts.size()-1) {
               if (i > 0 && parts[i-1].isNode) continue; // cannot apply prefix operator if it would join two nodes
               parts[i] = Builder::makePrefix(op, parts[i+1].getNode());
               parts.erase(parts.begin() + i + 1);

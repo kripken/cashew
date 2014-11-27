@@ -641,5 +641,12 @@ struct ValueBuilder {
     if (!!ifFalse) ret->push_back(ifFalse);
     return ret;
   }
+
+  static Ref makeConditional(Ref condition, Ref ifTrue, Ref ifFalse) {
+    return &makeArray()->push_back(makeRawString(CONDITIONAL))
+                        .push_back(condition)
+                        .push_back(ifTrue)
+                        .push_back(ifFalse);
+  }
 };
 

@@ -120,4 +120,32 @@ function compare_result_simplification() {
  HEAP32[$4] = (HEAP32[$5] < HEAP32[$6]) & 1;
  var x = (HEAP32[$5] != HEAP32[$6]) & 1;
 }
+function tempDoublePtr($45, $14, $28, $42) {
+ $45 = $45 | 0;
+ $14 = $14 | 0;
+ $28 = $28 | 0;
+ $42 = $42 | 0;
+ var unelim = 0; // only used as assign to int heap, so can avoid bitcast in definition
+ var bad = 0;
+ var unelim2 = 0; // opposite types
+ unelim = (HEAPF32[tempDoublePtr >> 2] = 127.5 * +$14, HEAP32[tempDoublePtr >> 2] | 0);
+ HEAP32[$45 >> 2] = 0 | (HEAPF32[tempDoublePtr >> 2] = ($14 < $28 ? $14 : $28) - $42, HEAP32[tempDoublePtr >> 2] | 0);
+ HEAP32[$world + 102916 >> 2] = _malloc(192) | 0;
+ f((HEAP32[tempDoublePtr >> 2] = HEAP32[$45 >> 2], +HEAPF32[tempDoublePtr >> 2]));
+ g((HEAPF32[tempDoublePtr >> 2] = HEAPF32[$14 >> 2], HEAP32[tempDoublePtr >> 2] | 0));
+ $42 = (HEAP32[tempDoublePtr >> 2] = HEAP32[$42 >> 2] | 0, +HEAPF32[tempDoublePtr >> 2]);
+ ch($42);
+ HEAP32[$45 >> 2] = unelim;
+ moar();
+ bad = (HEAPF32[tempDoublePtr >> 2] = 127.5 * +$14, HEAP32[tempDoublePtr >> 2] | 0);
+ func();
+ HEAP32[4] = bad;
+ HEAP32[5] = (bad + 1) | 0;
+ moar();
+ unelim2 = (HEAP32[tempDoublePtr >> 2] = 127 + $14, +HEAPF32[tempDoublePtr >> 2]);
+ func();
+ HEAPF32[4] = unelim2;
+ barrier();
+ $f163 = (HEAP32[tempDoublePtr >> 2] = HEAP32[$f165 >> 2], HEAP32[tempDoublePtr + 4 >> 2] = HEAP32[$f165 + 4 >> 2], +HEAPF64[tempDoublePtr >> 3]);
+}
 
