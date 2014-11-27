@@ -98,4 +98,26 @@ function i32_8() {
   print(5);
  }
 }
+function sign_extension_simplification() {
+ if ((HEAP8[$4 & 16777215] & 127) << 24 >> 24 == 0) {
+  print(5);
+ }
+ if ((HEAP8[$4 & 16777215] & 128) << 24 >> 24 == 0) {
+  print(5);
+ }
+ if ((HEAP32[$5 & 16777215] & 32767) << 16 >> 16 == 0) {
+  print(5);
+ }
+ if ((HEAP32[$5 & 16777215] & 32768) << 16 >> 16 == 0) {
+  print(5);
+ }
+}
+function compare_result_simplification() {
+ f(((a > b)&1) + 1 | 0);
+ f(((a > b)&1) | z);
+ f(((a > b)&1) | (c > d & 1));
+ // Don't eliminate these '&1's.
+ HEAP32[$4] = (HEAP32[$5] < HEAP32[$6]) & 1;
+ var x = (HEAP32[$5] != HEAP32[$6]) & 1;
+}
 
