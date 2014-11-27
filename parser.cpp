@@ -73,37 +73,30 @@ IString TOPLEVEL("toplevel"),
         SET("=");
 
 StringSet keywords("var function if else do while for break continue return switch case default throw try catch finally true false null"),
-          allOperators(". ! ~ - + * / % + - << >> >>> < <= > >= == != & ^ | ? = ,"),
-          binaryOperators(". - + * / % << >> >>> < <= > >= == != & ^ | = ,"),
-          prefixOperators("! ~ - +"),
-          postfixOperators(""),
-          tertiaryOperators("? :");
+          allOperators(". ! ~ - + * / % + - << >> >>> < <= > >= == != & ^ | ? = ,");
 
 const char *OPERATOR_INITS = "+-*/%<>&^|~=!,",
            *SEPARATORS = "([";
 
-int MAX_OPERATOR_SIZE = 3,
-    LOWEST_PREC = 12;
+int MAX_OPERATOR_SIZE = 3;
 
-StringIntMap binaryPrec, prefixPrec, postfixPrec, tertiaryPrec;
+std::vector<OperatorClass> operatorClasses;
 
 struct Init {
   Init() {
-    // highest
-    binaryPrec["."] = 0;
-    prefixPrec["!"] = prefixPrec["~"] = prefixPrec["-"] = prefixPrec["+"] = 1;
-    binaryPrec["*"] = binaryPrec["/"] = binaryPrec["%"] = 2;
-    binaryPrec["+"] = binaryPrec["-"] = 3;
-    binaryPrec["<<"] = binaryPrec[">>"] = binaryPrec[">>>"] = 4;
-    binaryPrec["<"] = binaryPrec["<="] = binaryPrec[">="] = binaryPrec[">"] = 5;
-    binaryPrec["=="] = binaryPrec["!="] = 6;
-    binaryPrec["&"] = 7;
-    binaryPrec["^"] = 8;
-    binaryPrec["|"] = 9;
-    tertiaryPrec["?"] = tertiaryPrec[":"] = 10;
-    binaryPrec["="] = 11;
-    binaryPrec[","] = 12;
-    // lowest
+    // operators, rtl, type
+    operatorClasses.push_back(OperatorClass("! ~ + -",   true,  OperatorClass::Prefix));
+    operatorClasses.push_back(OperatorClass("* / %",     false, OperatorClass::Binary));
+    operatorClasses.push_back(OperatorClass("+ -",       false, OperatorClass::Binary));
+    operatorClasses.push_back(OperatorClass("<< >> >>>", false, OperatorClass::Binary));
+    operatorClasses.push_back(OperatorClass("< <= > >=", false, OperatorClass::Binary));
+    operatorClasses.push_back(OperatorClass("== !=",     false, OperatorClass::Binary));
+    operatorClasses.push_back(OperatorClass("&",         false, OperatorClass::Binary));
+    operatorClasses.push_back(OperatorClass("^",         false, OperatorClass::Binary));
+    operatorClasses.push_back(OperatorClass("|",         false, OperatorClass::Binary));
+    operatorClasses.push_back(OperatorClass("? :",       true,  OperatorClass::Tertiary));
+    operatorClasses.push_back(OperatorClass("=",         true,  OperatorClass::Binary));
+    operatorClasses.push_back(OperatorClass(",",         false, OperatorClass::Binary));
   }
 };
 

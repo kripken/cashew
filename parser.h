@@ -81,13 +81,28 @@ extern IString TOPLEVEL,
                COMMA,
                SET;
 
-extern StringSet keywords, allOperators, binaryOperators, prefixOperators, postfixOperators, tertiaryOperators;
+extern StringSet keywords, allOperators;
 
 extern const char *OPERATOR_INITS, *SEPARATORS;
 
 extern int MAX_OPERATOR_SIZE, LOWEST_PREC;
 
-extern StringIntMap binaryPrec, prefixPrec, postfixPrec, tertiaryPrec;
+struct OperatorClass {
+  enum Type {
+    Binary = 0,
+    Prefix = 1,
+    Postfix = 2,
+    Tertiary = 3
+  };
+
+  StringSet ops;
+  bool rtl;
+  Type type;
+
+  OperatorClass(const char* o, bool r, Type t) : ops(o), rtl(r), type(t) {}
+};
+
+extern std::vector<OperatorClass> operatorClasses;
 
 // parser
 
@@ -191,7 +206,7 @@ class Parser {
         src[1] = temp;
         src++;
       } else {
-        dump("frag parsing", src);
+        //dump("frag parsing", src);
         assert(0);
       }
       size = src - start;
@@ -222,7 +237,7 @@ class Parser {
       case OPERATOR: {
         return parseExpression(frag.str, src, seps);
       }
-      default: dump("parseElement", src); printf("bad frag type: %d\n", frag.type); assert(0);
+      default: /* dump("parseElement", src); printf("bad frag type: %d\n", frag.type); */ assert(0);
     }
   }
 
@@ -459,20 +474,38 @@ class Parser {
       // we are the toplevel. sort it all out
       // collapse right to left, highest priority first
       //dumpParts(parts);
-      for (int prec = 0; prec <= LOWEST_PREC; prec++) {
-        for (int i = parts.size()-1; i >= 0; i--) {
-          if (parts[i].isNode) continue;
-          IString op = parts[i].getOp();
-          if (i > 0 && i < parts.size()-1 && binaryOperators.has(op) && binaryPrec[op] == prec) {
-            parts[i] = Builder::makeBinary(parts[i-1].getNode(), op, parts[i+1].getNode());
-            parts.erase(parts.begin() + i + 1);
-            parts.erase(parts.begin() + i - 1);
-          } else if (i < parts.size()-1 && prefixOperators.has(op) && prefixPrec[op] == prec) { // TODO: postfix
-            if (i > 0 && parts[i-1].isNode) continue; // cannot apply prefix operator if it would join two nodes
-            parts[i] = Builder::makePrefix(op, parts[i+1].getNode());
-            parts.erase(parts.begin() + i + 1);
-          } else if (tertiaryOperators.has(op) && tertiaryPrec[op] == prec) {
-            assert(0);
+      for (auto ops : operatorClasses) {
+        if (ops.rtl) {
+          // right to left
+          for (int i = parts.size()-1; i >= 0; i--) {
+            if (parts[i].isNode) continue;
+            IString op = parts[i].getOp();
+            if (ops.type == OperatorClass::Binary && i > 0 && i < parts.size()-1 && ops.ops.has(op)) {
+              parts[i] = Builder::makeBinary(parts[i-1].getNode(), op, parts[i+1].getNode());
+              parts.erase(parts.begin() + i + 1);
+              parts.erase(parts.begin() + i - 1);
+            } else if (ops.type == OperatorClass::Prefix && i < parts.size()-1 && ops.ops.has(op)) {
+              if (i > 0 && parts[i-1].isNode) continue; // cannot apply prefix operator if it would join two nodes
+              parts[i] = Builder::makePrefix(op, parts[i+1].getNode());
+              parts.erase(parts.begin() + i + 1);
+            } // TODO: tertiary, postfix
+          }
+        } else {
+          // left to right
+          for (int i = 0; i < parts.size(); i++) {
+            if (parts[i].isNode) continue;
+            IString op = parts[i].getOp();
+            if (ops.type == OperatorClass::Binary && i > 0 && i < parts.size()-1 && ops.ops.has(op)) {
+              parts[i] = Builder::makeBinary(parts[i-1].getNode(), op, parts[i+1].getNode());
+              parts.erase(parts.begin() + i + 1);
+              parts.erase(parts.begin() + i - 1);
+              i--;
+            } else if (ops.type == OperatorClass::Prefix && i < parts.size()-1 && ops.ops.has(op)) {
+              if (i > 0 && parts[i-1].isNode) continue; // cannot apply prefix operator if it would join two nodes
+              parts[i] = Builder::makePrefix(op, parts[i+1].getNode());
+              parts.erase(parts.begin() + i + 1);
+              i = std::max(i-2, 0); // allow a previous prefix operator to cascade
+            } // TODO: tertiary, postfix
           }
         }
       }
