@@ -4,15 +4,15 @@
 import os, sys, difflib
 from subprocess import Popen, PIPE, STDOUT
 
-print 'building'
-
-try:
-  os.unlink('a.out')
-except:
-  print '(no existing file)'
-proc = Popen(['sh', './build.sh'], stdout=PIPE)
-proc.communicate()
-assert proc.returncode == 0, 'failed to build'
+if not os.path.exists('a.out') or os.stat('a.out').st_mtime < os.stat('parser.h').st_mtime:
+  print 'building'
+  try:
+    os.unlink('a.out')
+  except:
+    print '(no existing file)'
+  proc = Popen(['sh', './build.sh'], stdout=PIPE)
+  proc.communicate()
+  assert proc.returncode == 0, 'failed to build'
 
 print 'testing'
 
