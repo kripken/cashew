@@ -258,6 +258,7 @@ class Parser {
     else if (frag.str == VAR) return parseVar(frag, src, seps);
     else if (frag.str == RETURN) return parseReturn(frag, src, seps);
     else if (frag.str == IF) return parseIf(frag, src, seps);
+    dump(frag.str.str, src);
     assert(0);
   }
 
