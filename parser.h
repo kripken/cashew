@@ -338,16 +338,14 @@ class Parser {
     src = skipSpace(src);
     assert(*src == ')');
     src++;
-    src = skipSpace(src);
-    NodeRef ifTrue = *src == '{' ? parseBracketedBlock(src) : parseElement(src, seps);
+    NodeRef ifTrue = parseMaybeBracketedBlock(src, seps);
     src = skipSpace(src);
     NodeRef ifFalse;
     if (*src && !hasChar(seps, *src)) {
       Frag next(src);
       if (next.type == KEYWORD && next.str == ELSE) {
         src += next.size;
-        src = skipSpace(src);
-        ifFalse = *src == '{' ? parseBracketedBlock(src) : parseElement(src, seps);
+        ifFalse = parseMaybeBracketedBlock(src, seps);
       }
     }
     return Builder::makeIf(condition, ifTrue, ifFalse);
@@ -556,6 +554,11 @@ class Parser {
     assert(*src == '}');
     src++;
     return block;
+  }
+
+  NodeRef parseMaybeBracketedBlock(char*& src, const char *seps) {
+    src = skipSpace(src);
+    return *src == '{' ? parseBracketedBlock(src) : parseElement(src, seps);
   }
 
   // Debugging
