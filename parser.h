@@ -382,6 +382,10 @@ class Parser {
     assert(!isSpace(*src));
     if (*src == '(') return parseExpression(parseCall(parseFrag(frag), src), src, seps);
     if (*src == '[') return parseExpression(parseIndexing(parseFrag(frag), src), src, seps);
+    if (*src == ':' && expressionPartsStack.back().size() == 0) {
+      src++;
+      return Builder::makeLabel(frag.str, parseElement(src, seps));
+    }
     return parseExpression(parseFrag(frag), src, seps);
   }
 

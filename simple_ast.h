@@ -672,5 +672,11 @@ struct ValueBuilder {
     if (!!label) ret->push_back(makeRawString(label));
     return ret;
   }
+
+  static Ref makeLabel(IString name, Ref body) {
+    return &makeArray()->push_back(makeRawString(LABEL))
+                        .push_back(makeRawString(name))
+                        .push_back(body);
+  }
 };
 
