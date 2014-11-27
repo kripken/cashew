@@ -459,10 +459,14 @@ class Parser {
 
   void dumpParts(ExpressionParts& parts, int i) {
     printf("expressionparts: %d,%d (at %d)\n", parts.size(), parts.size(), i);
-    printf("|");
+    printf("| ");
     for (int i = 0; i < parts.size(); i++) {
-      if (parts[i].isNode) parts[i].getNode()->stringify(std::cout);
-      else printf(" _%s_ ", parts[i].getOp().str);
+      if (parts[i].isNode) {
+        parts[i].getNode()->stringify(std::cout);
+        printf(" ");
+      } else {
+        printf("_%s_ ", parts[i].getOp().str);
+      }
     }
     printf("|\n");
   }
@@ -520,6 +524,7 @@ class Parser {
             } else if (ops.type == OperatorClass::Tertiary) {
               // we must be at  X ? Y : Z
               //                      ^
+              //dumpParts(parts, i);
               assert(op == COLON);
               assert(i < parts.size()-1 && i >= 3);
               assert(parts[i-2].getOp() == QUESTION);
