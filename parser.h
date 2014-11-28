@@ -392,8 +392,8 @@ class Parser {
       if (*src == '}') break;
       Frag next(src);
       if (next.type == KEYWORD) {
-        src += next.size;
         if (next.str == CASE) {
+          src += next.size;
           src = skipSpace(src);
           Frag value(src);
           assert(value.type == NUMBER);
@@ -404,6 +404,7 @@ class Parser {
           src++;
           continue;
         } else if (next.str == DEFAULT) {
+          src += next.size;
           Builder::appendDefaultToSwitch(ret);
           src = skipSpace(src);
           assert(*src == ':');
@@ -415,6 +416,9 @@ class Parser {
       // not case X: or default: or }, so must be some code
       Builder::appendCodeToSwitch(ret, parseMaybeBracketedBlock(src, ";}", CASE));
     }
+    src = skipSpace(src);
+    assert(*src == '}');
+    src++;
     return ret;
   }
 
