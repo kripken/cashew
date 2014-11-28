@@ -72,6 +72,8 @@ IString TOPLEVEL("toplevel"),
         COMMA(","),
         QUESTION("?"),
         COLON(":"),
+        CASE("case"),
+        DEFAULT("default"),
         SET("=");
 
 StringSet keywords("var function if else do while for break continue return switch case default throw try catch finally true false null"),

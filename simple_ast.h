@@ -525,6 +525,10 @@ struct ValueBuilder {
     return &arena.alloc()->setArray();
   }
 
+  static Ref makeNull() {
+    return &arena.alloc()->setNull();
+  }
+
   static Ref makeToplevel() {
     return &makeArray()->push_back(makeRawString(TOPLEVEL))
                         .push_back(makeArray());
@@ -677,6 +681,27 @@ struct ValueBuilder {
     return &makeArray()->push_back(makeRawString(LABEL))
                         .push_back(makeRawString(name))
                         .push_back(body);
+  }
+
+  static Ref makeSwitch(Ref input) {
+    return &makeArray()->push_back(makeRawString(SWITCH))
+                        .push_back(input)
+                        .push_back(makeArray());
+  }
+
+  static void appendCaseToSwitch(Ref switch_, double arg) {
+    assert(switch_[0] == SWITCH);
+    switch_[2]->push_back(&makeArray()->push_back(makeNumber(arg)).push_back(makeArray()));
+  }
+
+  static void appendDefaultToSwitch(Ref switch_) {
+    assert(switch_[0] == SWITCH);
+    switch_[2]->push_back(&makeArray()->push_back(makeNull()).push_back(makeArray()));
+  }
+
+  static void appendCodeToSwitch(Ref switch_, Ref code) {
+    assert(switch_[0] == SWITCH);
+    switch_[2]->back()->push_back(code);
   }
 };
 

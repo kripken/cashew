@@ -81,6 +81,8 @@ extern IString TOPLEVEL,
                COMMA,
                QUESTION,
                COLON,
+               CASE,
+               DEFAULT,
                SET;
 
 extern StringSet keywords, allOperators;
@@ -263,6 +265,7 @@ class Parser {
     else if (frag.str == WHILE) return parseWhile(frag, src, seps);
     else if (frag.str == BREAK) return parseBreak(frag, src, seps);
     else if (frag.str == CONTINUE) return parseContinue(frag, src, seps);
+    else if (frag.str == SWITCH) return parseSwitch(frag, src, seps);
     dump(frag.str.str, src);
     assert(0);
   }
@@ -376,6 +379,41 @@ class Parser {
     src = skipSpace(src);
     Frag next(src);
     return Builder::makeContinue(next.type == IDENT ? next.str : IString());
+  }
+
+  NodeRef parseSwitch(Frag& frag, char*& src, const char* seps) {
+    NodeRef ret = Builder::makeSwitch(parseParenned(src));
+    src = skipSpace(src);
+    assert(*src == '{');
+    src++;
+    while (1) {
+      // find all cases and possibly a default
+      src = skipSpace(src);
+      if (*src == '}') break;
+      Frag next(src);
+      if (next.type == KEYWORD) {
+        src += next.size;
+        if (next.str == CASE) {
+          src = skipSpace(src);
+          Frag value(src);
+          assert(frag.type == NUMBER);
+          Builder::appendCaseToSwitch(ret, value.num);
+          src += value.size;
+          src = skipSpace(src);
+          assert(*src == ':');
+          src++;
+        } else if (next.str == DEFAULT) {
+          Builder::appendDefaultToSwitch(ret);
+          src = skipSpace(src);
+          assert(*src == ':');
+          src++;
+        } else assert(0);
+      } else {
+        // not case X: or default: or }, so must be some code
+        Builder::appendCodeToSwitch(ret, parseMaybeBracketedBlock(src, ";}"));
+      }
+    }
+    return ret;
   }
 
   NodeRef parseAfterIdent(Frag& frag, char*& src, const char* seps) {
