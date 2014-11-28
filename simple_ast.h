@@ -701,7 +701,7 @@ struct ValueBuilder {
 
   static void appendCodeToSwitch(Ref switch_, Ref code) {
     assert(switch_[0] == SWITCH);
-    switch_[2]->back()->push_back(code);
+    switch_[2]->back()->back()->push_back(code);
   }
 };
 
