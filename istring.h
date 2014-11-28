@@ -109,12 +109,12 @@ template <> struct equal_to<cashew::IString> : public binary_function<cashew::IS
 
 namespace cashew {
 
-// StringSet
+// IStringSet
 
-class StringSet : public std::unordered_set<IString> {
+class IStringSet : public std::unordered_set<IString> {
 public:
-  StringSet() {}
-  StringSet(const char *init) { // comma-delimited list
+  IStringSet() {}
+  IStringSet(const char *init) { // comma-delimited list
     int size = strlen(init);
     char *curr = (char*)malloc(size+1); // leaked!
     strcpy(curr, init);
@@ -131,8 +131,6 @@ public:
     return count(str) > 0;
   }
 };
-
-typedef std::unordered_map<IString, int> StringIntMap;
 
 } // namespace cashew
 

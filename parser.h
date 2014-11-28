@@ -85,7 +85,7 @@ extern IString TOPLEVEL,
                DEFAULT,
                SET;
 
-extern StringSet keywords, allOperators;
+extern IStringSet keywords, allOperators;
 
 extern const char *OPERATOR_INITS, *SEPARATORS;
 
@@ -99,7 +99,7 @@ struct OperatorClass {
     Tertiary = 3
   };
 
-  StringSet ops;
+  IStringSet ops;
   bool rtl;
   Type type;
 
