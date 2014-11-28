@@ -891,6 +891,49 @@
             ],
             [
               [
+                "unary-prefix",
+                "-",
+                [
+                  "num",
+                  10
+                ]
+              ],
+              [
+                [
+                  "block",
+                  [
+                    [
+                      "stat",
+                      [
+                        "assign",
+                        true,
+                        [
+                          "name",
+                          "x"
+                        ],
+                        [
+                          "unary-prefix",
+                          "+",
+                          [
+                            "num",
+                            20
+                          ]
+                        ]
+                      ]
+                    ],
+                    [
+                      "return",
+                      [
+                        "name",
+                        "x"
+                      ]
+                    ]
+                  ]
+                ]
+              ]
+            ],
+            [
+              [
                 "num",
                 1
               ],

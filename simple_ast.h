@@ -689,9 +689,9 @@ struct ValueBuilder {
                         .push_back(makeArray());
   }
 
-  static void appendCaseToSwitch(Ref switch_, double arg) {
+  static void appendCaseToSwitch(Ref switch_, Ref arg) {
     assert(switch_[0] == SWITCH);
-    switch_[2]->push_back(&makeArray()->push_back(makeNumber(arg)).push_back(makeArray()));
+    switch_[2]->push_back(&makeArray()->push_back(arg).push_back(makeArray()));
   }
 
   static void appendDefaultToSwitch(Ref switch_) {

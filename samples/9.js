@@ -37,6 +37,10 @@ function switchey(x, y) {
    print(int2);
    double2 = double1*5;
    return double2;
+  case -10: {
+    x = +20;
+    return x;
+  }
   case 1:
    return 20;
  }
