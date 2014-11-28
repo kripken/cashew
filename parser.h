@@ -340,21 +340,21 @@ class Parser {
 
   NodeRef parseIf(Frag& frag, char*& src, const char* seps) {
     NodeRef condition = parseParenned(src);
-    NodeRef ifTrue = parseMaybeBracketedBlock(src, seps);
+    NodeRef ifTrue = parseMaybeBracketed(src, seps);
     src = skipSpace(src);
     NodeRef ifFalse;
     if (*src && !hasChar(seps, *src)) {
       Frag next(src);
       if (next.type == KEYWORD && next.str == ELSE) {
         src += next.size;
-        ifFalse = parseMaybeBracketedBlock(src, seps);
+        ifFalse = parseMaybeBracketed(src, seps);
       }
     }
     return Builder::makeIf(condition, ifTrue, ifFalse);
   }
 
   NodeRef parseDo(Frag& frag, char*& src, const char* seps) {
-    NodeRef body = parseMaybeBracketedBlock(src, seps);
+    NodeRef body = parseMaybeBracketed(src, seps);
     src = skipSpace(src);
     Frag next(src);
     assert(next.type == KEYWORD && next.str == WHILE);
@@ -365,7 +365,7 @@ class Parser {
 
   NodeRef parseWhile(Frag& frag, char*& src, const char* seps) {
     NodeRef condition = parseParenned(src);
-    NodeRef body = parseMaybeBracketedBlock(src, seps);
+    NodeRef body = parseMaybeBracketed(src, seps);
     return Builder::makeWhile(condition, body);
   }
 
@@ -396,7 +396,7 @@ class Parser {
         if (next.str == CASE) {
           src = skipSpace(src);
           Frag value(src);
-          assert(frag.type == NUMBER);
+          assert(value.type == NUMBER);
           Builder::appendCaseToSwitch(ret, value.num);
           src += value.size;
           src = skipSpace(src);
@@ -410,7 +410,7 @@ class Parser {
         } else assert(0);
       } else {
         // not case X: or default: or }, so must be some code
-        Builder::appendCodeToSwitch(ret, parseMaybeBracketedBlock(src, ";}"));
+        Builder::appendCodeToSwitch(ret, parseMaybeBracketedBlock(src, ";}", CASE));
       }
     }
     return ret;
@@ -603,11 +603,15 @@ class Parser {
   }
 
   // Parses a block of code (e.g. a bunch of statements inside {,}, or the top level of o file)
-  NodeRef parseBlock(char*& src, NodeRef block=nullptr, const char* seps=";") {
+  NodeRef parseBlock(char*& src, NodeRef block=nullptr, const char* seps=";", IString keywordSep=IString()) {
     if (!block) block = Builder::makeBlock();
     while (*src) {
       src = skipSpace(src);
       if (*src == 0 || hasChar(seps, *src)) break; // XXX handle ;;
+      if (!!keywordSep) {
+        Frag next(src);
+        if (next.type == KEYWORD && next.str == keywordSep) break;
+      }
       NodeRef element = parseElement(src, seps);
       src = skipSpace(src);
       if (*src && *src == ';') {
@@ -630,9 +634,14 @@ class Parser {
     return block;
   }
 
-  NodeRef parseMaybeBracketedBlock(char*& src, const char *seps) {
+  NodeRef parseMaybeBracketed(char*& src, const char *seps) {
     src = skipSpace(src);
     return *src == '{' ? parseBracketedBlock(src) : parseElement(src, seps);
+  }
+
+  NodeRef parseMaybeBracketedBlock(char*& src, const char *seps, IString keywordSep=IString()) {
+    src = skipSpace(src);
+    return *src == '{' ? parseBracketedBlock(src) : parseBlock(src, nullptr, seps, keywordSep);
   }
 
   NodeRef parseParenned(char*& src) {
