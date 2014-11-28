@@ -402,16 +402,18 @@ class Parser {
           src = skipSpace(src);
           assert(*src == ':');
           src++;
+          continue;
         } else if (next.str == DEFAULT) {
           Builder::appendDefaultToSwitch(ret);
           src = skipSpace(src);
           assert(*src == ':');
           src++;
-        } else assert(0);
-      } else {
-        // not case X: or default: or }, so must be some code
-        Builder::appendCodeToSwitch(ret, parseMaybeBracketedBlock(src, ";}", CASE));
+          continue;
+        }
+        // otherwise, may be some keyword that happens to start a block (e.g. case 1: _return_ 5)
       }
+      // not case X: or default: or }, so must be some code
+      Builder::appendCodeToSwitch(ret, parseMaybeBracketedBlock(src, ";}", CASE));
     }
     return ret;
   }
@@ -604,6 +606,7 @@ class Parser {
 
   // Parses a block of code (e.g. a bunch of statements inside {,}, or the top level of o file)
   NodeRef parseBlock(char*& src, NodeRef block=nullptr, const char* seps=";", IString keywordSep=IString()) {
+    //dump("parseBlock", src);
     if (!block) block = Builder::makeBlock();
     while (*src) {
       src = skipSpace(src);
