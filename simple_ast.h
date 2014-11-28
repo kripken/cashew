@@ -627,9 +627,7 @@ struct ValueBuilder {
   }
 
   static Ref makeReturn(Ref value) {
-    Ref ret = &makeArray()->push_back(makeRawString(RETURN));
-    if (!!value) ret->push_back(value);
-    return ret;
+    return &makeArray()->push_back(makeRawString(RETURN)).push_back(!!value ? value : makeNull());
   }
 
   static Ref makeIndexing(Ref target, Ref index) {
@@ -639,11 +637,10 @@ struct ValueBuilder {
   }
 
   static Ref makeIf(Ref condition, Ref ifTrue, Ref ifFalse) {
-    Ref ret = &makeArray()->push_back(makeRawString(IF))
-                           .push_back(condition)
-                          .push_back(ifTrue);
-    if (!!ifFalse) ret->push_back(ifFalse);
-    return ret;
+    return &makeArray()->push_back(makeRawString(IF))
+                        .push_back(condition)
+                        .push_back(ifTrue)
+                        .push_back(!!ifFalse ? ifFalse : makeNull());
   }
 
   static Ref makeConditional(Ref condition, Ref ifTrue, Ref ifFalse) {

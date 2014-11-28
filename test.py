@@ -21,7 +21,6 @@ for i in os.listdir('samples'):
     command = ['./a.out', os.path.join('samples', i)]
     print ' '.join(command)
     out, err = Popen(command, stdout=PIPE).communicate()
-    out = out.split('output:\n')[1]
     out = out.replace('\n\n', '\n')
     try:
       expected = open(os.path.join('samples', i + '.txt')).read()

@@ -16,7 +16,6 @@ int main(int argc, char **argv) {
 
   cashew::Parser<Ref, ValueBuilder> builder;
   Ref ast = builder.parseToplevel(src);
-  std::cout << "output:\n";
   ast->stringify(std::cout, true);
   std::cout << "\n";
 }
