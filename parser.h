@@ -78,6 +78,7 @@ extern IString TOPLEVEL,
                FUNCTION,
                OPEN_PAREN,
                OPEN_BRACE,
+               OPEN_CURLY,
                COMMA,
                QUESTION,
                COLON,
@@ -86,6 +87,7 @@ extern IString TOPLEVEL,
                DOT,
                NEW,
                ARRAY,
+               OBJECT,
                SET;
 
 extern IStringSet keywords, allOperators;
@@ -241,6 +243,7 @@ class Parser {
       case SEPARATOR: {
         if (frag.str == OPEN_PAREN) return parseExpression(parseAfterParen(src), src, seps);
         if (frag.str == OPEN_BRACE) return parseExpression(parseAfterBrace(src), src, seps);
+        if (frag.str == OPEN_CURLY) return parseExpression(parseAfterCurly(src), src, seps);
         assert(0);
       }
       case OPERATOR: {
@@ -532,6 +535,32 @@ class Parser {
       } else assert(*src == ']');
     }
     assert(*src == ']');
+    src++;
+    return ret;
+  }
+
+  NodeRef parseAfterCurly(char*& src) {
+    expressionPartsStack.resize(expressionPartsStack.size()+1);
+    NodeRef ret = Builder::makeObject();
+    while (1) {
+      src = skipSpace(src);
+      assert(*src);
+      if (*src == '}') break;
+      Frag key(src);
+      assert(key.type == IDENT || key.type == STRING);
+      src += key.size;
+      src = skipSpace(src);
+      assert(*src == ':');
+      src++;
+      NodeRef value = parseElement(src, ",}");
+      Builder::appendToObject(ret, key.str, value);
+      src = skipSpace(src);
+      if (*src == ',') {
+        src++;
+        continue;
+      } else assert(*src == '}');
+    }
+    assert(*src == '}');
     src++;
     return ret;
   }

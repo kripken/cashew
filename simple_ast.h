@@ -731,5 +731,16 @@ public:
     assert(array[0] == ARRAY);
     array[1]->push_back(element);
   }
+
+  static Ref makeObject() {
+    return &makeRawArray()->push_back(makeRawString(OBJECT))
+                           .push_back(makeRawArray());
+  }
+
+  static void appendToObject(Ref array, IString key, Ref value) {
+    assert(array[0] == OBJECT);
+    array[1]->push_back(&makeRawArray()->push_back(makeRawString(key))
+                                        .push_back(value));
+  }
 };
 
