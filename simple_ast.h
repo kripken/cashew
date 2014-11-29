@@ -710,5 +710,16 @@ public:
       switch_[2]->back()->back()->push_back(code);
     }
   }
+
+  static Ref makeDot(Ref obj, IString key) {
+    return &makeArray()->push_back(makeRawString(DOT))
+                        .push_back(obj)
+                        .push_back(makeRawString(key));
+  }
+
+  static Ref makeNew(Ref call) {
+    return &makeArray()->push_back(makeRawString(NEW))
+                        .push_back(call);
+  }
 };
 

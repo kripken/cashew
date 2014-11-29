@@ -74,12 +74,14 @@ IString TOPLEVEL("toplevel"),
         COLON(":"),
         CASE("case"),
         DEFAULT("default"),
+        DOT("."),
+        NEW("new"),
         SET("=");
 
-IStringSet keywords("var function if else do while for break continue return switch case default throw try catch finally true false null"),
+IStringSet keywords("var function if else do while for break continue return switch case default throw try catch finally true false null new"),
            allOperators(". ! ~ - + * / % + - << >> >>> < <= > >= == != & ^ | ? : = ,");
 
-const char *OPERATOR_INITS = "+-*/%<>&^|~=!,?:",
+const char *OPERATOR_INITS = "+-*/%<>&^|~=!,?:.",
            *SEPARATORS = "([;{";
 
 int MAX_OPERATOR_SIZE = 3;

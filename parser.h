@@ -83,6 +83,8 @@ extern IString TOPLEVEL,
                COLON,
                CASE,
                DEFAULT,
+               DOT,
+               NEW,
                SET;
 
 extern IStringSet keywords, allOperators;
@@ -266,6 +268,7 @@ class Parser {
     else if (frag.str == BREAK) return parseBreak(frag, src, seps);
     else if (frag.str == CONTINUE) return parseContinue(frag, src, seps);
     else if (frag.str == SWITCH) return parseSwitch(frag, src, seps);
+    else if (frag.str == NEW) return parseNew(frag, src, seps);
     dump(frag.str.str, src);
     assert(0);
   }
@@ -438,6 +441,10 @@ class Parser {
     return ret;
   }
 
+  NodeRef parseNew(Frag& frag, char*& src, const char* seps) {
+    return Builder::makeNew(parseElement(src, seps));
+  }
+
   NodeRef parseAfterIdent(Frag& frag, char*& src, const char* seps) {
     assert(!isSpace(*src));
     if (*src == '(') return parseExpression(parseCall(parseFrag(frag), src), src, seps);
@@ -446,6 +453,7 @@ class Parser {
       src++;
       return Builder::makeLabel(frag.str, parseElement(src, seps));
     }
+    if (*src == '.') return parseExpression(parseDotting(parseFrag(frag), src), src, seps);
     return parseExpression(parseFrag(frag), src, seps);
   }
 
@@ -483,6 +491,15 @@ class Parser {
     assert(expressionPartsStack.back().size() == 0);
     expressionPartsStack.pop_back();
     return ret;
+  }
+
+  NodeRef parseDotting(NodeRef target, char*& src) {
+    assert(*src == '.');
+    src++;
+    Frag key(src);
+    assert(key.type == IDENT);
+    src += key.size;
+    return Builder::makeDot(target, key.str);
   }
 
   NodeRef parseAfterParen(char*& src) {
@@ -557,7 +574,10 @@ class Parser {
           initial = parseCall(initial.getNode(), src);
         } else if (*src == '[') {
           initial = parseIndexing(initial.getNode(), src);
-        } else assert(0);
+        } else {
+          dump("bad parseExpression state", src);
+          assert(0);
+        }
         return parseExpression(initial, src, seps);
       }
     } else {
