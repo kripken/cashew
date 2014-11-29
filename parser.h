@@ -85,6 +85,7 @@ extern IString TOPLEVEL,
                DEFAULT,
                DOT,
                NEW,
+               ARRAY,
                SET;
 
 extern IStringSet keywords, allOperators;
@@ -239,6 +240,7 @@ class Parser {
       }
       case SEPARATOR: {
         if (frag.str == OPEN_PAREN) return parseExpression(parseAfterParen(src), src, seps);
+        if (frag.str == OPEN_BRACE) return parseExpression(parseAfterBrace(src), src, seps);
         assert(0);
       }
       case OPERATOR: {
@@ -511,6 +513,26 @@ class Parser {
     src++;
     assert(expressionPartsStack.back().size() == 0);
     expressionPartsStack.pop_back();
+    return ret;
+  }
+
+  NodeRef parseAfterBrace(char*& src) {
+    expressionPartsStack.resize(expressionPartsStack.size()+1);
+    NodeRef ret = Builder::makeArray();
+    while (1) {
+      src = skipSpace(src);
+      assert(*src);
+      if (*src == ']') break;
+      NodeRef element = parseElement(src, ",]");
+      Builder::appendToArray(ret, element);
+      src = skipSpace(src);
+      if (*src == ',') {
+        src++;
+        continue;
+      } else assert(*src == ']');
+    }
+    assert(*src == ']');
+    src++;
     return ret;
   }
 

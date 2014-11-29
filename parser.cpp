@@ -76,6 +76,7 @@ IString TOPLEVEL("toplevel"),
         DEFAULT("default"),
         DOT("."),
         NEW("new"),
+        ARRAY("array"),
         SET("=");
 
 IStringSet keywords("var function if else do while for break continue return switch case default throw try catch finally true false null new"),
