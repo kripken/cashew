@@ -390,52 +390,49 @@
               [
                 "seq",
                 [
+                  "assign",
+                  true,
+                  [
+                    "name",
+                    "tempInt"
+                  ],
+                  [
+                    "name",
+                    "STACKTOP"
+                  ]
+                ],
+                [
                   "seq",
                   [
-                    "seq",
+                    "assign",
+                    true,
                     [
-                      "seq",
+                      "name",
+                      "STACKTOP"
+                    ],
+                    [
+                      "binary",
+                      "|",
                       [
-                        "assign",
-                        true,
-                        [
-                          "name",
-                          "tempInt"
-                        ],
+                        "binary",
+                        "+",
                         [
                           "name",
                           "STACKTOP"
+                        ],
+                        [
+                          "num",
+                          8
                         ]
                       ],
                       [
-                        "assign",
-                        true,
-                        [
-                          "name",
-                          "STACKTOP"
-                        ],
-                        [
-                          "binary",
-                          "|",
-                          [
-                            "binary",
-                            "+",
-                            [
-                              "name",
-                              "STACKTOP"
-                            ],
-                            [
-                              "num",
-                              8
-                            ]
-                          ],
-                          [
-                            "num",
-                            0
-                          ]
-                        ]
+                        "num",
+                        0
                       ]
-                    ],
+                    ]
+                  ],
+                  [
+                    "seq",
                     [
                       "assign",
                       true,
@@ -470,55 +467,58 @@
                         "name",
                         "$y$0"
                       ]
-                    ]
-                  ],
-                  [
-                    "assign",
-                    true,
+                    ],
                     [
-                      "sub",
+                      "seq",
                       [
-                        "name",
-                        "HEAP32"
-                      ],
-                      [
-                        "binary",
-                        ">>",
+                        "assign",
+                        true,
                         [
-                          "binary",
-                          "&",
+                          "sub",
+                          [
+                            "name",
+                            "HEAP32"
+                          ],
                           [
                             "binary",
-                            "+",
+                            ">>",
                             [
-                              "name",
-                              "tempInt"
+                              "binary",
+                              "&",
+                              [
+                                "binary",
+                                "+",
+                                [
+                                  "name",
+                                  "tempInt"
+                                ],
+                                [
+                                  "num",
+                                  4
+                                ]
+                              ],
+                              [
+                                "num",
+                                16777215
+                              ]
                             ],
                             [
                               "num",
-                              4
+                              2
                             ]
-                          ],
-                          [
-                            "num",
-                            16777215
                           ]
                         ],
                         [
-                          "num",
-                          2
+                          "name",
+                          "$y$1"
                         ]
+                      ],
+                      [
+                        "name",
+                        "tempInt"
                       ]
-                    ],
-                    [
-                      "name",
-                      "$y$1"
                     ]
                   ]
-                ],
-                [
-                  "name",
-                  "tempInt"
                 ]
               ]
             ]
@@ -721,170 +721,165 @@
               ],
               [
                 [
-                  "block",
+                  "stat",
                   [
+                    "assign",
+                    true,
                     [
-                      "stat",
-                      [
-                        "assign",
-                        true,
-                        [
-                          "name",
-                          "int1"
-                        ],
-                        [
-                          "binary",
-                          "|",
-                          [
-                            "binary",
-                            "+",
-                            [
-                              "name",
-                              "x"
-                            ],
-                            [
-                              "name",
-                              "x"
-                            ]
-                          ],
-                          [
-                            "num",
-                            0
-                          ]
-                        ]
-                      ]
+                      "name",
+                      "int1"
                     ],
                     [
-                      "stat",
+                      "binary",
+                      "|",
                       [
-                        "assign",
-                        true,
+                        "binary",
+                        "+",
                         [
                           "name",
-                          "double1"
+                          "x"
                         ],
+                        [
+                          "name",
+                          "x"
+                        ]
+                      ],
+                      [
+                        "num",
+                        0
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "stat",
+                  [
+                    "assign",
+                    true,
+                    [
+                      "name",
+                      "double1"
+                    ],
+                    [
+                      "call",
+                      [
+                        "name",
+                        "d"
+                      ],
+                      [
                         [
                           "call",
                           [
                             "name",
-                            "d"
+                            "Math_max"
                           ],
                           [
+                            [
+                              "num",
+                              10
+                            ],
                             [
                               "call",
                               [
                                 "name",
-                                "Math_max"
+                                "Math_min"
                               ],
                               [
                                 [
                                   "num",
-                                  10
+                                  5
                                 ],
                                 [
                                   "call",
                                   [
                                     "name",
-                                    "Math_min"
+                                    "f"
                                   ],
-                                  [
-                                    [
-                                      "num",
-                                      5
-                                    ],
-                                    [
-                                      "call",
-                                      [
-                                        "name",
-                                        "f"
-                                      ],
-                                      []
-                                    ]
-                                  ]
+                                  []
                                 ]
                               ]
                             ]
                           ]
                         ]
                       ]
+                    ]
+                  ]
+                ],
+                [
+                  "stat",
+                  [
+                    "assign",
+                    true,
+                    [
+                      "name",
+                      "int2"
                     ],
                     [
-                      "stat",
+                      "binary",
+                      "|",
                       [
-                        "assign",
-                        true,
+                        "binary",
+                        "+",
                         [
                           "name",
-                          "int2"
+                          "int1"
                         ],
                         [
-                          "binary",
-                          "|",
-                          [
-                            "binary",
-                            "+",
-                            [
-                              "name",
-                              "int1"
-                            ],
-                            [
-                              "num",
-                              2
-                            ]
-                          ],
-                          [
-                            "num",
-                            0
-                          ]
+                          "num",
+                          2
                         ]
-                      ]
-                    ],
-                    [
-                      "stat",
+                      ],
                       [
-                        "call",
-                        [
-                          "name",
-                          "print"
-                        ],
-                        [
-                          [
-                            "name",
-                            "int2"
-                          ]
-                        ]
-                      ]
-                    ],
-                    [
-                      "stat",
-                      [
-                        "assign",
-                        true,
-                        [
-                          "name",
-                          "double2"
-                        ],
-                        [
-                          "binary",
-                          "*",
-                          [
-                            "name",
-                            "double1"
-                          ],
-                          [
-                            "num",
-                            5
-                          ]
-                        ]
-                      ]
-                    ],
-                    [
-                      "return",
-                      [
-                        "name",
-                        "double2"
+                        "num",
+                        0
                       ]
                     ]
+                  ]
+                ],
+                [
+                  "stat",
+                  [
+                    "call",
+                    [
+                      "name",
+                      "print"
+                    ],
+                    [
+                      [
+                        "name",
+                        "int2"
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "stat",
+                  [
+                    "assign",
+                    true,
+                    [
+                      "name",
+                      "double2"
+                    ],
+                    [
+                      "binary",
+                      "*",
+                      [
+                        "name",
+                        "double1"
+                      ],
+                      [
+                        "num",
+                        5
+                      ]
+                    ]
+                  ]
+                ],
+                [
+                  "return",
+                  [
+                    "name",
+                    "double2"
                   ]
                 ]
               ]
@@ -939,15 +934,10 @@
               ],
               [
                 [
-                  "block",
+                  "return",
                   [
-                    [
-                      "return",
-                      [
-                        "num",
-                        20
-                      ]
-                    ]
+                    "num",
+                    20
                   ]
                 ]
               ]
@@ -1126,99 +1116,92 @@
                 ],
                 [
                   [
-                    "block",
+                    "stat",
                     [
+                      "assign",
+                      true,
                       [
-                        "stat",
-                        [
-                          "assign",
-                          true,
-                          [
-                            "name",
-                            "$rng2"
-                          ],
-                          [
-                            "binary",
-                            "|",
-                            [
-                              "name",
-                              "__stackBase__"
-                            ],
-                            [
-                              "num",
-                              0
-                            ]
-                          ]
-                        ]
+                        "name",
+                        "$rng2"
                       ],
                       [
-                        "stat",
+                        "binary",
+                        "|",
                         [
-                          "call",
-                          [
-                            "name",
-                            "__ZN6RandomC1Ev"
-                          ],
-                          [
-                            [
-                              "name",
-                              "$rng2"
-                            ]
-                          ]
-                        ]
-                      ],
-                      [
-                        "stat",
+                          "name",
+                          "__stackBase__"
+                        ],
                         [
-                          "assign",
-                          true,
-                          [
-                            "name",
-                            "$i_05"
-                          ],
-                          [
-                            "num",
-                            0
-                          ]
-                        ]
-                      ],
-                      [
-                        "stat",
-                        [
-                          "assign",
-                          true,
-                          [
-                            "name",
-                            "$count_06"
-                          ],
-                          [
-                            "num",
-                            0
-                          ]
-                        ]
-                      ],
-                      [
-                        "stat",
-                        [
-                          "assign",
-                          true,
-                          [
-                            "name",
-                            "label"
-                          ],
-                          [
-                            "num",
-                            2
-                          ]
-                        ]
-                      ],
-                      [
-                        "stat",
-                        [
-                          "break"
+                          "num",
+                          0
                         ]
                       ]
                     ]
+                  ],
+                  [
+                    "stat",
+                    [
+                      "call",
+                      [
+                        "name",
+                        "__ZN6RandomC1Ev"
+                      ],
+                      [
+                        [
+                          "name",
+                          "$rng2"
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "stat",
+                    [
+                      "assign",
+                      true,
+                      [
+                        "name",
+                        "$i_05"
+                      ],
+                      [
+                        "num",
+                        0
+                      ]
+                    ]
+                  ],
+                  [
+                    "stat",
+                    [
+                      "assign",
+                      true,
+                      [
+                        "name",
+                        "$count_06"
+                      ],
+                      [
+                        "num",
+                        0
+                      ]
+                    ]
+                  ],
+                  [
+                    "stat",
+                    [
+                      "assign",
+                      true,
+                      [
+                        "name",
+                        "label"
+                      ],
+                      [
+                        "num",
+                        2
+                      ]
+                    ]
+                  ],
+                  [
+                    "break",
+                    null
                   ]
                 ]
               ],
@@ -1229,190 +1212,185 @@
                 ],
                 [
                   [
-                    "block",
+                    "stat",
                     [
+                      "assign",
+                      true,
                       [
-                        "stat",
-                        [
-                          "assign",
-                          true,
-                          [
-                            "name",
-                            "$2"
-                          ],
-                          [
-                            "unary-prefix",
-                            "+",
-                            [
-                              "call",
-                              [
-                                "name",
-                                "__ZN6Random3getEf"
-                              ],
-                              [
-                                [
-                                  "num",
-                                  8
-                                ],
-                                [
-                                  "unary-prefix",
-                                  "+",
-                                  [
-                                    "num",
-                                    1
-                                  ]
-                                ]
-                              ]
-                            ]
-                          ]
-                        ]
+                        "name",
+                        "$2"
                       ],
                       [
-                        "stat",
-                        [
-                          "assign",
-                          true,
-                          [
-                            "name",
-                            "$3"
-                          ],
-                          [
-                            "unary-prefix",
-                            "+",
-                            [
-                              "call",
-                              [
-                                "name",
-                                "__ZN6Random3getEf"
-                              ],
-                              [
-                                [
-                                  "name",
-                                  "$rng2"
-                                ],
-                                [
-                                  "unary-prefix",
-                                  "+",
-                                  [
-                                    "num",
-                                    1
-                                  ]
-                                ]
-                              ]
-                            ]
-                          ]
-                        ]
-                      ],
-                      [
-                        "stat",
+                        "unary-prefix",
+                        "+",
                         [
                           "call",
                           [
                             "name",
-                            "_printf"
+                            "__ZN6Random3getEf"
                           ],
                           [
                             [
                               "num",
-                              24
+                              8
                             ],
                             [
-                              "binary",
-                              "|",
+                              "unary-prefix",
+                              "+",
+                              [
+                                "num",
+                                1
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "stat",
+                    [
+                      "assign",
+                      true,
+                      [
+                        "name",
+                        "$3"
+                      ],
+                      [
+                        "unary-prefix",
+                        "+",
+                        [
+                          "call",
+                          [
+                            "name",
+                            "__ZN6Random3getEf"
+                          ],
+                          [
+                            [
+                              "name",
+                              "$rng2"
+                            ],
+                            [
+                              "unary-prefix",
+                              "+",
+                              [
+                                "num",
+                                1
+                              ]
+                            ]
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "stat",
+                    [
+                      "call",
+                      [
+                        "name",
+                        "_printf"
+                      ],
+                      [
+                        [
+                          "num",
+                          24
+                        ],
+                        [
+                          "binary",
+                          "|",
+                          [
+                            "seq",
+                            [
+                              "assign",
+                              true,
+                              [
+                                "name",
+                                "tempInt"
+                              ],
+                              [
+                                "name",
+                                "STACKTOP"
+                              ]
+                            ],
+                            [
+                              "seq",
+                              [
+                                "assign",
+                                true,
+                                [
+                                  "name",
+                                  "STACKTOP"
+                                ],
+                                [
+                                  "binary",
+                                  "|",
+                                  [
+                                    "binary",
+                                    "+",
+                                    [
+                                      "name",
+                                      "STACKTOP"
+                                    ],
+                                    [
+                                      "num",
+                                      16
+                                    ]
+                                  ],
+                                  [
+                                    "num",
+                                    0
+                                  ]
+                                ]
+                              ],
                               [
                                 "seq",
                                 [
-                                  "seq",
+                                  "assign",
+                                  true,
                                   [
-                                    "seq",
+                                    "sub",
                                     [
-                                      "seq",
+                                      "name",
+                                      "HEAPF64"
+                                    ],
+                                    [
+                                      "binary",
+                                      ">>",
                                       [
-                                        "assign",
-                                        true,
+                                        "call",
                                         [
                                           "name",
-                                          "tempInt"
+                                          "CHECK_ALIGN_8"
                                         ],
                                         [
-                                          "name",
-                                          "STACKTOP"
-                                        ]
-                                      ],
-                                      [
-                                        "assign",
-                                        true,
-                                        [
-                                          "name",
-                                          "STACKTOP"
-                                        ],
-                                        [
-                                          "binary",
-                                          "|",
                                           [
                                             "binary",
-                                            "+",
+                                            "|",
                                             [
                                               "name",
-                                              "STACKTOP"
+                                              "tempInt"
                                             ],
                                             [
                                               "num",
-                                              16
+                                              0
                                             ]
-                                          ],
-                                          [
-                                            "num",
-                                            0
-                                          ]
-                                        ]
-                                      ]
-                                    ],
-                                    [
-                                      "assign",
-                                      true,
-                                      [
-                                        "sub",
-                                        [
-                                          "name",
-                                          "HEAPF64"
-                                        ],
-                                        [
-                                          "binary",
-                                          ">>",
-                                          [
-                                            "call",
-                                            [
-                                              "name",
-                                              "CHECK_ALIGN_8"
-                                            ],
-                                            [
-                                              [
-                                                "binary",
-                                                "|",
-                                                [
-                                                  "name",
-                                                  "tempInt"
-                                                ],
-                                                [
-                                                  "num",
-                                                  0
-                                                ]
-                                              ]
-                                            ]
-                                          ],
-                                          [
-                                            "num",
-                                            3
                                           ]
                                         ]
                                       ],
                                       [
-                                        "name",
-                                        "$2"
+                                        "num",
+                                        3
                                       ]
                                     ]
                                   ],
+                                  [
+                                    "name",
+                                    "$2"
+                                  ]
+                                ],
+                                [
+                                  "seq",
                                   [
                                     "assign",
                                     true,
@@ -1464,202 +1442,198 @@
                                       "name",
                                       "$3"
                                     ]
-                                  ]
-                                ],
-                                [
-                                  "name",
-                                  "tempInt"
-                                ]
-                              ],
-                              [
-                                "num",
-                                0
-                              ]
-                            ]
-                          ]
-                        ]
-                      ],
-                      [
-                        "stat",
-                        [
-                          "assign",
-                          true,
-                          [
-                            "name",
-                            "$count_1"
-                          ],
-                          [
-                            "binary",
-                            "|",
-                            [
-                              "binary",
-                              "+",
-                              [
-                                "binary",
-                                "&",
-                                [
-                                  "binary",
-                                  "!=",
-                                  [
-                                    "name",
-                                    "$2"
                                   ],
                                   [
                                     "name",
-                                    "$3"
+                                    "tempInt"
                                   ]
-                                ],
-                                [
-                                  "num",
-                                  1
                                 ]
-                              ],
-                              [
-                                "name",
-                                "$count_06"
                               ]
-                            ],
-                            [
-                              "num",
-                              0
-                            ]
-                          ]
-                        ]
-                      ],
-                      [
-                        "stat",
-                        [
-                          "assign",
-                          true,
-                          [
-                            "name",
-                            "$9"
-                          ],
-                          [
-                            "binary",
-                            "|",
-                            [
-                              "binary",
-                              "+",
-                              [
-                                "name",
-                                "$i_05"
-                              ],
-                              [
-                                "num",
-                                1
-                              ]
-                            ],
-                            [
-                              "num",
-                              0
-                            ]
-                          ]
-                        ]
-                      ],
-                      [
-                        "if",
-                        [
-                          "binary",
-                          "<",
-                          [
-                            "binary",
-                            "|",
-                            [
-                              "name",
-                              "$9"
-                            ],
-                            [
-                              "num",
-                              0
                             ]
                           ],
                           [
                             "num",
-                            100
+                            0
+                          ]
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "stat",
+                    [
+                      "assign",
+                      true,
+                      [
+                        "name",
+                        "$count_1"
+                      ],
+                      [
+                        "binary",
+                        "|",
+                        [
+                          "binary",
+                          "+",
+                          [
+                            "binary",
+                            "&",
+                            [
+                              "binary",
+                              "!=",
+                              [
+                                "name",
+                                "$2"
+                              ],
+                              [
+                                "name",
+                                "$3"
+                              ]
+                            ],
+                            [
+                              "num",
+                              1
+                            ]
+                          ],
+                          [
+                            "name",
+                            "$count_06"
                           ]
                         ],
                         [
-                          "block",
+                          "num",
+                          0
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "stat",
+                    [
+                      "assign",
+                      true,
+                      [
+                        "name",
+                        "$9"
+                      ],
+                      [
+                        "binary",
+                        "|",
+                        [
+                          "binary",
+                          "+",
                           [
+                            "name",
+                            "$i_05"
+                          ],
+                          [
+                            "num",
+                            1
+                          ]
+                        ],
+                        [
+                          "num",
+                          0
+                        ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "if",
+                    [
+                      "binary",
+                      "<",
+                      [
+                        "binary",
+                        "|",
+                        [
+                          "name",
+                          "$9"
+                        ],
+                        [
+                          "num",
+                          0
+                        ]
+                      ],
+                      [
+                        "num",
+                        100
+                      ]
+                    ],
+                    [
+                      "block",
+                      [
+                        [
+                          "stat",
+                          [
+                            "assign",
+                            true,
                             [
-                              "stat",
-                              [
-                                "assign",
-                                true,
-                                [
-                                  "name",
-                                  "$i_05"
-                                ],
-                                [
-                                  "name",
-                                  "$9"
-                                ]
-                              ]
+                              "name",
+                              "$i_05"
                             ],
                             [
-                              "stat",
-                              [
-                                "assign",
-                                true,
-                                [
-                                  "name",
-                                  "$count_06"
-                                ],
-                                [
-                                  "name",
-                                  "$count_1"
-                                ]
-                              ]
-                            ],
-                            [
-                              "stat",
-                              [
-                                "assign",
-                                true,
-                                [
-                                  "name",
-                                  "label"
-                                ],
-                                [
-                                  "num",
-                                  2
-                                ]
-                              ]
-                            ],
-                            [
-                              "stat",
-                              [
-                                "break"
-                              ]
+                              "name",
+                              "$9"
                             ]
                           ]
                         ],
                         [
-                          "block",
+                          "stat",
                           [
+                            "assign",
+                            true,
                             [
-                              "stat",
-                              [
-                                "assign",
-                                true,
-                                [
-                                  "name",
-                                  "label"
-                                ],
-                                [
-                                  "num",
-                                  3
-                                ]
-                              ]
+                              "name",
+                              "$count_06"
                             ],
                             [
-                              "stat",
-                              [
-                                "break"
-                              ]
+                              "name",
+                              "$count_1"
                             ]
                           ]
+                        ],
+                        [
+                          "stat",
+                          [
+                            "assign",
+                            true,
+                            [
+                              "name",
+                              "label"
+                            ],
+                            [
+                              "num",
+                              2
+                            ]
+                          ]
+                        ],
+                        [
+                          "break",
+                          null
+                        ]
+                      ]
+                    ],
+                    [
+                      "block",
+                      [
+                        [
+                          "stat",
+                          [
+                            "assign",
+                            true,
+                            [
+                              "name",
+                              "label"
+                            ],
+                            [
+                              "num",
+                              3
+                            ]
+                          ]
+                        ],
+                        [
+                          "break",
+                          null
                         ]
                       ]
                     ]
@@ -1673,151 +1647,146 @@
                 ],
                 [
                   [
-                    "block",
+                    "stat",
                     [
+                      "call",
                       [
-                        "stat",
+                        "name",
+                        "_printf"
+                      ],
+                      [
                         [
-                          "call",
+                          "num",
+                          16
+                        ],
+                        [
+                          "binary",
+                          "|",
                           [
-                            "name",
-                            "_printf"
-                          ],
-                          [
+                            "seq",
                             [
-                              "num",
-                              16
+                              "assign",
+                              true,
+                              [
+                                "name",
+                                "tempInt"
+                              ],
+                              [
+                                "name",
+                                "STACKTOP"
+                              ]
                             ],
                             [
-                              "binary",
-                              "|",
+                              "seq",
+                              [
+                                "assign",
+                                true,
+                                [
+                                  "name",
+                                  "STACKTOP"
+                                ],
+                                [
+                                  "binary",
+                                  "|",
+                                  [
+                                    "binary",
+                                    "+",
+                                    [
+                                      "name",
+                                      "STACKTOP"
+                                    ],
+                                    [
+                                      "num",
+                                      8
+                                    ]
+                                  ],
+                                  [
+                                    "num",
+                                    0
+                                  ]
+                                ]
+                              ],
                               [
                                 "seq",
                                 [
-                                  "seq",
+                                  "assign",
+                                  true,
                                   [
-                                    "seq",
+                                    "sub",
                                     [
-                                      "assign",
-                                      true,
-                                      [
-                                        "name",
-                                        "tempInt"
-                                      ],
-                                      [
-                                        "name",
-                                        "STACKTOP"
-                                      ]
+                                      "name",
+                                      "HEAP32"
                                     ],
                                     [
-                                      "assign",
-                                      true,
+                                      "binary",
+                                      ">>",
                                       [
-                                        "name",
-                                        "STACKTOP"
-                                      ],
-                                      [
-                                        "binary",
-                                        "|",
+                                        "call",
                                         [
-                                          "binary",
-                                          "+",
-                                          [
-                                            "name",
-                                            "STACKTOP"
-                                          ],
-                                          [
-                                            "num",
-                                            8
-                                          ]
+                                          "name",
+                                          "CHECK_ALIGN_4"
                                         ],
                                         [
-                                          "num",
-                                          0
+                                          [
+                                            "binary",
+                                            "|",
+                                            [
+                                              "name",
+                                              "tempInt"
+                                            ],
+                                            [
+                                              "num",
+                                              0
+                                            ]
+                                          ]
                                         ]
+                                      ],
+                                      [
+                                        "num",
+                                        2
                                       ]
                                     ]
                                   ],
                                   [
-                                    "assign",
-                                    true,
-                                    [
-                                      "sub",
-                                      [
-                                        "name",
-                                        "HEAP32"
-                                      ],
-                                      [
-                                        "binary",
-                                        ">>",
-                                        [
-                                          "call",
-                                          [
-                                            "name",
-                                            "CHECK_ALIGN_4"
-                                          ],
-                                          [
-                                            [
-                                              "binary",
-                                              "|",
-                                              [
-                                                "name",
-                                                "tempInt"
-                                              ],
-                                              [
-                                                "num",
-                                                0
-                                              ]
-                                            ]
-                                          ]
-                                        ],
-                                        [
-                                          "num",
-                                          2
-                                        ]
-                                      ]
-                                    ],
-                                    [
-                                      "name",
-                                      "$count_1"
-                                    ]
+                                    "name",
+                                    "$count_1"
                                   ]
                                 ],
                                 [
                                   "name",
                                   "tempInt"
                                 ]
-                              ],
-                              [
-                                "num",
-                                0
                               ]
                             ]
-                          ]
-                        ]
-                      ],
-                      [
-                        "stat",
-                        [
-                          "assign",
-                          true,
-                          [
-                            "name",
-                            "STACKTOP"
                           ],
                           [
-                            "name",
-                            "__stackBase__"
+                            "num",
+                            0
                           ]
                         ]
+                      ]
+                    ]
+                  ],
+                  [
+                    "stat",
+                    [
+                      "assign",
+                      true,
+                      [
+                        "name",
+                        "STACKTOP"
                       ],
                       [
-                        "return",
-                        [
-                          "num",
-                          0
-                        ]
+                        "name",
+                        "__stackBase__"
                       ]
+                    ]
+                  ],
+                  [
+                    "return",
+                    [
+                      "num",
+                      0
                     ]
                   ]
                 ]
@@ -2182,52 +2151,49 @@
                             [
                               "seq",
                               [
+                                "assign",
+                                true,
+                                [
+                                  "name",
+                                  "tempInt"
+                                ],
+                                [
+                                  "name",
+                                  "STACKTOP"
+                                ]
+                              ],
+                              [
                                 "seq",
                                 [
-                                  "seq",
+                                  "assign",
+                                  true,
                                   [
-                                    "seq",
+                                    "name",
+                                    "STACKTOP"
+                                  ],
+                                  [
+                                    "binary",
+                                    "|",
                                     [
-                                      "assign",
-                                      true,
-                                      [
-                                        "name",
-                                        "tempInt"
-                                      ],
+                                      "binary",
+                                      "+",
                                       [
                                         "name",
                                         "STACKTOP"
+                                      ],
+                                      [
+                                        "num",
+                                        16
                                       ]
                                     ],
                                     [
-                                      "assign",
-                                      true,
-                                      [
-                                        "name",
-                                        "STACKTOP"
-                                      ],
-                                      [
-                                        "binary",
-                                        "|",
-                                        [
-                                          "binary",
-                                          "+",
-                                          [
-                                            "name",
-                                            "STACKTOP"
-                                          ],
-                                          [
-                                            "num",
-                                            16
-                                          ]
-                                        ],
-                                        [
-                                          "num",
-                                          0
-                                        ]
-                                      ]
+                                      "num",
+                                      0
                                     ]
-                                  ],
+                                  ]
+                                ],
+                                [
+                                  "seq",
                                   [
                                     "assign",
                                     true,
@@ -2271,64 +2237,67 @@
                                       "name",
                                       "$2"
                                     ]
-                                  ]
-                                ],
-                                [
-                                  "assign",
-                                  true,
+                                  ],
                                   [
-                                    "sub",
+                                    "seq",
                                     [
-                                      "name",
-                                      "HEAPF64"
-                                    ],
-                                    [
-                                      "binary",
-                                      ">>",
+                                      "assign",
+                                      true,
                                       [
-                                        "call",
+                                        "sub",
                                         [
                                           "name",
-                                          "CHECK_ALIGN_8"
+                                          "HEAPF64"
                                         ],
                                         [
+                                          "binary",
+                                          ">>",
                                           [
-                                            "binary",
-                                            "|",
+                                            "call",
                                             [
-                                              "binary",
-                                              "+",
-                                              [
-                                                "name",
-                                                "tempInt"
-                                              ],
-                                              [
-                                                "num",
-                                                8
-                                              ]
+                                              "name",
+                                              "CHECK_ALIGN_8"
                                             ],
                                             [
-                                              "num",
-                                              0
+                                              [
+                                                "binary",
+                                                "|",
+                                                [
+                                                  "binary",
+                                                  "+",
+                                                  [
+                                                    "name",
+                                                    "tempInt"
+                                                  ],
+                                                  [
+                                                    "num",
+                                                    8
+                                                  ]
+                                                ],
+                                                [
+                                                  "num",
+                                                  0
+                                                ]
+                                              ]
                                             ]
+                                          ],
+                                          [
+                                            "num",
+                                            3
                                           ]
                                         ]
                                       ],
                                       [
-                                        "num",
-                                        3
+                                        "name",
+                                        "$3"
                                       ]
+                                    ],
+                                    [
+                                      "name",
+                                      "tempInt"
                                     ]
-                                  ],
-                                  [
-                                    "name",
-                                    "$3"
                                   ]
                                 ]
-                              ],
-                              [
-                                "name",
-                                "tempInt"
                               ]
                             ],
                             [
