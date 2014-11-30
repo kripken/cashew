@@ -61,6 +61,7 @@ extern IString TOPLEVEL,
                NE,
                DIV,
                MOD,
+               MUL,
                RSHIFT,
                LSHIFT,
                TRSHIFT,
@@ -196,18 +197,35 @@ class Parser {
         assert(src > start);
         type = NUMBER;
       } else if (hasChar(OPERATOR_INITS, *src)) {
-        for (int i = 0; i < MAX_OPERATOR_SIZE; i++) {
-          if (!start[i]) break;
-          char temp = start[i+1];
-          start[i+1] = 0;
-          if (allOperators.has(start)) {
-            str.set(start, false);
-            src = start + i + 1;
-          }
-          start[i+1] = temp;
+        switch (*src) {
+          case '!': str = src[1] == '=' ? str = NE : str = L_NOT; break;
+          case '%': str = MOD; break;
+          case '&': str = AND; break;
+          case '*': str = MUL; break;
+          case '+': str = PLUS; break;
+          case ',': str = COMMA; break;
+          case '-': str = MINUS; break;
+          case '.': str = DOT; break;
+          case '/': str = DIV; break;
+          case ':': str = COLON; break;
+          case '<': str = src[1] == '<' ? LSHIFT : (src[1] == '=' ? LE : LT); break;
+          case '=': str = src[1] == '=' ? EQ : SET; break;
+          case '>': str = src[1] == '>' ? (src[2] == '>' ? TRSHIFT : RSHIFT) : (src[1] == '=' ? GE : GT); break;
+          case '?': str = QUESTION; break;
+          case '^': str = XOR; break;
+          case '|': str = OR; break;
+          case '~': str = B_NOT; break;
         }
-        type = OPERATOR;
         assert(!str.isNull());
+        size = strlen(str.str);
+#ifndef NDEBUG
+        char temp = start[size];
+        start[size] = 0;
+        assert(strcmp(str.str, start) == 0);
+        start[size] = temp;
+#endif
+        type = OPERATOR;
+        return;
       } else if (hasChar(SEPARATORS, *src)) {
         type = SEPARATOR;
         char temp = src[1];
