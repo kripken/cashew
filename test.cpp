@@ -16,7 +16,14 @@ int main(int argc, char **argv) {
 
   cashew::Parser<Ref, ValueBuilder> builder;
   Ref ast = builder.parseToplevel(src);
-  ast->stringify(std::cout, true);
-  std::cout << "\n";
+
+  if (argc == 2) {
+    ast->stringify(std::cout, true);
+    std::cout << "\n";
+  } else {
+    JSPrinter jser(argv[2][0] == '1', argv[3][0] == '1');
+    jser.print(ast);
+    std::cout << jser.buffer << "\n";
+  }
 }
 

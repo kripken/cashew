@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <math.h>
 
 #include <vector>
 #include <ostream>
@@ -511,6 +512,204 @@ struct Value {
   bool has(IString x) {
     assert(isObject());
     return obj->count(x) > 0;
+  }
+};
+
+// JS printer
+
+struct JSPrinter {
+  bool pretty, finalize;
+
+  char *buffer;
+  int size, used;
+
+  int indent;
+
+  JSPrinter(bool pretty_, bool finalize_) : pretty(pretty_), finalize(finalize_), buffer(0), size(0), used(0), indent(0) {}
+
+  void ensure(int safety=100) {
+    if (size < used + safety) {
+      size = std::max(1024, size*2) + safety;
+      if (!buffer) {
+        buffer = (char*)malloc(size);
+      } else {
+        buffer = (char*)realloc(buffer, size);
+      }
+    }
+  }
+
+  void emit(char c) {
+    ensure(1);
+    buffer[used++] = c;
+  }
+
+  void emit(const char *s) {
+    int len = strlen(s);
+    ensure(len);
+    strcpy(buffer + used, s);
+    used += len;
+  }
+
+  void newline() {
+    if (!pretty) return;
+    emit('\n');
+    for (int i = 0; i < indent; i++) emit(' ');
+  }
+
+  void space() {
+    if (pretty) emit(' ');
+  }
+
+  void print(Ref node) {
+    ensure();
+    IString type = node[0]->getIString();
+    //printf("printing %s\n", type.str);
+    switch (type.str[0]) {
+      case 'a': {
+        if (type == ASSIGN) printAssign(node);
+        else assert(0);
+        break;
+      }
+      case 'b': {
+        if (type == BINARY) printBinary(node);
+        else assert(0);
+        break;
+      }
+      case 'c': {
+        if (type == CALL) printCall(node);
+        else assert(0);
+        break;
+      }
+      case 'd': {
+        if (type == DEFUN) printDefun(node);
+        else assert(0);
+        break;
+      }
+      case 'n': {
+        if (type == NAME) printName(node);
+        else if (type == NUM) printNum(node);
+        else assert(0);
+        break;
+      }
+      case 's': {
+        if (type == STAT) printStat(node);
+        else if (type == SEQ) printSeq(node);
+        else assert(0);
+        break;
+      }
+      case 't': {
+        if (type == TOPLEVEL) printToplevel(node);
+        else assert(0);
+        break;
+      }
+      default: {
+        printf("cannot yet print %s\n", type.str);
+        assert(0);
+      }
+    }
+  }
+
+  void printStats(Ref stats) {
+    for (int i = 0; i < stats->size(); i++) {
+      if (i > 0) newline();
+      print(stats[i]);
+    }
+  }
+
+  void printArgs(Ref args) {
+    for (int i = 0; i < args->size(); i++) {
+      if (i > 0) (pretty ? emit(", ") : emit(','));
+      print(args[i]);
+    }
+  }
+
+  void printToplevel(Ref node) {
+    printStats(node[1]);
+  }
+
+  void printDefun(Ref node) {
+    emit("function ");
+    emit(node[1]->getCString());
+    emit('(');
+    Ref args = node[2];
+    for (int i = 0; i < args->size(); i++) {
+      if (i > 0) (pretty ? emit(", ") : emit(','));
+      emit(args[i]->getCString());
+    }
+    emit(')');
+    space();
+    emit('{');
+    newline();
+    indent++;
+    printStats(node[3]);
+    indent--;
+    newline();
+    emit('}');
+    newline();
+  }
+
+  void printStat(Ref node) {
+    print(node[1]);
+    emit(';');
+  }
+
+  void printAssign(Ref node) {
+    print(node[2]);
+    space();
+    emit('=');
+    space();
+    print(node[3]);
+  }
+
+  void printName(Ref node) {
+    emit(node[1]->getCString());
+  }
+
+  void printNum(Ref node) {
+    double d = node[1]->getNumber();
+    static char buffer[50];
+    int n;
+    if (fmod(d, 1) == 0) {
+      n = snprintf(buffer, 45, "%.0f", d);
+    } else {
+      n = snprintf(buffer, 45, "%.17f", d);
+    }
+    assert(n < 40);
+    emit(buffer);
+  }
+
+  void printBinary(Ref node) {
+    // TODO: optimize out parens
+    emit('(');
+    print(node[2]);
+    emit(')');
+    space();
+    emit(node[1]->getCString());
+    space();
+    emit('(');
+    print(node[3]);
+    emit(')');
+  }
+
+  void printCall(Ref node) {
+    print(node[1]);
+    emit('(');
+    Ref args = node[2];
+    for (int i = 0; i < args->size(); i++) {
+      if (i > 0) (pretty ? emit(", ") : emit(','));
+      print(args[i]);
+    }
+    emit(')');
+  }
+
+  void printSeq(Ref node) {
+    // TODO: optimize out parens
+    emit('(');
+    print(node[1]);
+    emit(',');
+    space();
+    print(node[2]);
+    emit(')');
   }
 };
 
