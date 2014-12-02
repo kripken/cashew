@@ -24,7 +24,7 @@
                 [
                   "call",
                   [
-                    ".",
+                    "dot",
                     [
                       "name",
                       "stdlib"
@@ -52,7 +52,7 @@
                 [
                   "call",
                   [
-                    ".",
+                    "dot",
                     [
                       "name",
                       "stdlib"
@@ -76,7 +76,7 @@
             [
               "log",
               [
-                ".",
+                "dot",
                 [
                   "name",
                   "foreign"

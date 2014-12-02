@@ -86,6 +86,7 @@ extern IString TOPLEVEL,
                CASE,
                DEFAULT,
                DOT,
+               PERIOD,
                NEW,
                ARRAY,
                OBJECT,
@@ -205,7 +206,7 @@ class Parser {
           case '+': str = PLUS; break;
           case ',': str = COMMA; break;
           case '-': str = MINUS; break;
-          case '.': str = DOT; break;
+          case '.': str = PERIOD; break;
           case '/': str = DIV; break;
           case ':': str = COLON; break;
           case '<': str = src[1] == '<' ? LSHIFT : (src[1] == '=' ? LE : LT); break;
