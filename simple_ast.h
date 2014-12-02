@@ -563,10 +563,11 @@ struct JSPrinter {
   void print(Ref node) {
     ensure();
     IString type = node[0]->getIString();
-    fprintf(stderr, "printing %s\n", type.str);
+    //fprintf(stderr, "printing %s\n", type.str);
     switch (type.str[0]) {
       case 'a': {
         if (type == ASSIGN) printAssign(node);
+        else if (type == ARRAY) printArray(node);
         else assert(0);
         break;
       }
@@ -587,6 +588,7 @@ struct JSPrinter {
       case 'd': {
         if (type == DEFUN) printDefun(node);
         else if (type == DO) printDo(node);
+        else if (type == DOT) printDot(node);
         else assert(0);
         break;
       }
@@ -605,6 +607,10 @@ struct JSPrinter {
         else if (type == NUM) printNum(node);
         else if (type == NEW) printNew(node);
         else assert(0);
+        break;
+      }
+      case 'o': {
+        if (type == OBJECT) printObject(node);
         break;
       }
       case 'r': {
@@ -786,6 +792,12 @@ struct JSPrinter {
     emit(')');
   }
 
+  void printDot(Ref node) {
+    print(node[1]);
+    emit('.');
+    emit(node[2]->getCString());
+  }
+
   void printSwitch(Ref node) {
     emit("switch");
     space();
@@ -921,6 +933,37 @@ struct JSPrinter {
   void printNew(Ref node) {
     emit("new ");
     print(node[1]);
+  }
+
+  void printArray(Ref node) {
+    emit('[');
+    Ref args = node[1];
+    for (int i = 0; i < args->size(); i++) {
+      if (i > 0) (pretty ? emit(", ") : emit(','));
+      print(args[i]);
+    }
+    emit(']');
+  }
+
+  void printObject(Ref node) {
+    emit('{');
+    indent++;
+    newline();
+    Ref args = node[1];
+    for (int i = 0; i < args->size(); i++) {
+      if (i > 0) {
+        pretty ? emit(", ") : emit(',');
+        newline();
+      }
+      emit('"');
+      emit(args[i][0]->getCString());
+      emit("\":");
+      space();
+      print(args[i][1]);
+    }
+    indent--;
+    newline();
+    emit('}');
   }
 };
 
