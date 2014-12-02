@@ -17,7 +17,7 @@ if not os.path.exists('a.out') or os.stat('a.out').st_mtime < os.stat('parser.h'
 print 'testing'
 
 for i in os.listdir('samples'):
-  if i.endswith('.js'):
+  if i.endswith('.js') and i.count('.') == 1:
     for extra in [[], ['1', '0']]:
       command = ['./a.out', os.path.join('samples', i)] + extra
       print ' '.join(command)

@@ -563,7 +563,7 @@ struct JSPrinter {
   void print(Ref node) {
     ensure();
     IString type = node[0]->getIString();
-    //printf("printing %s\n", type.str);
+    fprintf(stderr, "printing %s\n", type.str);
     switch (type.str[0]) {
       case 'a': {
         if (type == ASSIGN) printAssign(node);
@@ -572,33 +572,72 @@ struct JSPrinter {
       }
       case 'b': {
         if (type == BINARY) printBinary(node);
+        else if (type == BLOCK) printBlock(node);
+        else if (type == BREAK) printBreak(node);
         else assert(0);
         break;
       }
       case 'c': {
         if (type == CALL) printCall(node);
+        else if (type == CONDITIONAL) printConditional(node);
+        else if (type == CONTINUE) printContinue(node);
         else assert(0);
         break;
       }
       case 'd': {
         if (type == DEFUN) printDefun(node);
+        else if (type == DO) printDo(node);
+        else assert(0);
+        break;
+      }
+      case 'i': {
+        if (type == IF) printIf(node);
+        else assert(0);
+        break;
+      }
+      case 'l': {
+        if (type == LABEL) printLabel(node);
         else assert(0);
         break;
       }
       case 'n': {
         if (type == NAME) printName(node);
         else if (type == NUM) printNum(node);
+        else if (type == NEW) printNew(node);
+        else assert(0);
+        break;
+      }
+      case 'r': {
+        if (type == RETURN) printReturn(node);
         else assert(0);
         break;
       }
       case 's': {
         if (type == STAT) printStat(node);
+        else if (type == SUB) printSub(node);
         else if (type == SEQ) printSeq(node);
+        else if (type == SWITCH) printSwitch(node);
+        else if (type == STRING) printString(node);
         else assert(0);
         break;
       }
       case 't': {
         if (type == TOPLEVEL) printToplevel(node);
+        else assert(0);
+        break;
+      }
+      case 'u': {
+        if (type == UNARY_PREFIX) printUnaryPrefix(node);
+        else assert(0);
+        break;
+      }
+      case 'v': {
+        if (type == VAR) printVar(node);
+        else assert(0);
+        break;
+      }
+      case 'w': {
+        if (type == WHILE) printWhile(node);
         else assert(0);
         break;
       }
@@ -625,6 +664,16 @@ struct JSPrinter {
 
   void printToplevel(Ref node) {
     printStats(node[1]);
+  }
+
+  void printBlock(Ref node) {
+    emit('{');
+    indent++;
+    newline();
+    printStats(node[1]);
+    indent--;
+    newline();
+    emit('}');
   }
 
   void printDefun(Ref node) {
@@ -678,6 +727,12 @@ struct JSPrinter {
     emit(buffer);
   }
 
+  void printString(Ref node) {
+    emit('"');
+    emit(node[1]->getCString());
+    emit('"');
+  }
+
   void printBinary(Ref node) {
     // TODO: optimize out parens
     emit('(');
@@ -685,6 +740,25 @@ struct JSPrinter {
     emit(')');
     space();
     emit(node[1]->getCString());
+    space();
+    emit('(');
+    print(node[3]);
+    emit(')');
+  }
+
+  void printConditional(Ref node) {
+    // TODO: optimize out parens
+    emit('(');
+    print(node[1]);
+    emit(')');
+    space();
+    emit('?');
+    space();
+    emit('(');
+    print(node[2]);
+    emit(')');
+    space();
+    emit(':');
     space();
     emit('(');
     print(node[3]);
@@ -710,6 +784,143 @@ struct JSPrinter {
     space();
     print(node[2]);
     emit(')');
+  }
+
+  void printSwitch(Ref node) {
+    emit("switch");
+    space();
+    emit('(');
+    print(node[1]);
+    emit(')');
+    space();
+    emit('{');
+    indent++;
+    newline();
+    Ref cases = node[2];
+    for (int i = 0; i < cases->size(); i++) {
+      Ref c = cases[i];
+      if (!!c[0]) {
+        emit("default:");
+      } else {
+        emit("case ");
+        print(c[0]);
+        emit(':');
+      }
+      space();
+      indent++;
+      newline();
+      printStats(c[1]);
+      indent--;
+      newline();
+    }
+    indent--;
+    emit('}');
+  }
+
+  void printSub(Ref node) {
+    print(node[1]);
+    emit('[');
+    print(node[2]);
+    emit(']');
+  }
+
+  void printUnaryPrefix(Ref node) {
+    // TODO: optimize out parens
+    emit(node[1]->getCString());
+    emit('(');
+    print(node[2]);
+    emit(')');
+  }
+
+  void printVar(Ref node) {
+    emit("var ");
+    Ref args = node[1];
+    for (int i = 0; i < args->size(); i++) {
+      if (i > 0) (pretty ? emit(", ") : emit(','));
+      emit(args[i][0]->getCString());
+      if (args[i]->size() > 1) {
+        space();
+        emit('=');
+        space();
+        print(args[i][1]);
+      }
+    }
+    emit(';');
+  }
+
+  void printIf(Ref node) {
+    emit("if");
+    space();
+    emit('(');
+    print(node[1]);
+    emit(')');
+    space();
+    print(node[2]);
+    if (!!node[3]) {
+      space();
+      emit("else");
+      space();
+      print(node[3]);
+    }
+  }
+
+  void printDo(Ref node) {
+    emit("do");
+    space();
+    emit('(');
+    print(node[1]);
+    emit(')');
+    space();
+    print(node[2]);
+  }
+
+  void printWhile(Ref node) {
+    emit("while");
+    space();
+    emit('(');
+    print(node[1]);
+    emit(')');
+    space();
+    print(node[2]);
+  }
+
+  void printLabel(Ref node) {
+    emit(node[1]->getCString());
+    emit(':');
+    space();
+    emit('(');
+  }
+
+  void printReturn(Ref node) {
+    emit("return");
+    if (!!node[1]) {
+      emit(' ');
+      print(node[1]);
+    }
+    emit(';');
+  }
+
+  void printBreak(Ref node) {
+    emit("break");
+    if (!!node[1]) {
+      emit(' ');
+      emit(node[1]->getCString());
+    }
+    emit(';');
+  }
+
+  void printContinue(Ref node) {
+    emit("continue");
+    if (!!node[1]) {
+      emit(' ');
+      emit(node[1]->getCString());
+    }
+    emit(';');
+  }
+
+  void printNew(Ref node) {
+    emit("new ");
+    print(node[1]);
   }
 };
 
