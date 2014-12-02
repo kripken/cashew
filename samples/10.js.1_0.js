@@ -1,12 +1,12 @@
 function mymodule(stdlib, foreign, heap) {
-"use asm"
+ "use asm"
  var H32 = new stdlib.Int32Array(heap);
  var HU32 = new stdlib.Uint32Array(heap);
  var log = foreign.consoleDotLog;
  var g_i = 0;
  var g_f = 0;
  function f(x, y) {
- x = (x) | (0);
+  x = (x) | (0);
   y = +(y);
   log((x) | (0));
   log(y);
@@ -15,16 +15,16 @@ function mymodule(stdlib, foreign, heap) {
  }
  
  function g() {
- g_f = +((g_i) | (0));
+  g_f = +((g_i) | (0));
   return;
  }
  
  function g2() {
- return;
+  return;
  }
  
  function h(i, x) {
- i = (i) | (0);
+  i = (i) | (0);
   x = (x) | (0);
   H32[(i) >> (2)] = x;
   ftable_2[((x) - (2)) & (1)]();

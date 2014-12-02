@@ -1,20 +1,20 @@
 function func() {
-print(10);
+ print(10);
 }
 
 function another(x, y) {
-func();
+ func();
  return;
 }
 
 function varr() {
-var x;
+ var x;
  var a = 5, b, c = func(a, b), d;
  return 20;
 }
 
 function sub() {
-x[10]
+ x[10]
  x[(y) + (20)]
  x[30]();
  x[40] = 50;

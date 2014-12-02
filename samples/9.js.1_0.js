@@ -1,5 +1,5 @@
 function asm(x, y) {
-x = +(x);
+ x = +(x);
  y = (y) | (0);
  var int1 = 0, int2 = 0;
  var double1 = +(0), double2 = +(0);
@@ -12,7 +12,7 @@ x = +(x);
 }
 
 function _doit($x, $y$0, $y$1) {
-$x = ($x) | (0);
+ $x = ($x) | (0);
  $y$0 = ($y$0) | (0);
  $y$1 = ($y$1) | (0);
  var __stackBase__ = 0;
@@ -23,12 +23,12 @@ $x = ($x) | (0);
 }
 
 function stackRestore(top) {
-top = (top) | (0);
+ top = (top) | (0);
  STACKTOP = top;
 }
 
 function switchey(x, y) {
-x = +(x);
+ x = +(x);
  y = (y) | (0);
  var int1 = 0, int2 = 0;
  var double1 = +(0), double2 = +(0);
@@ -51,7 +51,7 @@ x = +(x);
 }
 
 function switchey2() {
-var $rng2 = 0, $count_06 = 0, $i_05 = 0, $2 = +(0), $3 = +(0), $count_1 = 0, $9 = 0, label = 0, __stackBase__ = 0;
+ var $rng2 = 0, $count_06 = 0, $i_05 = 0, $2 = +(0), $3 = +(0), $count_1 = 0, $9 = 0, label = 0, __stackBase__ = 0;
  __stackBase__ = STACKTOP;
  STACKTOP = ((STACKTOP) + (8)) | (0);
  label = 1;
@@ -87,7 +87,7 @@ var $rng2 = 0, $count_06 = 0, $i_05 = 0, $2 = +(0), $3 = +(0), $count_1 = 0, $9 
 }
 
 function iffey() {
-var $rng2 = 0, $count_06 = 0, $i_05 = 0, $2 = +(0), $3 = +(0), $count_1 = 0, $9 = 0, label = 0, __stackBase__ = 0;
+ var $rng2 = 0, $count_06 = 0, $i_05 = 0, $2 = +(0), $3 = +(0), $count_1 = 0, $9 = 0, label = 0, __stackBase__ = 0;
  __stackBase__ = STACKTOP;
  STACKTOP = ((STACKTOP) + (8)) | (0);
  label = 1;
@@ -118,7 +118,7 @@ var $rng2 = 0, $count_06 = 0, $i_05 = 0, $2 = +(0), $3 = +(0), $count_1 = 0, $9 
 }
 
 function nops() {
-var x = 0;
+ var x = 0;
  (x) | (0);
  ~(x);
  f(x);

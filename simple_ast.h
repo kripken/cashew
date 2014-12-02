@@ -694,8 +694,8 @@ struct JSPrinter {
     emit(')');
     space();
     emit('{');
-    newline();
     indent++;
+    newline();
     printStats(node[3]);
     indent--;
     newline();
