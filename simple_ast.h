@@ -753,17 +753,34 @@ struct JSPrinter {
     emit('"');
   }
 
+  // checks if node or any of its children has lower precedence
+  bool hasLowerPrecedence(OperatorClass::Type type, IString op, Ref node) {
+    int prec = OperatorClass::getPrecedence(type, op);
+    // TODO: aborting
+    int has = false;
+    traversePre(node, [&](Ref node) {
+      Ref type = node[0];
+      if (type == BINARY ) {
+        if (OperatorClass::getPrecedence(OperatorClass::Binary, node[1]->getIString()) > prec) has = true;
+      } else if (type == UNARY_PREFIX) {
+        if (OperatorClass::getPrecedence(OperatorClass::Prefix, node[1]->getIString()) > prec) has = true;
+      }
+    });
+    return has;
+  }
+
   void printBinary(Ref node) {
-    // TODO: optimize out parens
-    emit('(');
+    bool needParensLeft = hasLowerPrecedence(OperatorClass::Binary, node[1]->getIString(), node[2]);
+    bool needParensRight = hasLowerPrecedence(OperatorClass::Binary, node[1]->getIString(), node[3]);
+    if (needParensLeft) emit('(');
     print(node[2]);
-    emit(')');
+    if (needParensLeft) emit(')');
     space();
     emit(node[1]->getCString());
     space();
-    emit('(');
+    if (needParensRight) emit('(');
     print(node[3]);
-    emit(')');
+    if (needParensRight) emit(')');
   }
 
   void printConditional(Ref node) {

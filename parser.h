@@ -111,9 +111,12 @@ struct OperatorClass {
   Type type;
 
   OperatorClass(const char* o, bool r, Type t) : ops(o), rtl(r), type(t) {}
+
+  static int getPrecedence(Type type, IString op);
 };
 
 extern std::vector<OperatorClass> operatorClasses;
+
 
 // parser
 
