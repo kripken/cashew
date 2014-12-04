@@ -694,6 +694,10 @@ struct JSPrinter {
   }
 
   void printBlock(Ref node) {
+    if (node[1]->size() == 0) {
+      emit("{}");
+      return;
+    }
     emit('{');
     indent++;
     newline();
@@ -880,12 +884,13 @@ struct JSPrinter {
         print(c[0]);
         emit(':');
       }
-      space();
       indent++;
       newline();
+      int curr = used;
       printStats(c[1]);
       indent--;
-      newline();
+      if (curr != used) newline();
+      else used--; // avoid the extra indentation we added tentatively
     }
     emit('}');
   }
