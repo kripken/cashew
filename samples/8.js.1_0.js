@@ -1,6 +1,6 @@
 function a() {
  f((HEAPU8[10202] | 0) + 5 | 0);
- f((HEAPU8[10202] | 0) | 0);
+ f(HEAPU8[10202] | 0 | 0);
  f(347 | 0);
  f(347 | 12);
  f(347 & 12);
@@ -15,10 +15,10 @@ function a() {
  +f();
  f(+(+h() + 5));
  $140 = $p_3_i + (-$mantSize_0_i | 0) | 0;
- f((g() | 0) | 0);
+ f(g() | 0 | 0);
  f(g() | 0 & -1);
  f((g() | 0) >> 2);
- $56 = (_fcntl() | 0) | 1;
+ $56 = _fcntl() | 0 | 1;
  FUNCTION_TABLE_ii[55 & 127]() | 0;
 }
 
@@ -31,11 +31,11 @@ function b($this, $__n) {
  }
  $4 = $this;
  $5 = HEAP8[$4 & 16777215] | 0;
- if (($5 & 1 << 24) >> 24 == 0) {
+ if (($5 & 1) << 24 >> 24 == 0) {
   $14 = 10;
   $13 = $5;
  } else {
-  $10 = HEAP32[($this | 0 & 16777215) >> 2] | 0;
+  $10 = HEAP32[(($this | 0) & 16777215) >> 2] | 0;
   $14 = ($10 & -2) - 1 | 0;
   $13 = $10 & 255;
  }
@@ -43,7 +43,7 @@ function b($this, $__n) {
  if (($15 & 1 | 0) == 0) {
   $23 = $15 >>> 1;
  } else {
-  $23 = HEAP32[($this + 4 | 0 & 16777215) >> 2] | 0;
+  $23 = HEAP32[(($this + 4 | 0) & 16777215) >> 2] | 0;
  }
  if (($14 - $23 | 0) >>> 0 < $__n >>> 0) {
   __ZNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEE9__grow_byEjjjjjj($this, $14, ($__n - $14 | 0) + $23 | 0, $23, $23);
@@ -51,17 +51,17 @@ function b($this, $__n) {
  } else {
   $30 = $13;
  }
- if (($30 & 1 << 24) >> 24 == 0) {
+ if (($30 & 1) << 24 >> 24 == 0) {
   $38 = $this + 1 | 0;
  } else {
-  $38 = HEAP32[($this + 8 | 0 & 16777215) >> 2] | 0;
+  $38 = HEAP32[(($this + 8 | 0) & 16777215) >> 2] | 0;
  }
- _memset(($38 + $23 | 0 | 0) | 0, (0 | 0) | 0, ($__n | 0) | 0, (1 | 0) | 0, 1213141516);
+ _memset($38 + $23 | 0 | 0 | 0, 0 | 0 | 0, $__n | 0 | 0, 1 | 0 | 0, 1213141516);
  $40 = $23 + $__n | 0;
- if (((HEAP8[$4 & 16777215] | 0) & 1 << 24) >> 24 == 0) {
+ if (((HEAP8[$4 & 16777215] | 0) & 1) << 24 >> 24 == 0) {
   HEAP8[$4 & 16777215] = $40 << 1 & 255;
  } else {
-  HEAP32[($this + 4 | 0 & 16777215) >> 2] = $40;
+  HEAP32[(($this + 4 | 0) & 16777215) >> 2] = $40;
  }
  HEAP8[($38 + $40 | 0) & 16777215] = 0;
  HEAP32[$4] = ~(HEAP32[$5] | 0) | 0;
@@ -69,42 +69,42 @@ function b($this, $__n) {
  HEAP16[$4] = HEAP32[$5] & 65535;
  HEAP32[$4] = HEAP32[$5] ^ -1;
  HEAP32[$4] = (HEAP32[$5] | 0) ^ -1 | 0;
- h(~(~g) ^ -1);
+ h(~~g ^ -1);
  return;
 }
 
 function i32_8() {
- if ((HEAP8[$4 & 16777215] | 0 << 24) >> 24 == 0) {
+ if ((HEAP8[$4 & 16777215] | 0) << 24 >> 24 == 0) {
   print(5);
  }
- if ((HEAP8[$5 & 16777215] << 24) >> 24 == 0) {
+ if (HEAP8[$5 & 16777215] << 24 >> 24 == 0) {
   print(5);
  }
- if ((HEAPU8[$6 & 16777215] | 0 << 24) >> 24 == 0) {
+ if ((HEAPU8[$6 & 16777215] | 0) << 24 >> 24 == 0) {
   print(5);
  }
- if ((HEAPU8[$7 & 16777215] << 24) >> 24 == 0) {
+ if (HEAPU8[$7 & 16777215] << 24 >> 24 == 0) {
   print(5);
  }
- if ((HEAPU8[$8 & 16777215] << 24) >> 16 == 0) {
+ if (HEAPU8[$8 & 16777215] << 24 >> 16 == 0) {
   print(5);
  }
- if ((HEAPU8[$9 & 16777215] << 16) >> 16 == 0) {
+ if (HEAPU8[$9 & 16777215] << 16 >> 16 == 0) {
   print(5);
  }
 }
 
 function sign_extension_simplification() {
- if ((HEAP8[($4 & 16777215)] & 127 << 24) >> 24 == 0) {
+ if ((HEAP8[$4 & 16777215] & 127) << 24 >> 24 == 0) {
   print(5);
  }
- if ((HEAP8[($4 & 16777215)] & 128 << 24) >> 24 == 0) {
+ if ((HEAP8[$4 & 16777215] & 128) << 24 >> 24 == 0) {
   print(5);
  }
- if ((HEAP32[($5 & 16777215)] & 32767 << 16) >> 16 == 0) {
+ if ((HEAP32[$5 & 16777215] & 32767) << 16 >> 16 == 0) {
   print(5);
  }
- if ((HEAP32[($5 & 16777215)] & 32768 << 16) >> 16 == 0) {
+ if ((HEAP32[$5 & 16777215] & 32768) << 16 >> 16 == 0) {
   print(5);
  }
 }
@@ -126,11 +126,11 @@ function tempDoublePtr($45, $14, $28, $42) {
  var bad = 0;
  var unelim2 = 0;
  unelim = (HEAPF32[tempDoublePtr >> 2] = 127.50000000000000000 * +$14, HEAP32[tempDoublePtr >> 2] | 0);
- HEAP32[$45 >> 2] = 0 | (HEAPF32[tempDoublePtr >> 2] = (($14 < $28)) ? ($14) : ($28) - $42, HEAP32[tempDoublePtr >> 2] | 0);
+ HEAP32[$45 >> 2] = 0 | (HEAPF32[tempDoublePtr >> 2] = ($14 < $28) ? ($14) : $28 - $42, HEAP32[tempDoublePtr >> 2] | 0);
  HEAP32[$world + 102916 >> 2] = _malloc(192) | 0;
- f((HEAP32[tempDoublePtr >> 2] = HEAP32[$45 >> 2], +HEAPF32[(tempDoublePtr >> 2)]));
+ f((HEAP32[tempDoublePtr >> 2] = HEAP32[$45 >> 2], +HEAPF32[tempDoublePtr >> 2]));
  g((HEAPF32[tempDoublePtr >> 2] = HEAPF32[$14 >> 2], HEAP32[tempDoublePtr >> 2] | 0));
- $42 = (HEAP32[tempDoublePtr >> 2] = HEAP32[$42 >> 2] | 0, +HEAPF32[(tempDoublePtr >> 2)]);
+ $42 = (HEAP32[tempDoublePtr >> 2] = HEAP32[$42 >> 2] | 0, +HEAPF32[tempDoublePtr >> 2]);
  ch($42);
  HEAP32[$45 >> 2] = unelim;
  moar();
@@ -139,11 +139,11 @@ function tempDoublePtr($45, $14, $28, $42) {
  HEAP32[4] = bad;
  HEAP32[5] = bad + 1 | 0;
  moar();
- unelim2 = (HEAP32[tempDoublePtr >> 2] = 127 + $14, +HEAPF32[(tempDoublePtr >> 2)]);
+ unelim2 = (HEAP32[tempDoublePtr >> 2] = 127 + $14, +HEAPF32[tempDoublePtr >> 2]);
  func();
  HEAPF32[4] = unelim2;
  barrier();
- $f163 = (HEAP32[tempDoublePtr >> 2] = HEAP32[$f165 >> 2], (HEAP32[tempDoublePtr + 4 >> 2] = HEAP32[$f165 + 4 >> 2], +HEAPF64[(tempDoublePtr >> 3)]));
+ $f163 = (HEAP32[tempDoublePtr >> 2] = HEAP32[$f165 >> 2], HEAP32[tempDoublePtr + 4 >> 2] = HEAP32[$f165 + 4 >> 2], +HEAPF64[tempDoublePtr >> 3]);
 }
 
 function boxx($this, $aabb, $xf, $childIndex) {
@@ -152,26 +152,26 @@ function boxx($this, $aabb, $xf, $childIndex) {
  $xf = $xf | 0;
  $childIndex = $childIndex | 0;
  var $2 = +0, $4 = +0, $7 = +0, $9 = +0, $13 = +0, $14 = +0, $19 = +0, $20 = +0, $22 = +0, $25 = +0, $28 = +0, $32 = +0, $42 = +0, $45 = 0, $_sroa_06_0_insert_insert$1 = 0, $51 = 0, $_sroa_0_0_insert_insert$1 = 0;
- $2 = +HEAPF32[($xf + 12 >> 2)];
- $4 = +HEAPF32[($this + 12 >> 2)];
- $7 = +HEAPF32[($xf + 8 >> 2)];
- $9 = +HEAPF32[($this + 16 >> 2)];
- $13 = +HEAPF32[($xf >> 2)];
+ $2 = +HEAPF32[$xf + 12 >> 2];
+ $4 = +HEAPF32[$this + 12 >> 2];
+ $7 = +HEAPF32[$xf + 8 >> 2];
+ $9 = +HEAPF32[$this + 16 >> 2];
+ $13 = +HEAPF32[$xf >> 2];
  $14 = $13 + ($2 * $4 - $7 * $9);
- $19 = +HEAPF32[($xf + 4 >> 2)];
- $20 = ($4 * $7 + $2 * $9) + $19;
- $22 = +HEAPF32[($this + 20 >> 2)];
- $25 = +HEAPF32[($this + 24 >> 2)];
+ $19 = +HEAPF32[$xf + 4 >> 2];
+ $20 = $4 * $7 + $2 * $9 + $19;
+ $22 = +HEAPF32[$this + 20 >> 2];
+ $25 = +HEAPF32[$this + 24 >> 2];
  $28 = $13 + ($2 * $22 - $7 * $25);
  $32 = $19 + ($7 * $22 + $2 * $25);
- $42 = +HEAPF32[($this + 8 >> 2)];
+ $42 = +HEAPF32[$this + 8 >> 2];
  $45 = $aabb;
- $_sroa_06_0_insert_insert$1 = (HEAPF32[tempDoublePtr >> 2] = (($20 < $32)) ? ($20) : ($32) - $42, HEAP32[tempDoublePtr >> 2] | 0) | 0;
- HEAPF32[$45 >> 2] = (($14 < $28)) ? ($14) : ($28) - $42;
+ $_sroa_06_0_insert_insert$1 = (HEAPF32[tempDoublePtr >> 2] = ($20 < $32) ? ($20) : $32 - $42, HEAP32[tempDoublePtr >> 2] | 0) | 0;
+ HEAPF32[$45 >> 2] = ($14 < $28) ? ($14) : $28 - $42;
  HEAP32[$45 + 4 >> 2] = $_sroa_06_0_insert_insert$1;
  $51 = $aabb + 8 | 0;
- $_sroa_0_0_insert_insert$1 = (HEAPF32[tempDoublePtr >> 2] = $42 + (($20 > $32)) ? ($20) : ($32), HEAP32[tempDoublePtr >> 2] | 0) | 0;
- HEAPF32[$51 >> 2] = $42 + (($14 > $28)) ? ($14) : ($28);
+ $_sroa_0_0_insert_insert$1 = (HEAPF32[tempDoublePtr >> 2] = $42 + ($20 > $32) ? ($20) : $32, HEAP32[tempDoublePtr >> 2] | 0) | 0;
+ HEAPF32[$51 >> 2] = $42 + ($14 > $28) ? ($14) : $28;
  HEAP32[$51 + 4 >> 2] = $_sroa_0_0_insert_insert$1;
  return;
 }
@@ -192,7 +192,7 @@ function _main($argc, $argv) {
  $result = __stackBase__ + 103408 | 0;
  do (0) {
   if (($argc | 0) > 1) {
-   $6 = (HEAP8[(HEAP32[($argv + 4 | 0) >> 2] | 0)] | 0 << 24) >> 24;
+   $6 = (HEAP8[HEAP32[($argv + 4 | 0) >> 2] | 0] | 0) << 24 >> 24;
    if (($6 | 0 | 0) == (49 | 0)) {
     HEAP32[9656 >> 2] = 35;
     $WARMUP_0 = 5;
@@ -217,7 +217,7 @@ function _main($argc, $argv) {
     STACKTOP = __stackBase__;
     return $_0 | 0;
    } else {
-    _printf((3512 | 0) | 0, (tempInt = STACKTOP, (STACKTOP = STACKTOP + 8 | 0, (HEAP32[tempInt >> 2] = $6 - 48 | 0, tempInt))) | 0) | 0;
+    _printf(3512 | 0 | 0, (tempInt = STACKTOP, STACKTOP = STACKTOP + 8 | 0, HEAP32[tempInt >> 2] = $6 - 48 | 0, tempInt) | 0) | 0;
     $_0 = -1;
     STACKTOP = __stackBase__;
     return $_0 | 0;
@@ -236,12 +236,12 @@ function _main($argc, $argv) {
  HEAP32[($world + 4 | 0) >> 2] = 0;
  $17 = _malloc(1024) | 0;
  HEAP32[($world | 0) >> 2] = $17;
- _memset(($17 | 0) | 0, (0 | 0) | 0, ((HEAP32[$15 >> 2] | 0) << 3 | 0) | 0);
- _memset(($world + 12 | 0 | 0) | 0, (0 | 0) | 0, (56 | 0) | 0);
+ _memset($17 | 0 | 0, 0 | 0 | 0, (HEAP32[$15 >> 2] | 0) << 3 | 0 | 0);
+ _memset($world + 12 | 0 | 0 | 0, 0 | 0 | 0, 56 | 0 | 0);
  $j_08_i_i = 0;
  $i_09_i_i = 1;
  while (1) {
-  if (!($j_08_i_i | 0 < 14)) {
+  if (!(($j_08_i_i | 0) < 14)) {
    label = 49;
    break;
   }
@@ -262,7 +262,7 @@ function _main($argc, $argv) {
   }
  }
  if ((label | 0) == 49) {
-  ___assert_func((3248 | 0) | 0, 73 | 0, (6448 | 0) | 0, (3360 | 0) | 0);
+  ___assert_func(3248 | 0 | 0, 73 | 0, 6448 | 0 | 0, 3360 | 0 | 0);
   return 0 | 0;
  }
  HEAP32[($world + 102468 | 0) >> 2] = 0;
@@ -276,14 +276,14 @@ function _main($argc, $argv) {
  $48 = _malloc(576) | 0;
  $50 = $world + 102876 | 0;
  HEAP32[$50 >> 2] = $48;
- _memset(($48 | 0) | 0, (0 | 0) | 0, ((HEAP32[$46 >> 2] | 0) * 36 & -1 | 0) | 0);
+ _memset($48 | 0 | 0, 0 | 0 | 0, (HEAP32[$46 >> 2] | 0) * 36 & -1 | 0 | 0);
  $54 = (HEAP32[$46 >> 2] | 0) - 1 | 0;
  if (($54 | 0) > 0) {
   $i_05_i_i_i = 0;
   while (1) {
    $56 = $i_05_i_i_i + 1 | 0;
-   HEAP32[((HEAP32[$50 >> 2] | 0 + $i_05_i_i_i * 36 & -1) + 20 | 0) >> 2] = $56;
-   HEAP32[((HEAP32[$50 >> 2] | 0 + $i_05_i_i_i * 36 & -1) + 32 | 0) >> 2] = -1;
+   HEAP32[((HEAP32[$50 >> 2] | 0) + ($i_05_i_i_i * 36 & -1) + 20 | 0) >> 2] = $56;
+   HEAP32[((HEAP32[$50 >> 2] | 0) + ($i_05_i_i_i * 36 & -1) + 32 | 0) >> 2] = -1;
    $62 = (HEAP32[$46 >> 2] | 0) - 1 | 0;
    if (($56 | 0) < ($62 | 0)) {
     $i_05_i_i_i = $56;
@@ -295,9 +295,9 @@ function _main($argc, $argv) {
  } else {
   $_lcssa_i_i_i = $54;
  }
- HEAP32[((HEAP32[$50 >> 2] | 0 + $_lcssa_i_i_i * 36 & -1) + 20 | 0) >> 2] = -1;
- HEAP32[((HEAP32[$50 >> 2] | 0 + ((HEAP32[$46 >> 2] | 0) - 1 | 0) * 36 & -1) + 32 | 0) >> 2] = -1;
- _memset(($world + 102888 | 0 | 0) | 0, (0 | 0) | 0, (16 | 0) | 0);
+ HEAP32[((HEAP32[$50 >> 2] | 0) + ($_lcssa_i_i_i * 36 & -1) + 20 | 0) >> 2] = -1;
+ HEAP32[((HEAP32[$50 >> 2] | 0) + (((HEAP32[$46 >> 2] | 0) - 1 | 0) * 36 & -1) + 32 | 0) >> 2] = -1;
+ _memset($world + 102888 | 0 | 0 | 0, 0 | 0 | 0, 16 | 0 | 0);
  HEAP32[($world + 102920 | 0) >> 2] = 16;
  HEAP32[($world + 102924 | 0) >> 2] = 0;
  HEAP32[($world + 102916 | 0) >> 2] = _malloc(192) | 0;
@@ -311,7 +311,7 @@ function _main($argc, $argv) {
  $87 = $world + 102948 | 0;
  HEAP32[($world + 102980 | 0) >> 2] = 0;
  HEAP32[($world + 102984 | 0) >> 2] = 0;
- _memset(($87 | 0) | 0, (0 | 0) | 0, (20 | 0) | 0);
+ _memset($87 | 0 | 0, 0 | 0 | 0, 20 | 0 | 0);
  HEAP8[$world + 102992 | 0] = 1;
  HEAP8[$world + 102993 | 0] = 1;
  HEAP8[$world + 102994 | 0] = 0;
@@ -325,10 +325,10 @@ function _main($argc, $argv) {
  HEAP32[$98 >> 2] = 4;
  HEAPF32[($world + 102988 | 0) >> 2] = +0;
  HEAP32[$87 >> 2] = $14;
- _memset(($world + 102996 | 0 | 0) | 0, (0 | 0) | 0, (32 | 0) | 0);
+ _memset($world + 102996 | 0 | 0 | 0, 0 | 0 | 0, 32 | 0 | 0);
  HEAP8[$96] = 0;
  HEAP32[($bd + 44 | 0) >> 2] = 0;
- _memset(($bd + 4 | 0 | 0) | 0, (0 | 0) | 0, (32 | 0) | 0);
+ _memset($bd + 4 | 0 | 0 | 0, 0 | 0 | 0, 32 | 0 | 0);
  HEAP8[$bd + 36 | 0] = 1;
  HEAP8[$bd + 37 | 0] = 1;
  HEAP8[$bd + 38 | 0] = 0;
@@ -348,7 +348,7 @@ function _main($argc, $argv) {
  $118 = $world + 102952 | 0;
  HEAP32[($116 + 96 | 0) >> 2] = HEAP32[$118 >> 2] | 0;
  $121 = HEAP32[$118 >> 2] | 0;
- if (!($121 | 0 == 0)) {
+ if (!(($121 | 0) == 0)) {
   HEAP32[($121 + 92 | 0) >> 2] = $116;
  }
  HEAP32[$118 >> 2] = $116;
@@ -357,7 +357,7 @@ function _main($argc, $argv) {
  HEAP32[($shape | 0) >> 2] = 8016 | 0;
  HEAP32[($shape + 4 | 0) >> 2] = 1;
  HEAPF32[($shape + 8 | 0) >> 2] = +0.00999999977648258;
- _memset(($shape + 28 | 0 | 0) | 0, (0 | 0) | 0, (18 | 0) | 0);
+ _memset($shape + 28 | 0 | 0 | 0, 0 | 0 | 0, 18 | 0 | 0);
  $135 = $shape + 12 | 0;
  HEAP32[($135 | 0) >> 2] = -1038090240;
  HEAP32[($135 + 4 | 0) >> 2] = 0;
@@ -380,21 +380,21 @@ function _main($argc, $argv) {
  HEAP32[($shape1 + 4 | 0) >> 2] = 2;
  HEAPF32[($shape1 + 8 | 0) >> 2] = +0.00999999977648258;
  HEAP32[($shape1 + 148 | 0) >> 2] = 4;
- HEAPF32[($shape1 + 20 | 0) >> 2] = +(-0.50000000000000000);
- HEAPF32[($shape1 + 24 | 0) >> 2] = +(-0.50000000000000000);
+ HEAPF32[($shape1 + 20 | 0) >> 2] = +-0.50000000000000000;
+ HEAPF32[($shape1 + 24 | 0) >> 2] = +-0.50000000000000000;
  HEAPF32[($shape1 + 28 | 0) >> 2] = +0.50000000000000000;
- HEAPF32[($shape1 + 32 | 0) >> 2] = +(-0.50000000000000000);
+ HEAPF32[($shape1 + 32 | 0) >> 2] = +-0.50000000000000000;
  HEAPF32[($shape1 + 36 | 0) >> 2] = +0.50000000000000000;
  HEAPF32[($shape1 + 40 | 0) >> 2] = +0.50000000000000000;
- HEAPF32[($shape1 + 44 | 0) >> 2] = +(-0.50000000000000000);
+ HEAPF32[($shape1 + 44 | 0) >> 2] = +-0.50000000000000000;
  HEAPF32[($shape1 + 48 | 0) >> 2] = +0.50000000000000000;
  HEAPF32[($shape1 + 84 | 0) >> 2] = +0;
- HEAPF32[($shape1 + 88 | 0) >> 2] = +(-1);
+ HEAPF32[($shape1 + 88 | 0) >> 2] = +-1;
  HEAPF32[($shape1 + 92 | 0) >> 2] = +1;
  HEAPF32[($shape1 + 96 | 0) >> 2] = +0;
  HEAPF32[($shape1 + 100 | 0) >> 2] = +0;
  HEAPF32[($shape1 + 104 | 0) >> 2] = +1;
- HEAPF32[($shape1 + 108 | 0) >> 2] = +(-1);
+ HEAPF32[($shape1 + 108 | 0) >> 2] = +-1;
  HEAPF32[($shape1 + 112 | 0) >> 2] = +0;
  HEAPF32[($shape1 + 12 | 0) >> 2] = +0;
  HEAPF32[($shape1 + 16 | 0) >> 2] = +0;
@@ -419,11 +419,11 @@ function _main($argc, $argv) {
  $195 = $def_i21 + 16 | 0;
  $196 = $def_i21 + 20 | 0;
  $x_sroa_1_4_load313755 = +0.75000000000000000;
- $x_sroa_0_0_load303656 = +(-7);
+ $x_sroa_0_0_load303656 = +-7;
  $i_057 = 0;
  L82: (
  if ((label | 0) == 65) {
-  ___assert_func((112 | 0) | 0, 109 | 0, (5328 | 0) | 0, (2520 | 0) | 0);
+  ___assert_func(112 | 0 | 0, 109 | 0, 5328 | 0 | 0, 2520 | 0 | 0);
   return 0 | 0;
  }
  while (1) {
@@ -437,7 +437,7 @@ function _main($argc, $argv) {
  $242 = _llvm_stacksave() | 0;
  $243 = STACKTOP;
  STACKTOP = STACKTOP + ($241 * 4 & -1) | 0;
- STACKTOP = (STACKTOP + 7 >> 3) << 3;
+ STACKTOP = STACKTOP + 7 >> 3 << 3;
  if (($241 | 0) > 0) {
   $i4_038 = 0;
   while (1) {
@@ -451,8 +451,8 @@ function _main($argc, $argv) {
   }
  }
  __Z7measurePm($result, $243);
- $260 = +HEAPF32[($result + 4 | 0 >> 2)];
- _printf((3480 | 0) | 0, (tempInt = STACKTOP, (STACKTOP = STACKTOP + 16 | 0, (HEAPF64[tempInt >> 3] = +HEAPF32[($result | 0 >> 2)], (HEAPF64[tempInt + 8 >> 3] = $260, tempInt)))) | 0) | 0;
+ $260 = +HEAPF32[($result + 4 | 0) >> 2];
+ _printf(3480 | 0 | 0, (tempInt = STACKTOP, STACKTOP = STACKTOP + 16 | 0, HEAPF64[tempInt >> 3] = +HEAPF32[($result | 0) >> 2], HEAPF64[tempInt + 8 >> 3] = $260, tempInt) | 0) | 0;
  _llvm_stackrestore($242 | 0);
  __ZN7b2WorldD2Ev($world);
  $_0 = 0;
@@ -476,59 +476,59 @@ function fcomp() {
  if (!($y < $x)) return 5;
  if (!(5 < $x)) return 5;
  if (!($y < 5)) return 5;
- if (!($a | 0 < $b | 0)) return 5;
- if (!($a | 0 < 5)) return 5;
- if (!(5 < $b | 0)) return 5;
+ if (!(($a | 0) < ($b | 0))) return 5;
+ if (!(($a | 0) < 5)) return 5;
+ if (!(5 < ($b | 0))) return 5;
  if (!(5 < 5)) return 5;
 }
 
 function conditionalizeMe() {
- if (x > 1 & (x + y + z) + w > 12) {
+ if (x > 1 & x + y + z + w > 12) {
   b();
  }
- if (a() > 1 & (x + y + z) + w > 12) {
+ if (a() > 1 & x + y + z + w > 12) {
   b();
  }
- if (x > 1 & (x + y + z) + k() > 12) {
+ if (x > 1 & x + y + z + k() > 12) {
   b();
  }
- if (a() > 1 & (x + y + z) + k() > 12) {
+ if (a() > 1 & x + y + z + k() > 12) {
   b();
  }
- if (x > 1 | (x + y + z) + w > 12) {
+ if (x > 1 | x + y + z + w > 12) {
   b();
  }
- if (a() > 1 | (x + y + z) + w > 12) {
+ if (a() > 1 | x + y + z + w > 12) {
   b();
  }
- if (x > 1 | (x + y + z) + k() > 12) {
+ if (x > 1 | x + y + z + k() > 12) {
   b();
  }
- if (a() > 1 | (x + y + z) + k() > 12) {
+ if (a() > 1 | x + y + z + k() > 12) {
   b();
  }
- if ((x + y + z) + w > 12 | x > 1) {
+ if (x + y + z + w > 12 | x > 1) {
   b();
  }
- if ((x + y + z) + w > 12 | a() > 1) {
+ if (x + y + z + w > 12 | a() > 1) {
   b();
  }
- if ((x + y + z) + k() > 12 | x > 1) {
+ if (x + y + z + k() > 12 | x > 1) {
   b();
  }
- if ((x + y + z) + k() > 12 | a() > 1) {
+ if (x + y + z + k() > 12 | a() > 1) {
   b();
  }
- while (x > 1 & (x + y + z) + w > 12) {
+ while (x > 1 & x + y + z + w > 12) {
   b();
  }
- while (a() > 1 & (x + y + z) + w > 12) {
+ while (a() > 1 & x + y + z + w > 12) {
   b();
  }
- while (x > 1 & (x + y + z) + k() > 12) {
+ while (x > 1 & x + y + z + k() > 12) {
   b();
  }
- while (a() > 1 & (x + y + z) + k() > 12) {
+ while (a() > 1 & x + y + z + k() > 12) {
   b();
  }
  if (!($sub$i480 >= Math_fround(+0)) | !($sub4$i483 >= Math_fround(+0))) {
@@ -540,15 +540,15 @@ function conditionalizeMe() {
  if (x > 10 | HEAP[20] + 2 > 5) {
   b();
  }
- print(((((HEAP8[a] + HEAP8[b] + HEAP8[c]) + HEAP8[d] + HEAP8[e]) + HEAP8[f] | 0) > (a % b % c) % d) ? (1) : ($el) | $cheap > 0);
- print(((((HEAP8[a] + HEAP8[b] + HEAP8[c]) + HEAP8[d] + HEAP8[e]) + HEAP8[f] | 0) > (a % b % c) % d) ? (1) : (-1) | $cheap > 0);
- print(((((HEAP8[a] + HEAP8[b] + HEAP8[c]) + HEAP8[d] + HEAP8[e]) + HEAP8[f] | 0) > (a % b % c) % d) ? (1) : (0) | $cheap > 0);
- print(((((HEAP8[a] + HEAP8[b] + HEAP8[c]) + HEAP8[d] + HEAP8[e]) + HEAP8[f] | 0) > (a % b % c) % d) ? (-1) : (1) | $cheap > 0);
- return ((((Math_imul(i6 + 1, i7) | 0) + 17 | 0) % 5 | 0 | 0) == 0 | (((Math_imul(i7 + 1, i7) | 0) + 11 | 0 >>> 0) % 3 | 0 | 0) == 0 | 0) == 0;
+ print(((HEAP8[a] + HEAP8[b] + HEAP8[c] + HEAP8[d] + HEAP8[e] + HEAP8[f] | 0) > a % b % c % d) ? (1) : $el | $cheap > 0);
+ print(((HEAP8[a] + HEAP8[b] + HEAP8[c] + HEAP8[d] + HEAP8[e] + HEAP8[f] | 0) > a % b % c % d) ? (1) : (-1) | $cheap > 0);
+ print(((HEAP8[a] + HEAP8[b] + HEAP8[c] + HEAP8[d] + HEAP8[e] + HEAP8[f] | 0) > a % b % c % d) ? (1) : 0 | $cheap > 0);
+ print(((HEAP8[a] + HEAP8[b] + HEAP8[c] + HEAP8[d] + HEAP8[e] + HEAP8[f] | 0) > a % b % c % d) ? (-1) : 1 | $cheap > 0);
+ return ((((Math_imul(i6 + 1, i7) | 0) + 17 | 0) % 5 | 0 | 0) == 0 | ((((Math_imul(i7 + 1, i7) | 0) + 11 | 0) >>> 0) % 3 | 0 | 0) == 0 | 0) == 0;
 }
 
 function bignum() {
  HEAP32[20] = 2779096485 | 0;
- if (!($2814 | 0 >= 0)) return;
+ if (!(($2814 | 0) >= 0)) return;
 }
 

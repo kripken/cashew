@@ -17,7 +17,7 @@ function _doit($x, $y$0, $y$1) {
  $y$1 = $y$1 | 0;
  var __stackBase__ = 0;
  __stackBase__ = STACKTOP;
- _printf(__str | 0, (tempInt = STACKTOP, (STACKTOP = STACKTOP + 8 | 0, (HEAP32[(tempInt & 16777215) >> 2] = $y$0, (HEAP32[(tempInt + 4 & 16777215) >> 2] = $y$1, tempInt)))));
+ _printf(__str | 0, (tempInt = STACKTOP, STACKTOP = STACKTOP + 8 | 0, HEAP32[(tempInt & 16777215) >> 2] = $y$0, HEAP32[(tempInt + 4 & 16777215) >> 2] = $y$1, tempInt));
  STACKTOP = __stackBase__;
  return 0 | 0;
 }
@@ -66,7 +66,7 @@ function switchey2() {
   case 2: 
    $2 = +__ZN6Random3getEf(8, +1);
    $3 = +__ZN6Random3getEf($rng2, +1);
-   _printf(24, (tempInt = STACKTOP, (STACKTOP = STACKTOP + 16 | 0, (HEAPF64[CHECK_ALIGN_8(tempInt | 0) >> 3] = $2, (HEAPF64[CHECK_ALIGN_8(tempInt + 8 | 0) >> 3] = $3, tempInt)))) | 0);
+   _printf(24, (tempInt = STACKTOP, STACKTOP = STACKTOP + 16 | 0, HEAPF64[CHECK_ALIGN_8(tempInt | 0) >> 3] = $2, HEAPF64[CHECK_ALIGN_8(tempInt + 8 | 0) >> 3] = $3, tempInt) | 0);
    $count_1 = ($2 != $3 & 1) + $count_06 | 0;
    $9 = $i_05 + 1 | 0;
    if (($9 | 0) < 100) {
@@ -79,7 +79,7 @@ function switchey2() {
     break;
    }
   case 3: 
-   _printf(16, (tempInt = STACKTOP, (STACKTOP = STACKTOP + 8 | 0, (HEAP32[CHECK_ALIGN_4(tempInt | 0) >> 2] = $count_1, tempInt))) | 0);
+   _printf(16, (tempInt = STACKTOP, STACKTOP = STACKTOP + 8 | 0, HEAP32[CHECK_ALIGN_4(tempInt | 0) >> 2] = $count_1, tempInt) | 0);
    STACKTOP = __stackBase__;
    return 0;
   }
@@ -101,7 +101,7 @@ function iffey() {
   } else {
    $2 = +__ZN6Random3getEf(8, +1);
    $3 = +__ZN6Random3getEf($rng2, +1);
-   _printf(24, (tempInt = STACKTOP, (STACKTOP = STACKTOP + 16 | 0, (HEAPF64[CHECK_ALIGN_8(tempInt | 0) >> 3] = $2, (HEAPF64[CHECK_ALIGN_8(tempInt + 8 | 0) >> 3] = $3, tempInt)))) | 0);
+   _printf(24, (tempInt = STACKTOP, STACKTOP = STACKTOP + 16 | 0, HEAPF64[CHECK_ALIGN_8(tempInt | 0) >> 3] = $2, HEAPF64[CHECK_ALIGN_8(tempInt + 8 | 0) >> 3] = $3, tempInt) | 0);
    $count_1 = ($2 != $3 & 1) + $count_06 | 0;
    $9 = $i_05 + 1 | 0;
    if (($9 | 0) < 100) {

@@ -11,7 +11,7 @@ function mymodule(stdlib, foreign, heap) {
   log(x | 0);
   log(y);
   x = x + 3 | 0;
-  return (x + 1 | 0 >>> 0) / (x >>> 0) | 0;
+  return ((x + 1 | 0) >>> 0) / (x >>> 0) | 0;
  }
  
  function g() {
