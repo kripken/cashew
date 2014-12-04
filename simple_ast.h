@@ -678,9 +678,14 @@ struct JSPrinter {
   }
 
   void printStats(Ref stats) {
+    bool first = true;
     for (int i = 0; i < stats->size(); i++) {
-      if (i > 0) newline();
-      print(stats[i]);
+      Ref curr = stats[i];
+      if (!isNothing(curr)) {
+        if (first) first = false;
+        else newline();
+        print(stats[i]);
+      }
     }
   }
 
@@ -719,9 +724,15 @@ struct JSPrinter {
     newline();
   }
 
+  bool isNothing(Ref node) {
+    return (node[0] == TOPLEVEL && node[1]->size() == 0) || (node[0] == STAT && isNothing(node[1]));
+  }
+
   void printStat(Ref node) {
-    print(node[1]);
-    emit(';');
+    if (!isNothing(node[1])) {
+      print(node[1]);
+      emit(';');
+    }
   }
 
   void printAssign(Ref node) {
