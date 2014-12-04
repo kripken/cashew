@@ -539,7 +539,70 @@ struct JSPrinter {
 
   int indent;
 
-  JSPrinter(bool pretty_, bool finalize_) : pretty(pretty_), finalize(finalize_), buffer(0), size(0), used(0), indent(0) {}
+  Ref ast;
+
+  JSPrinter(bool pretty_, bool finalize_, Ref ast_) : pretty(pretty_), finalize(finalize_), buffer(0), size(0), used(0), indent(0), ast(ast_) {
+    scan();
+  }
+
+  void printAst() {
+    print(ast);
+  }
+
+  // Scanning
+
+  bool capturesOperators(Ref node) {
+    Ref type = node[0];
+    return type == CALL || type == ARRAY || type == OBJECT || type == SEQ;
+  }
+
+  int getPrecedence(Ref node) {
+    Ref type = node[0];
+    assert(type == BINARY || type == UNARY_PREFIX);
+    return OperatorClass::getPrecedence(type == BINARY ? OperatorClass::Binary : OperatorClass::Prefix, node[1]->getIString());
+  }
+
+  std::unordered_set<void*> needsParens;
+
+  bool needParens(Ref node) {
+    return needsParens.count((void*)node.inst) > 0;
+  }
+
+  void scan() {
+    // calculate who need parens
+    std::vector<Ref> stack; // stack of relevant nodes for parens
+    traversePrePost(ast, [&](Ref node) {
+      Ref type = node[0];
+      if (type == BINARY || type == UNARY_PREFIX) {
+        // check if an ancestor forces us to need parens
+        int currPrecedence = getPrecedence(node);
+        for (int i = stack.size()-1; i >= 0; i--) {
+          Ref ancestor = stack[i];
+          if (!ancestor) break; // something captures here
+          if (currPrecedence >= getPrecedence(ancestor)) { // TODO: associativity etc.
+            // we need to capture here
+            needsParens.insert((void*)node.inst);
+            stack.push_back(nullptr);
+            return;
+          }
+        }
+        // no parens needed
+        stack.push_back(node);
+      } else if (capturesOperators(node)) {
+        stack.push_back(nullptr);
+      }
+    }, [&](Ref node) {
+      Ref type = node[0];
+      if (type == BINARY || type == UNARY_PREFIX || capturesOperators(node)) {
+        assert(stack.size() > 0);
+        assert(!stack.back() || stack.back() == node);
+        stack.pop_back();
+      }
+    });
+    assert(stack.size() == 0);
+  }
+
+  // Utils
 
   void ensure(int safety=100) {
     if (size < used + safety) {
@@ -770,17 +833,14 @@ struct JSPrinter {
   }
 
   void printBinary(Ref node) {
-    bool needParensLeft = hasLowerPrecedence(OperatorClass::Binary, node[1]->getIString(), node[2]);
-    bool needParensRight = hasLowerPrecedence(OperatorClass::Binary, node[1]->getIString(), node[3]);
-    if (needParensLeft) emit('(');
+    bool parens = needParens(node);
+    if (parens) emit('(');
     print(node[2]);
-    if (needParensLeft) emit(')');
     space();
     emit(node[1]->getCString());
     space();
-    if (needParensRight) emit('(');
     print(node[3]);
-    if (needParensRight) emit(')');
+    if (parens) emit(')');
   }
 
   void printConditional(Ref node) {
@@ -868,11 +928,11 @@ struct JSPrinter {
   }
 
   void printUnaryPrefix(Ref node) {
-    // TODO: optimize out parens
+    bool parens = needParens(node);
+    if (parens) emit('(');
     emit(node[1]->getCString());
-    emit('(');
     print(node[2]);
-    emit(')');
+    if (parens) emit(')');
   }
 
   void printVar(Ref node) {

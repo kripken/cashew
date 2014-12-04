@@ -21,8 +21,8 @@ int main(int argc, char **argv) {
     ast->stringify(std::cout, true);
     std::cout << "\n";
   } else {
-    JSPrinter jser(argv[2][0] == '1', argv[3][0] == '1');
-    jser.print(ast);
+    JSPrinter jser(argv[2][0] == '1', argv[3][0] == '1', ast);
+    jser.printAst();
     std::cout << jser.buffer << "\n";
   }
 }
