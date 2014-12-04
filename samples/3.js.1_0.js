@@ -1,1 +1,1 @@
-print(10)Çdh­
+print(10)
