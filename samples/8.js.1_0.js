@@ -126,7 +126,7 @@ function tempDoublePtr($45, $14, $28, $42) {
  var bad = 0;
  var unelim2 = 0;
  unelim = (HEAPF32[tempDoublePtr >> 2] = 127.50000000000000000 * +$14, HEAP32[tempDoublePtr >> 2] | 0);
- HEAP32[$45 >> 2] = 0 | (HEAPF32[tempDoublePtr >> 2] = ($14 < $28) ? ($14) : $28 - $42, HEAP32[tempDoublePtr >> 2] | 0);
+ HEAP32[$45 >> 2] = 0 | (HEAPF32[tempDoublePtr >> 2] = ($14 < $28 ? $14 : $28) - $42, HEAP32[tempDoublePtr >> 2] | 0);
  HEAP32[$world + 102916 >> 2] = _malloc(192) | 0;
  f((HEAP32[tempDoublePtr >> 2] = HEAP32[$45 >> 2], +HEAPF32[tempDoublePtr >> 2]));
  g((HEAPF32[tempDoublePtr >> 2] = HEAPF32[$14 >> 2], HEAP32[tempDoublePtr >> 2] | 0));
@@ -166,12 +166,12 @@ function boxx($this, $aabb, $xf, $childIndex) {
  $32 = $19 + ($7 * $22 + $2 * $25);
  $42 = +HEAPF32[$this + 8 >> 2];
  $45 = $aabb;
- $_sroa_06_0_insert_insert$1 = (HEAPF32[tempDoublePtr >> 2] = ($20 < $32) ? ($20) : $32 - $42, HEAP32[tempDoublePtr >> 2] | 0) | 0;
- HEAPF32[$45 >> 2] = ($14 < $28) ? ($14) : $28 - $42;
+ $_sroa_06_0_insert_insert$1 = (HEAPF32[tempDoublePtr >> 2] = ($20 < $32 ? $20 : $32) - $42, HEAP32[tempDoublePtr >> 2] | 0) | 0;
+ HEAPF32[$45 >> 2] = ($14 < $28 ? $14 : $28) - $42;
  HEAP32[$45 + 4 >> 2] = $_sroa_06_0_insert_insert$1;
  $51 = $aabb + 8 | 0;
- $_sroa_0_0_insert_insert$1 = (HEAPF32[tempDoublePtr >> 2] = $42 + ($20 > $32) ? ($20) : $32, HEAP32[tempDoublePtr >> 2] | 0) | 0;
- HEAPF32[$51 >> 2] = $42 + ($14 > $28) ? ($14) : $28;
+ $_sroa_0_0_insert_insert$1 = (HEAPF32[tempDoublePtr >> 2] = $42 + ($20 > $32 ? $20 : $32), HEAP32[tempDoublePtr >> 2] | 0) | 0;
+ HEAPF32[$51 >> 2] = $42 + ($14 > $28 ? $14 : $28);
  HEAP32[$51 + 4 >> 2] = $_sroa_0_0_insert_insert$1;
  return;
 }
@@ -605,10 +605,10 @@ function conditionalizeMe() {
  if (x > 10 | HEAP[20] + 2 > 5) {
   b();
  }
- print(((HEAP8[a] + HEAP8[b] + HEAP8[c] + HEAP8[d] + HEAP8[e] + HEAP8[f] | 0) > a % b % c % d) ? (1) : $el | $cheap > 0);
- print(((HEAP8[a] + HEAP8[b] + HEAP8[c] + HEAP8[d] + HEAP8[e] + HEAP8[f] | 0) > a % b % c % d) ? (1) : (-1) | $cheap > 0);
- print(((HEAP8[a] + HEAP8[b] + HEAP8[c] + HEAP8[d] + HEAP8[e] + HEAP8[f] | 0) > a % b % c % d) ? (1) : 0 | $cheap > 0);
- print(((HEAP8[a] + HEAP8[b] + HEAP8[c] + HEAP8[d] + HEAP8[e] + HEAP8[f] | 0) > a % b % c % d) ? (-1) : 1 | $cheap > 0);
+ print(((HEAP8[a] + HEAP8[b] + HEAP8[c] + HEAP8[d] + HEAP8[e] + HEAP8[f] | 0) > a % b % c % d ? 1 : $el) | $cheap > 0);
+ print(((HEAP8[a] + HEAP8[b] + HEAP8[c] + HEAP8[d] + HEAP8[e] + HEAP8[f] | 0) > a % b % c % d ? 1 : -1) | $cheap > 0);
+ print(((HEAP8[a] + HEAP8[b] + HEAP8[c] + HEAP8[d] + HEAP8[e] + HEAP8[f] | 0) > a % b % c % d ? 1 : 0) | $cheap > 0);
+ print(((HEAP8[a] + HEAP8[b] + HEAP8[c] + HEAP8[d] + HEAP8[e] + HEAP8[f] | 0) > a % b % c % d ? -1 : 1) | $cheap > 0);
  return ((((Math_imul(i6 + 1, i7) | 0) + 17 | 0) % 5 | 0 | 0) == 0 | ((((Math_imul(i7 + 1, i7) | 0) + 11 | 0) >>> 0) % 3 | 0 | 0) == 0 | 0) == 0;
 }
 

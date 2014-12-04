@@ -787,6 +787,8 @@ struct JSPrinter {
       return parent ? OperatorClass::getPrecedence(OperatorClass::Binary, COMMA) : -1; // call arguments are split by commas, but call itself is safe
     } else if (type == ASSIGN) {
       return OperatorClass::getPrecedence(OperatorClass::Binary, SET);
+    } else if (type == CONDITIONAL) {
+      return OperatorClass::getPrecedence(OperatorClass::Tertiary, QUESTION);
     }
     // otherwise, this is something that fixes precedence explicitly, and we can ignore
     return -1; // XXX
@@ -829,7 +831,6 @@ struct JSPrinter {
   }
 
   void printConditional(Ref node) {
-    // TODO: optimize out parens
     printChild(node[1], node, -1);
     space();
     emit('?');
