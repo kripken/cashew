@@ -858,7 +858,6 @@ struct JSPrinter {
     emit(')');
     space();
     emit('{');
-    indent++;
     newline();
     Ref cases = node[2];
     for (int i = 0; i < cases->size(); i++) {
@@ -877,7 +876,6 @@ struct JSPrinter {
       indent--;
       newline();
     }
-    indent--;
     emit('}');
   }
 
@@ -942,9 +940,10 @@ struct JSPrinter {
 
   void printLabel(Ref node) {
     emit(node[1]->getCString());
+    space();
     emit(':');
     space();
-    emit('(');
+    print(node[2]);
   }
 
   void printReturn(Ref node) {

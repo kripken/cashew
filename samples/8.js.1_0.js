@@ -421,7 +421,72 @@ function _main($argc, $argv) {
  $x_sroa_1_4_load313755 = +0.75000000000000000;
  $x_sroa_0_0_load303656 = +-7;
  $i_057 = 0;
- L82: (
+ L82 : while (1) {
+  $y_sroa_1_4_load293550 = $x_sroa_1_4_load313755;
+  $y_sroa_0_0_load283451 = $x_sroa_0_0_load303656;
+  $j_052 = $i_057;
+  while (1) {
+   HEAP32[$174 >> 2] = 0;
+   _memset($177 | 0 | 0, 0 | 0 | 0, 32 | 0 | 0);
+   HEAP8[$176] = 1;
+   HEAP8[$178] = 1;
+   HEAP8[$179] = 0;
+   HEAP8[$180] = 0;
+   HEAP8[$182] = 1;
+   HEAPF32[$183 >> 2] = +1;
+   HEAP32[$181 >> 2] = 2;
+   $y_sroa_0_0_insert_insert$1 = (HEAPF32[tempDoublePtr >> 2] = $y_sroa_1_4_load293550, HEAP32[tempDoublePtr >> 2] | 0) | 0;
+   HEAP32[($185 | 0) >> 2] = 0 | (HEAPF32[tempDoublePtr >> 2] = $y_sroa_0_0_load283451, HEAP32[tempDoublePtr >> 2] | 0);
+   HEAP32[($185 + 4 | 0) >> 2] = $y_sroa_0_0_insert_insert$1;
+   if (!(((HEAP32[$98 >> 2] | 0) & 2 | 0) == 0)) {
+    label = 65;
+    break L82;
+   }
+   $205 = __ZN16b2BlockAllocator8AllocateEi($14, 152) | 0;
+   if (($205 | 0) == 0) {
+    $209 = 0;
+   } else {
+    $208 = $205;
+    __ZN6b2BodyC2EPK9b2BodyDefP7b2World($208, $bd2, $world);
+    $209 = $208;
+   }
+   HEAP32[($209 + 92 | 0) >> 2] = 0;
+   HEAP32[($209 + 96 | 0) >> 2] = HEAP32[$118 >> 2] | 0;
+   $213 = HEAP32[$118 >> 2] | 0;
+   if (!(($213 | 0) == 0)) {
+    HEAP32[($213 + 92 | 0) >> 2] = $209;
+   }
+   HEAP32[$118 >> 2] = $209;
+   HEAP32[$126 >> 2] = (HEAP32[$126 >> 2] | 0) + 1 | 0;
+   HEAP16[$188 >> 1] = 1;
+   HEAP16[$189 >> 1] = -1;
+   HEAP16[$190 >> 1] = 0;
+   HEAP32[$192 >> 2] = 0;
+   HEAPF32[$193 >> 2] = +0.20000000298023224;
+   HEAPF32[$194 >> 2] = +0;
+   HEAP8[$196] = 0;
+   HEAP32[$191 >> 2] = $186;
+   HEAPF32[$195 >> 2] = +5;
+   __ZN6b2Body13CreateFixtureEPK12b2FixtureDef($209, $def_i21);
+   $223 = $j_052 + 1 | 0;
+   if (($223 | 0) < 40) {
+    $y_sroa_1_4_load293550 = $y_sroa_1_4_load293550 + +0;
+    $y_sroa_0_0_load283451 = $y_sroa_0_0_load283451 + 1.12500000000000000;
+    $j_052 = $223;
+   } else {
+    break;
+   }
+  }
+  $236 = $i_057 + 1 | 0;
+  if (($236 | 0) < 40) {
+   $x_sroa_1_4_load313755 = $x_sroa_1_4_load313755 + +1;
+   $x_sroa_0_0_load303656 = $x_sroa_0_0_load303656 + +0.56250000000000000;
+   $i_057 = $236;
+  } else {
+   $i3_042 = 0;
+   break;
+  }
+ }
  if ((label | 0) == 65) {
   ___assert_func(112 | 0 | 0, 109 | 0, 5328 | 0 | 0, 2520 | 0 | 0);
   return 0 | 0;
