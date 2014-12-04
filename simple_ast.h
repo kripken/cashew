@@ -803,6 +803,14 @@ struct JSPrinter {
     if (childPrecedence > parentPrecedence) return true;  // child is definitely a danger
     if (childPrecedence < parentPrecedence) return false; //          definitely cool
     // equal precedence, so associativity (rtl/ltr) is what matters
+    // (except for some exceptions, where multiple operators can combine into confusion)
+    if (parent[0] == UNARY_PREFIX) {
+      assert(child[0] == UNARY_PREFIX);
+      if ((parent[1] == PLUS || parent[1] == MINUS) && child[1] == parent[1]) {
+        // cannot emit ++x when we mean +(+x)
+        return true;
+      }
+    }
     if (childPosition == 0) return true; // child could be anywhere, so always paren
     if (childPrecedence < 0) return false; // both precedences are safe
     // check if child is on the dangerous side
@@ -938,11 +946,13 @@ struct JSPrinter {
   void printDo(Ref node) {
     emit("do");
     space();
+    print(node[2]);
+    space();
+    emit("while");
+    space();
     emit('(');
     print(node[1]);
     emit(')');
-    space();
-    print(node[2]);
   }
 
   void printWhile(Ref node) {

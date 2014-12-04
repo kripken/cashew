@@ -190,7 +190,7 @@ function _main($argc, $argv) {
  $shape1 = __stackBase__ + 103200 | 0;
  $bd2 = __stackBase__ + 103352 | 0;
  $result = __stackBase__ + 103408 | 0;
- do (0) {
+ do {
   if (($argc | 0) > 1) {
    $6 = (HEAP8[HEAP32[($argv + 4 | 0) >> 2] | 0] | 0) << 24 >> 24;
    if (($6 | 0 | 0) == (49 | 0)) {
@@ -225,7 +225,7 @@ function _main($argc, $argv) {
   } else {
    label = 43;
   }
- }
+ } while (0)
  if ((label | 0) == 43) {
   HEAP32[9656 >> 2] = 333;
   $WARMUP_0 = 64;
