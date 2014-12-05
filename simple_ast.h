@@ -799,9 +799,29 @@ struct JSPrinter {
             copy[0] = copy[1];
           } while (*copy++ != 0);
         }
+      } else {
+        // no dot. try to change 12345000 => 12345e3
+        char *end = strchr(buffer, 0);
+        end--;
+        char *test = end;
+        while (*test == '0' && test > buffer) test--;
+        int num = end - test;
+        if (num >= 3) {
+          test++;
+          test[0] = 'e';
+          if (num < 10) {
+            test[1] = '0' + num;
+            test[2] = 0;
+          } else {
+            assert(num < 100);
+            test[1] = '1';
+            test[2] = '0' + (num - 10);
+            test[3] = 0;
+          }
+        }
       }
     }
-    //printf("options:\n%s\n%s\n", storage_e, storage_f);
+    //fprintf(stderr, "options:\n%s\n%s\n", storage_e, storage_f);
     emit(strlen(storage_e) < strlen(storage_f) ? storage_e : storage_f);
   }
 
