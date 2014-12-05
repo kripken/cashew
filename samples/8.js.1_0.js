@@ -225,7 +225,7 @@ function _main($argc, $argv) {
   } else {
    label = 43;
   }
- } while (0)
+ } while (0);
  if ((label | 0) == 43) {
   HEAP32[9656 >> 2] = 333;
   $WARMUP_0 = 64;
