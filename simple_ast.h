@@ -756,7 +756,6 @@ struct JSPrinter {
     static char storage[50];
     char *buffer = storage;
     int n;
-    assert(d >= 0); // if negative, should have a unary-prefix
     if (fmod(d, 1) == 0) {
       // integer
       n = snprintf(buffer, 45, "%.0f", d);
@@ -773,10 +772,11 @@ struct JSPrinter {
       }
       assert(buffer[0] >= '0' && buffer[0] <= '9');
       // remove preceding zeros
-      assert(buffer[0] >= '0' && buffer[0] <= '9');
-      while (*buffer == '0') {
+      bool neg = *buffer == '-';
+      while (*buffer == '0' || *buffer == '-') {
         buffer++;
       }
+      if (neg) buffer--;
     }
     assert(n < 40);
     emit(buffer);
