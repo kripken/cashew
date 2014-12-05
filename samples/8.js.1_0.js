@@ -125,7 +125,7 @@ function tempDoublePtr($45, $14, $28, $42) {
  var unelim = 0;
  var bad = 0;
  var unelim2 = 0;
- unelim = (HEAPF32[tempDoublePtr >> 2] = 127.50000000000000000 * +$14, HEAP32[tempDoublePtr >> 2] | 0);
+ unelim = (HEAPF32[tempDoublePtr >> 2] = 127.5 * +$14, HEAP32[tempDoublePtr >> 2] | 0);
  HEAP32[$45 >> 2] = 0 | (HEAPF32[tempDoublePtr >> 2] = ($14 < $28 ? $14 : $28) - $42, HEAP32[tempDoublePtr >> 2] | 0);
  HEAP32[$world + 102916 >> 2] = _malloc(192) | 0;
  f((HEAP32[tempDoublePtr >> 2] = HEAP32[$45 >> 2], +HEAPF32[tempDoublePtr >> 2]));
@@ -134,7 +134,7 @@ function tempDoublePtr($45, $14, $28, $42) {
  ch($42);
  HEAP32[$45 >> 2] = unelim;
  moar();
- bad = (HEAPF32[tempDoublePtr >> 2] = 127.50000000000000000 * +$14, HEAP32[tempDoublePtr >> 2] | 0);
+ bad = (HEAPF32[tempDoublePtr >> 2] = 127.5 * +$14, HEAP32[tempDoublePtr >> 2] | 0);
  func();
  HEAP32[4] = bad;
  HEAP32[5] = bad + 1 | 0;
@@ -356,7 +356,7 @@ function _main($argc, $argv) {
  HEAP32[$126 >> 2] = (HEAP32[$126 >> 2] | 0) + 1 | 0;
  HEAP32[($shape | 0) >> 2] = 8016 | 0;
  HEAP32[($shape + 4 | 0) >> 2] = 1;
- HEAPF32[($shape + 8 | 0) >> 2] = +0.00999999977648258;
+ HEAPF32[($shape + 8 | 0) >> 2] = +.00999999977648258;
  _memset($shape + 28 | 0 | 0 | 0, 0 | 0 | 0, 18 | 0 | 0);
  $135 = $shape + 12 | 0;
  HEAP32[($135 | 0) >> 2] = -1038090240;
@@ -370,7 +370,7 @@ function _main($argc, $argv) {
  HEAP16[($def_i + 24 | 0) >> 1] = -1;
  HEAP16[($def_i + 26 | 0) >> 1] = 0;
  HEAP32[($def_i + 4 | 0) >> 2] = 0;
- HEAPF32[($def_i + 8 | 0) >> 2] = +0.20000000298023224;
+ HEAPF32[($def_i + 8 | 0) >> 2] = +.20000000298023224;
  HEAPF32[($def_i + 12 | 0) >> 2] = +0;
  HEAP8[$def_i + 20 | 0] = 0;
  HEAP32[($def_i | 0) >> 2] = $shape | 0;
@@ -378,16 +378,16 @@ function _main($argc, $argv) {
  __ZN6b2Body13CreateFixtureEPK12b2FixtureDef($116, $def_i);
  HEAP32[($shape1 | 0) >> 2] = 7968 | 0;
  HEAP32[($shape1 + 4 | 0) >> 2] = 2;
- HEAPF32[($shape1 + 8 | 0) >> 2] = +0.00999999977648258;
+ HEAPF32[($shape1 + 8 | 0) >> 2] = +.00999999977648258;
  HEAP32[($shape1 + 148 | 0) >> 2] = 4;
- HEAPF32[($shape1 + 20 | 0) >> 2] = +-0.50000000000000000;
- HEAPF32[($shape1 + 24 | 0) >> 2] = +-0.50000000000000000;
- HEAPF32[($shape1 + 28 | 0) >> 2] = +0.50000000000000000;
- HEAPF32[($shape1 + 32 | 0) >> 2] = +-0.50000000000000000;
- HEAPF32[($shape1 + 36 | 0) >> 2] = +0.50000000000000000;
- HEAPF32[($shape1 + 40 | 0) >> 2] = +0.50000000000000000;
- HEAPF32[($shape1 + 44 | 0) >> 2] = +-0.50000000000000000;
- HEAPF32[($shape1 + 48 | 0) >> 2] = +0.50000000000000000;
+ HEAPF32[($shape1 + 20 | 0) >> 2] = +-.5;
+ HEAPF32[($shape1 + 24 | 0) >> 2] = +-.5;
+ HEAPF32[($shape1 + 28 | 0) >> 2] = +.5;
+ HEAPF32[($shape1 + 32 | 0) >> 2] = +-.5;
+ HEAPF32[($shape1 + 36 | 0) >> 2] = +.5;
+ HEAPF32[($shape1 + 40 | 0) >> 2] = +.5;
+ HEAPF32[($shape1 + 44 | 0) >> 2] = +-.5;
+ HEAPF32[($shape1 + 48 | 0) >> 2] = +.5;
  HEAPF32[($shape1 + 84 | 0) >> 2] = +0;
  HEAPF32[($shape1 + 88 | 0) >> 2] = +-1;
  HEAPF32[($shape1 + 92 | 0) >> 2] = +1;
@@ -418,7 +418,7 @@ function _main($argc, $argv) {
  $194 = $def_i21 + 12 | 0;
  $195 = $def_i21 + 16 | 0;
  $196 = $def_i21 + 20 | 0;
- $x_sroa_1_4_load313755 = +0.75000000000000000;
+ $x_sroa_1_4_load313755 = +.75;
  $x_sroa_0_0_load303656 = +-7;
  $i_057 = 0;
  L82 : while (1) {
@@ -462,7 +462,7 @@ function _main($argc, $argv) {
    HEAP16[$189 >> 1] = -1;
    HEAP16[$190 >> 1] = 0;
    HEAP32[$192 >> 2] = 0;
-   HEAPF32[$193 >> 2] = +0.20000000298023224;
+   HEAPF32[$193 >> 2] = +.20000000298023224;
    HEAPF32[$194 >> 2] = +0;
    HEAP8[$196] = 0;
    HEAP32[$191 >> 2] = $186;
@@ -471,7 +471,7 @@ function _main($argc, $argv) {
    $223 = $j_052 + 1 | 0;
    if (($223 | 0) < 40) {
     $y_sroa_1_4_load293550 = $y_sroa_1_4_load293550 + +0;
-    $y_sroa_0_0_load283451 = $y_sroa_0_0_load283451 + 1.12500000000000000;
+    $y_sroa_0_0_load283451 = $y_sroa_0_0_load283451 + 1.125;
     $j_052 = $223;
    } else {
     break;
@@ -480,7 +480,7 @@ function _main($argc, $argv) {
   $236 = $i_057 + 1 | 0;
   if (($236 | 0) < 40) {
    $x_sroa_1_4_load313755 = $x_sroa_1_4_load313755 + +1;
-   $x_sroa_0_0_load303656 = $x_sroa_0_0_load303656 + +0.56250000000000000;
+   $x_sroa_0_0_load303656 = $x_sroa_0_0_load303656 + +.5625;
    $i_057 = $236;
   } else {
    $i3_042 = 0;

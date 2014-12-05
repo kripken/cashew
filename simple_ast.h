@@ -753,12 +753,30 @@ struct JSPrinter {
 
   void printNum(Ref node) {
     double d = node[1]->getNumber();
-    static char buffer[50];
+    static char storage[50];
+    char *buffer = storage;
     int n;
+    assert(d >= 0); // if negative, should have a unary-prefix
     if (fmod(d, 1) == 0) {
+      // integer
       n = snprintf(buffer, 45, "%.0f", d);
     } else {
+      // non-integer
       n = snprintf(buffer, 45, "%.17f", d);
+      char *dot = strchr(buffer, '.');
+      assert(dot);
+      // remove trailing zeros
+      char *end = strchr(buffer, 0) - 1;
+      while (*end == '0') {
+        *end = 0;
+        end--;
+      }
+      assert(buffer[0] >= '0' && buffer[0] <= '9');
+      // remove preceding zeros
+      assert(buffer[0] >= '0' && buffer[0] <= '9');
+      while (*buffer == '0') {
+        buffer++;
+      }
     }
     assert(n < 40);
     emit(buffer);
