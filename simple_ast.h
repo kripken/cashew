@@ -753,33 +753,56 @@ struct JSPrinter {
 
   void printNum(Ref node) {
     double d = node[1]->getNumber();
-    static char storage[50];
-    char *buffer = storage;
     int n;
-    if (fmod(d, 1) == 0) {
-      // integer
-      n = snprintf(buffer, 45, "%.0f", d);
-    } else {
-      // non-integer
-      n = snprintf(buffer, 45, "%.17f", d);
+    // try to emit the fewest necessary characters
+    static char storage_e[50], storage_f[50];
+    for (int e = 0; e <= 1; e++) {
+      char *buffer = e ? storage_e : storage_f;
+      static char format[6];
+      double temp;
+      for (int i = 0; i <= 18; i++) {
+        format[0] = '%';
+        format[1] = '.';
+        if (i < 10) {
+          format[2] = '0' + i;
+          format[3] = e ? 'e' : 'f';
+          format[4] = 0;
+        } else {
+          format[2] = '1';
+          format[3] = '0' + (i - 10);
+          format[4] = e ? 'e' : 'f';
+          format[5] = 0;
+        }
+        n = snprintf(buffer, 45, format, d);
+        sscanf(buffer, "%lf", &temp);
+        if (temp == d) break;
+      }
+      assert(temp == d);
       char *dot = strchr(buffer, '.');
-      assert(dot);
-      // remove trailing zeros
-      char *end = strchr(buffer, 0) - 1;
-      while (*end == '0') {
-        *end = 0;
+      if (dot) {
+        // remove trailing zeros
+        char *end = dot+1;
+        while (*end >= '0' && *end <= '9') end++;
         end--;
+        while (*end == '0') {
+          char *copy = end;
+          do {
+            copy[0] = copy[1];
+          } while (*copy++ != 0);
+          end--;
+        }
+        // remove preceding zeros
+        if (*buffer == '-') buffer++;
+        while (*buffer == '0') {
+          char *copy = buffer;
+          do {
+            copy[0] = copy[1];
+          } while (*copy++ != 0);
+        }
       }
-      assert(buffer[0] >= '0' && buffer[0] <= '9');
-      // remove preceding zeros
-      bool neg = *buffer == '-';
-      while (*buffer == '0' || *buffer == '-') {
-        buffer++;
-      }
-      if (neg) buffer--;
     }
-    assert(n < 40);
-    emit(buffer);
+    //printf("options:\n%s\n%s\n", storage_e, storage_f);
+    emit(strlen(storage_e) < strlen(storage_f) ? storage_e : storage_f);
   }
 
   void printString(Ref node) {

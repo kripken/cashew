@@ -356,7 +356,7 @@ function _main($argc, $argv) {
  HEAP32[$126 >> 2] = (HEAP32[$126 >> 2] | 0) + 1 | 0;
  HEAP32[($shape | 0) >> 2] = 8016 | 0;
  HEAP32[($shape + 4 | 0) >> 2] = 1;
- HEAPF32[($shape + 8 | 0) >> 2] = +.00999999977648258;
+ HEAPF32[($shape + 8 | 0) >> 2] = +.009999999776482582;
  _memset($shape + 28 | 0 | 0 | 0, 0 | 0 | 0, 18 | 0 | 0);
  $135 = $shape + 12 | 0;
  HEAP32[($135 | 0) >> 2] = -1038090240;
@@ -378,7 +378,7 @@ function _main($argc, $argv) {
  __ZN6b2Body13CreateFixtureEPK12b2FixtureDef($116, $def_i);
  HEAP32[($shape1 | 0) >> 2] = 7968 | 0;
  HEAP32[($shape1 + 4 | 0) >> 2] = 2;
- HEAPF32[($shape1 + 8 | 0) >> 2] = +.00999999977648258;
+ HEAPF32[($shape1 + 8 | 0) >> 2] = +.009999999776482582;
  HEAP32[($shape1 + 148 | 0) >> 2] = 4;
  HEAPF32[($shape1 + 20 | 0) >> 2] = +-.5;
  HEAPF32[($shape1 + 24 | 0) >> 2] = +-.5;
