@@ -753,29 +753,38 @@ struct JSPrinter {
 
   void printNum(Ref node) {
     double d = node[1]->getNumber();
-    int n;
+    bool neg = d < 0;
+    if (neg) d = -d;
     // try to emit the fewest necessary characters
-    static char storage_e[50], storage_f[50];
+    bool integer = fmod(d, 1) == 0;
+    static char storage_f[50], storage_e[50]; // f is normal, e is scientific for float, x for integer
     for (int e = 0; e <= 1; e++) {
       char *buffer = e ? storage_e : storage_f;
-      static char format[6];
       double temp;
-      for (int i = 0; i <= 18; i++) {
-        format[0] = '%';
-        format[1] = '.';
-        if (i < 10) {
-          format[2] = '0' + i;
-          format[3] = e ? 'e' : 'f';
-          format[4] = 0;
-        } else {
-          format[2] = '1';
-          format[3] = '0' + (i - 10);
-          format[4] = e ? 'e' : 'f';
-          format[5] = 0;
+      if (!integer) {
+        static char format[6];
+        for (int i = 0; i <= 18; i++) {
+          format[0] = '%';
+          format[1] = '.';
+          if (i < 10) {
+            format[2] = '0' + i;
+            format[3] = e ? 'e' : 'f';
+            format[4] = 0;
+          } else {
+            format[2] = '1';
+            format[3] = '0' + (i - 10);
+            format[4] = e ? 'e' : 'f';
+            format[5] = 0;
+          }
+          snprintf(buffer, 45, format, d);
+          sscanf(buffer, "%lf", &temp);
+          if (temp == d) break;
         }
-        n = snprintf(buffer, 45, format, d);
+      } else {
+        // integer
+        int64_t ii = (int64_t)d;
+        snprintf(buffer, 45, e ? "0x%lx" : "%ld", ii);
         sscanf(buffer, "%lf", &temp);
-        if (temp == d) break;
       }
       assert(temp == d);
       char *dot = strchr(buffer, '.');
@@ -792,14 +801,13 @@ struct JSPrinter {
           end--;
         }
         // remove preceding zeros
-        if (*buffer == '-') buffer++;
         while (*buffer == '0') {
           char *copy = buffer;
           do {
             copy[0] = copy[1];
           } while (*copy++ != 0);
         }
-      } else {
+      } else if (!integer || !e) {
         // no dot. try to change 12345000 => 12345e3
         char *end = strchr(buffer, 0);
         end--;
@@ -822,6 +830,7 @@ struct JSPrinter {
       }
     }
     //fprintf(stderr, "options:\n%s\n%s\n", storage_e, storage_f);
+    if (neg) emit('-');
     emit(strlen(storage_e) < strlen(storage_f) ? storage_e : storage_f);
   }
 
