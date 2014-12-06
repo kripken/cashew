@@ -538,10 +538,11 @@ struct JSPrinter {
   int size, used;
 
   int indent;
+  bool possibleSpace; // add a space to separate identifiers
 
   Ref ast;
 
-  JSPrinter(bool pretty_, bool finalize_, Ref ast_) : pretty(pretty_), finalize(finalize_), buffer(0), size(0), used(0), indent(0), ast(ast_) {}
+  JSPrinter(bool pretty_, bool finalize_, Ref ast_) : pretty(pretty_), finalize(finalize_), buffer(0), size(0), used(0), indent(0), possibleSpace(false), ast(ast_) {}
 
   void printAst() {
     print(ast);
@@ -562,12 +563,14 @@ struct JSPrinter {
   }
 
   void emit(char c) {
+    maybeSpace(c);
     if (!pretty && c == '}' && buffer[used-1] == ';') used--; // optimize ;} into }, the ; is not separating anything
     ensure(1);
     buffer[used++] = c;
   }
 
   void emit(const char *s) {
+    maybeSpace(*s);
     int len = strlen(s);
     ensure(len);
     strcpy(buffer + used, s);
@@ -582,6 +585,18 @@ struct JSPrinter {
 
   void space() {
     if (pretty) emit(' ');
+  }
+
+  void safeSpace() {
+    if (pretty) emit(' ');
+    else possibleSpace = true;
+  }
+
+  void maybeSpace(char s) {
+    if (possibleSpace) {
+      possibleSpace = false;
+      if (isIdentPart(s)) emit(' ');
+    }
   }
 
   void print(Ref node) {
@@ -1034,7 +1049,7 @@ struct JSPrinter {
 
   void printIf(Ref node) {
     emit("if");
-    space();
+    safeSpace();
     emit('(');
     print(node[1]);
     emit(')');
@@ -1056,14 +1071,14 @@ struct JSPrinter {
     if (hasElse) {
       space();
       emit("else");
-      space();
+      safeSpace();
       print(node[3]);
     }
   }
 
   void printDo(Ref node) {
     emit("do");
-    space();
+    safeSpace();
     print(node[2]);
     space();
     emit("while");

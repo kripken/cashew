@@ -118,6 +118,8 @@ struct OperatorClass {
 
 extern std::vector<OperatorClass> operatorClasses;
 
+extern bool isIdentInit(char x);
+extern bool isIdentPart(char x);
 
 // parser
 
@@ -147,9 +149,6 @@ class Parser {
     }
     return curr;
   }
-
-  static bool isIdentInit(char x) { return (x >= 'a' && x <= 'z') || (x >= 'A' && x <= 'Z') || x == '_' || x == '$'; }
-  static bool isIdentPart(char x) { return isIdentInit(x) || (x >= '0' && x <= '9'); }
 
   static bool isDigit(char x) { return x >= '0' && x <= '9'; }
 

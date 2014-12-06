@@ -131,5 +131,8 @@ bool OperatorClass::getRtl(int prec) {
   return operatorClasses[prec].rtl;
 }
 
+bool isIdentInit(char x) { return (x >= 'a' && x <= 'z') || (x >= 'A' && x <= 'Z') || x == '_' || x == '$'; }
+bool isIdentPart(char x) { return isIdentInit(x) || (x >= '0' && x <= '9'); }
+
 } // namespace cashew
 
