@@ -912,6 +912,10 @@ struct JSPrinter {
   }
 
   void printUnaryPrefix(Ref node) {
+    if ((buffer[used-1] == '-' && node[1] == MINUS) ||
+        (buffer[used-1] == '+' && node[1] == PLUS && !finalize)) {
+      emit(' '); // cannot join - and - to --, looks like the -- operator
+    }
     if (finalize && node[1] == PLUS && (node[2][0] == NUM ||
                                        (node[2][0] == UNARY_PREFIX && node[2][1] == MINUS && node[2][2][0] == NUM))) {
       // emit a finalized number
