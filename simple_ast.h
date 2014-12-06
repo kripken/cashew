@@ -911,6 +911,17 @@ struct JSPrinter {
   }
 
   void printUnaryPrefix(Ref node) {
+    if (finalize && node[1] == PLUS && node[2][0] == NUM) {
+      // emit a finalized number
+      char *curr = buffer + used;
+      print(node[2]);
+      buffer[used] = 0;
+      if (!strchr(curr, '.')) {
+        // no decimal point - add one
+        emit(".0");
+      }
+      return;
+    }
     emit(node[1]->getCString());
     printChild(node[2], node, 1);
   }
