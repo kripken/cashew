@@ -6557,123 +6557,213 @@
           ]
         ],
         [
-          "stat",
+          "do",
           [
-            "do",
+            "num",
+            0
+          ],
+          [
+            "block",
             [
-              "num",
-              0
-            ],
-            [
-              "block",
               [
+                "if",
                 [
-                  "if",
+                  "binary",
+                  ">",
                   [
                     "binary",
-                    ">",
+                    "|",
                     [
-                      "binary",
-                      "|",
-                      [
-                        "name",
-                        "$argc"
-                      ],
-                      [
-                        "num",
-                        0
-                      ]
+                      "name",
+                      "$argc"
                     ],
                     [
                       "num",
-                      1
+                      0
                     ]
                   ],
                   [
-                    "block",
+                    "num",
+                    1
+                  ]
+                ],
+                [
+                  "block",
+                  [
                     [
+                      "stat",
                       [
-                        "stat",
+                        "assign",
+                        true,
                         [
-                          "assign",
-                          true,
-                          [
-                            "name",
-                            "$6"
-                          ],
+                          "name",
+                          "$6"
+                        ],
+                        [
+                          "binary",
+                          ">>",
                           [
                             "binary",
-                            ">>",
+                            "<<",
                             [
                               "binary",
-                              "<<",
+                              "|",
                               [
-                                "binary",
-                                "|",
+                                "sub",
                                 [
-                                  "sub",
+                                  "name",
+                                  "HEAP8"
+                                ],
+                                [
+                                  "binary",
+                                  "|",
                                   [
-                                    "name",
-                                    "HEAP8"
-                                  ],
-                                  [
-                                    "binary",
-                                    "|",
+                                    "sub",
                                     [
-                                      "sub",
-                                      [
-                                        "name",
-                                        "HEAP32"
-                                      ],
+                                      "name",
+                                      "HEAP32"
+                                    ],
+                                    [
+                                      "binary",
+                                      ">>",
                                       [
                                         "binary",
-                                        ">>",
+                                        "|",
                                         [
                                           "binary",
-                                          "|",
+                                          "+",
                                           [
-                                            "binary",
-                                            "+",
-                                            [
-                                              "name",
-                                              "$argv"
-                                            ],
-                                            [
-                                              "num",
-                                              4
-                                            ]
+                                            "name",
+                                            "$argv"
                                           ],
                                           [
                                             "num",
-                                            0
+                                            4
                                           ]
                                         ],
                                         [
                                           "num",
-                                          2
+                                          0
                                         ]
+                                      ],
+                                      [
+                                        "num",
+                                        2
                                       ]
-                                    ],
-                                    [
-                                      "num",
-                                      0
                                     ]
+                                  ],
+                                  [
+                                    "num",
+                                    0
                                   ]
-                                ],
-                                [
-                                  "num",
-                                  0
                                 ]
                               ],
                               [
                                 "num",
-                                24
+                                0
                               ]
                             ],
                             [
                               "num",
                               24
                             ]
+                          ],
+                          [
+                            "num",
+                            24
+                          ]
+                        ]
+                      ]
+                    ],
+                    [
+                      "if",
+                      [
+                        "binary",
+                        "==",
+                        [
+                          "binary",
+                          "|",
+                          [
+                            "binary",
+                            "|",
+                            [
+                              "name",
+                              "$6"
+                            ],
+                            [
+                              "num",
+                              0
+                            ]
+                          ],
+                          [
+                            "num",
+                            0
+                          ]
+                        ],
+                        [
+                          "binary",
+                          "|",
+                          [
+                            "num",
+                            49
+                          ],
+                          [
+                            "num",
+                            0
+                          ]
+                        ]
+                      ],
+                      [
+                        "block",
+                        [
+                          [
+                            "stat",
+                            [
+                              "assign",
+                              true,
+                              [
+                                "sub",
+                                [
+                                  "name",
+                                  "HEAP32"
+                                ],
+                                [
+                                  "binary",
+                                  ">>",
+                                  [
+                                    "num",
+                                    9656
+                                  ],
+                                  [
+                                    "num",
+                                    2
+                                  ]
+                                ]
+                              ],
+                              [
+                                "num",
+                                35
+                              ]
+                            ]
+                          ],
+                          [
+                            "stat",
+                            [
+                              "assign",
+                              true,
+                              [
+                                "name",
+                                "$WARMUP_0"
+                              ],
+                              [
+                                "num",
+                                5
+                              ]
+                            ]
+                          ],
+                          [
+                            "break",
+                            null
                           ]
                         ]
                       ],
@@ -6707,7 +6797,7 @@
                             "|",
                             [
                               "num",
-                              49
+                              50
                             ],
                             [
                               "num",
@@ -6744,7 +6834,7 @@
                                 ],
                                 [
                                   "num",
-                                  35
+                                  161
                                 ]
                               ]
                             ],
@@ -6759,7 +6849,7 @@
                                 ],
                                 [
                                   "num",
-                                  5
+                                  32
                                 ]
                               ]
                             ],
@@ -6799,7 +6889,7 @@
                               "|",
                               [
                                 "num",
-                                50
+                                51
                               ],
                               [
                                 "num",
@@ -6816,42 +6906,12 @@
                                   "assign",
                                   true,
                                   [
-                                    "sub",
-                                    [
-                                      "name",
-                                      "HEAP32"
-                                    ],
-                                    [
-                                      "binary",
-                                      ">>",
-                                      [
-                                        "num",
-                                        9656
-                                      ],
-                                      [
-                                        "num",
-                                        2
-                                      ]
-                                    ]
-                                  ],
-                                  [
-                                    "num",
-                                    161
-                                  ]
-                                ]
-                              ],
-                              [
-                                "stat",
-                                [
-                                  "assign",
-                                  true,
-                                  [
                                     "name",
-                                    "$WARMUP_0"
+                                    "label"
                                   ],
                                   [
                                     "num",
-                                    32
+                                    43
                                   ]
                                 ]
                               ],
@@ -6891,7 +6951,7 @@
                                 "|",
                                 [
                                   "num",
-                                  51
+                                  52
                                 ],
                                 [
                                   "num",
@@ -6908,12 +6968,42 @@
                                     "assign",
                                     true,
                                     [
-                                      "name",
-                                      "label"
+                                      "sub",
+                                      [
+                                        "name",
+                                        "HEAP32"
+                                      ],
+                                      [
+                                        "binary",
+                                        ">>",
+                                        [
+                                          "num",
+                                          9656
+                                        ],
+                                        [
+                                          "num",
+                                          2
+                                        ]
+                                      ]
                                     ],
                                     [
                                       "num",
-                                      43
+                                      2331
+                                    ]
+                                  ]
+                                ],
+                                [
+                                  "stat",
+                                  [
+                                    "assign",
+                                    true,
+                                    [
+                                      "name",
+                                      "$WARMUP_0"
+                                    ],
+                                    [
+                                      "num",
+                                      320
                                     ]
                                   ]
                                 ],
@@ -6953,7 +7043,7 @@
                                   "|",
                                   [
                                     "num",
-                                    52
+                                    53
                                   ],
                                   [
                                     "num",
@@ -6990,7 +7080,7 @@
                                       ],
                                       [
                                         "num",
-                                        2331
+                                        5661
                                       ]
                                     ]
                                   ],
@@ -7005,7 +7095,7 @@
                                       ],
                                       [
                                         "num",
-                                        320
+                                        640
                                       ]
                                     ]
                                   ],
@@ -7045,7 +7135,7 @@
                                     "|",
                                     [
                                       "num",
-                                      53
+                                      48
                                     ],
                                     [
                                       "num",
@@ -7062,27 +7152,12 @@
                                         "assign",
                                         true,
                                         [
-                                          "sub",
-                                          [
-                                            "name",
-                                            "HEAP32"
-                                          ],
-                                          [
-                                            "binary",
-                                            ">>",
-                                            [
-                                              "num",
-                                              9656
-                                            ],
-                                            [
-                                              "num",
-                                              2
-                                            ]
-                                          ]
+                                          "name",
+                                          "$_0"
                                         ],
                                         [
                                           "num",
-                                          5661
+                                          0
                                         ]
                                       ]
                                     ],
@@ -7093,137 +7168,55 @@
                                         true,
                                         [
                                           "name",
-                                          "$WARMUP_0"
+                                          "STACKTOP"
                                         ],
                                         [
-                                          "num",
-                                          640
+                                          "name",
+                                          "__stackBase__"
                                         ]
                                       ]
                                     ],
                                     [
-                                      "break",
-                                      null
-                                    ]
-                                  ]
-                                ],
-                                [
-                                  "if",
-                                  [
-                                    "binary",
-                                    "==",
-                                    [
-                                      "binary",
-                                      "|",
+                                      "return",
                                       [
                                         "binary",
                                         "|",
                                         [
                                           "name",
-                                          "$6"
+                                          "$_0"
                                         ],
                                         [
                                           "num",
                                           0
                                         ]
-                                      ],
-                                      [
-                                        "num",
-                                        0
-                                      ]
-                                    ],
-                                    [
-                                      "binary",
-                                      "|",
-                                      [
-                                        "num",
-                                        48
-                                      ],
-                                      [
-                                        "num",
-                                        0
                                       ]
                                     ]
-                                  ],
+                                  ]
+                                ],
+                                [
+                                  "block",
                                   [
-                                    "block",
                                     [
+                                      "stat",
                                       [
-                                        "stat",
+                                        "binary",
+                                        "|",
                                         [
-                                          "assign",
-                                          true,
+                                          "call",
                                           [
                                             "name",
-                                            "$_0"
+                                            "_printf"
                                           ],
                                           [
-                                            "num",
-                                            0
-                                          ]
-                                        ]
-                                      ],
-                                      [
-                                        "stat",
-                                        [
-                                          "assign",
-                                          true,
-                                          [
-                                            "name",
-                                            "STACKTOP"
-                                          ],
-                                          [
-                                            "name",
-                                            "__stackBase__"
-                                          ]
-                                        ]
-                                      ],
-                                      [
-                                        "return",
-                                        [
-                                          "binary",
-                                          "|",
-                                          [
-                                            "name",
-                                            "$_0"
-                                          ],
-                                          [
-                                            "num",
-                                            0
-                                          ]
-                                        ]
-                                      ]
-                                    ]
-                                  ],
-                                  [
-                                    "block",
-                                    [
-                                      [
-                                        "stat",
-                                        [
-                                          "binary",
-                                          "|",
-                                          [
-                                            "call",
                                             [
-                                              "name",
-                                              "_printf"
-                                            ],
-                                            [
+                                              "binary",
+                                              "|",
                                               [
                                                 "binary",
                                                 "|",
                                                 [
-                                                  "binary",
-                                                  "|",
-                                                  [
-                                                    "num",
-                                                    3512
-                                                  ],
-                                                  [
-                                                    "num",
-                                                    0
-                                                  ]
+                                                  "num",
+                                                  3512
                                                 ],
                                                 [
                                                   "num",
@@ -7231,8 +7224,27 @@
                                                 ]
                                               ],
                                               [
-                                                "binary",
-                                                "|",
+                                                "num",
+                                                0
+                                              ]
+                                            ],
+                                            [
+                                              "binary",
+                                              "|",
+                                              [
+                                                "seq",
+                                                [
+                                                  "assign",
+                                                  true,
+                                                  [
+                                                    "name",
+                                                    "tempInt"
+                                                  ],
+                                                  [
+                                                    "name",
+                                                    "STACKTOP"
+                                                  ]
+                                                ],
                                                 [
                                                   "seq",
                                                   [
@@ -7240,11 +7252,27 @@
                                                     true,
                                                     [
                                                       "name",
-                                                      "tempInt"
+                                                      "STACKTOP"
                                                     ],
                                                     [
-                                                      "name",
-                                                      "STACKTOP"
+                                                      "binary",
+                                                      "|",
+                                                      [
+                                                        "binary",
+                                                        "+",
+                                                        [
+                                                          "name",
+                                                          "STACKTOP"
+                                                        ],
+                                                        [
+                                                          "num",
+                                                          8
+                                                        ]
+                                                      ],
+                                                      [
+                                                        "num",
+                                                        0
+                                                      ]
                                                     ]
                                                   ],
                                                   [
@@ -7253,22 +7281,37 @@
                                                       "assign",
                                                       true,
                                                       [
-                                                        "name",
-                                                        "STACKTOP"
+                                                        "sub",
+                                                        [
+                                                          "name",
+                                                          "HEAP32"
+                                                        ],
+                                                        [
+                                                          "binary",
+                                                          ">>",
+                                                          [
+                                                            "name",
+                                                            "tempInt"
+                                                          ],
+                                                          [
+                                                            "num",
+                                                            2
+                                                          ]
+                                                        ]
                                                       ],
                                                       [
                                                         "binary",
                                                         "|",
                                                         [
                                                           "binary",
-                                                          "+",
+                                                          "-",
                                                           [
                                                             "name",
-                                                            "STACKTOP"
+                                                            "$6"
                                                           ],
                                                           [
                                                             "num",
-                                                            8
+                                                            48
                                                           ]
                                                         ],
                                                         [
@@ -7278,117 +7321,71 @@
                                                       ]
                                                     ],
                                                     [
-                                                      "seq",
-                                                      [
-                                                        "assign",
-                                                        true,
-                                                        [
-                                                          "sub",
-                                                          [
-                                                            "name",
-                                                            "HEAP32"
-                                                          ],
-                                                          [
-                                                            "binary",
-                                                            ">>",
-                                                            [
-                                                              "name",
-                                                              "tempInt"
-                                                            ],
-                                                            [
-                                                              "num",
-                                                              2
-                                                            ]
-                                                          ]
-                                                        ],
-                                                        [
-                                                          "binary",
-                                                          "|",
-                                                          [
-                                                            "binary",
-                                                            "-",
-                                                            [
-                                                              "name",
-                                                              "$6"
-                                                            ],
-                                                            [
-                                                              "num",
-                                                              48
-                                                            ]
-                                                          ],
-                                                          [
-                                                            "num",
-                                                            0
-                                                          ]
-                                                        ]
-                                                      ],
-                                                      [
-                                                        "name",
-                                                        "tempInt"
-                                                      ]
+                                                      "name",
+                                                      "tempInt"
                                                     ]
                                                   ]
-                                                ],
-                                                [
-                                                  "num",
-                                                  0
                                                 ]
+                                              ],
+                                              [
+                                                "num",
+                                                0
                                               ]
                                             ]
-                                          ],
+                                          ]
+                                        ],
+                                        [
+                                          "num",
+                                          0
+                                        ]
+                                      ]
+                                    ],
+                                    [
+                                      "stat",
+                                      [
+                                        "assign",
+                                        true,
+                                        [
+                                          "name",
+                                          "$_0"
+                                        ],
+                                        [
+                                          "unary-prefix",
+                                          "-",
                                           [
                                             "num",
-                                            0
+                                            1
                                           ]
                                         ]
-                                      ],
+                                      ]
+                                    ],
+                                    [
+                                      "stat",
                                       [
-                                        "stat",
+                                        "assign",
+                                        true,
                                         [
-                                          "assign",
-                                          true,
-                                          [
-                                            "name",
-                                            "$_0"
-                                          ],
-                                          [
-                                            "unary-prefix",
-                                            "-",
-                                            [
-                                              "num",
-                                              1
-                                            ]
-                                          ]
+                                          "name",
+                                          "STACKTOP"
+                                        ],
+                                        [
+                                          "name",
+                                          "__stackBase__"
                                         ]
-                                      ],
+                                      ]
+                                    ],
+                                    [
+                                      "return",
                                       [
-                                        "stat",
+                                        "binary",
+                                        "|",
                                         [
-                                          "assign",
-                                          true,
-                                          [
-                                            "name",
-                                            "STACKTOP"
-                                          ],
-                                          [
-                                            "name",
-                                            "__stackBase__"
-                                          ]
-                                        ]
-                                      ],
-                                      [
-                                        "return",
+                                          "name",
+                                          "$_0"
+                                        ],
                                         [
-                                          "binary",
-                                          "|",
-                                          [
-                                            "name",
-                                            "$_0"
-                                          ],
-                                          [
-                                            "num",
-                                            0
-                                          ]
+                                          "num",
+                                          0
                                         ]
                                       ]
                                     ]
@@ -7400,23 +7397,23 @@
                         ]
                       ]
                     ]
-                  ],
+                  ]
+                ],
+                [
+                  "block",
                   [
-                    "block",
                     [
+                      "stat",
                       [
-                        "stat",
+                        "assign",
+                        true,
                         [
-                          "assign",
-                          true,
-                          [
-                            "name",
-                            "label"
-                          ],
-                          [
-                            "num",
-                            43
-                          ]
+                          "name",
+                          "label"
+                        ],
+                        [
+                          "num",
+                          43
                         ]
                       ]
                     ]

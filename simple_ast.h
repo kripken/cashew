@@ -1030,6 +1030,7 @@ struct JSPrinter {
     emit('(');
     print(node[1]);
     emit(')');
+    emit(';');
   }
 
   void printWhile(Ref node) {
