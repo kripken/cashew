@@ -782,9 +782,16 @@ struct JSPrinter {
         }
       } else {
         // integer
-        int64_t ii = (int64_t)d;
-        snprintf(buffer, 45, e ? "0x%lx" : "%ld", ii);
-        sscanf(buffer, "%lf", &temp);
+        assert(d >= 0);
+        unsigned long long uu = (unsigned long long)d;
+        if (uu == d) {
+          snprintf(buffer, 45, e ? "0x%llx" : "%llu", uu);
+          sscanf(buffer, "%lf", &temp);
+        } else {
+          // too large for a machine integer, just use floats
+          snprintf(buffer, 45, "%.0f", d);
+          sscanf(buffer, "%lf", &temp);
+        }
       }
       assert(temp == d);
       char *dot = strchr(buffer, '.');
