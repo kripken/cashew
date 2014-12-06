@@ -562,6 +562,7 @@ struct JSPrinter {
   }
 
   void emit(char c) {
+    if (!pretty && c == '}' && buffer[used-1] == ';') used--; // optimize ;} into }, the ; is not separating anything
     ensure(1);
     buffer[used++] = c;
   }
