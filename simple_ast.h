@@ -785,7 +785,7 @@ struct JSPrinter {
         assert(d >= 0);
         unsigned long long uu = (unsigned long long)d;
         if (uu == d) {
-          snprintf(buffer, 45, e ? "0x%llx" : "%llu", uu);
+          snprintf(buffer, 45, (e && !finalize) ? "0x%llx" : "%llu", uu);
           sscanf(buffer, "%lf", &temp);
         } else {
           // too large for a machine integer, just use floats
@@ -916,10 +916,21 @@ struct JSPrinter {
       char *curr = buffer + used;
       print(node[2]);
       buffer[used] = 0;
-      if (!strchr(curr, '.')) {
-        // no decimal point - add one
+      if (strchr(curr, '.')) return; // already a decimal point, all good
+      char *e = strchr(curr, 'e');
+      if (!e) {
         emit(".0");
+        return;
       }
+      ensure(3);
+      char *end = strchr(curr, 0);
+      while (end >= e) {
+        end[2] = end[0];
+        end--;
+      }
+      e[0] = '.';
+      e[1] = '0';
+      used += 2;
       return;
     }
     emit(node[1]->getCString());
