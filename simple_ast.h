@@ -1011,8 +1011,21 @@ struct JSPrinter {
     print(node[1]);
     emit(')');
     space();
+    // special case: we need braces to save us from ambiguity, if () { if () } else. otherwise else binds to inner if
+    bool hasElse = node->size() >= 4 && !!node[3];
+    bool needBraces = node[2][0] == IF && (node[2]->size() == 3 || !node[2][3]) && hasElse;
+    if (needBraces) {
+      emit('{');
+      indent++;
+      newline();
+    }
     print(node[2]);
-    if (node->size() >= 4 && !!node[3]) {
+    if (needBraces) {
+      indent--;
+      newline();
+      emit('}');
+    }
+    if (hasElse) {
       space();
       emit("else");
       space();
