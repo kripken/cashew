@@ -735,7 +735,7 @@ struct JSPrinter {
   void printStat(Ref node) {
     if (!isNothing(node[1])) {
       print(node[1]);
-      emit(';');
+      if (buffer[used-1] != ';') emit(';');
     }
   }
 
