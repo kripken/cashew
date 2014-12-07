@@ -1022,7 +1022,7 @@ struct JSPrinter {
         if (curr != used) newline();
         else used--; // avoid the extra indentation we added tentatively
       } else {
-        space();
+        newline();
       }
     }
     emit('}');
