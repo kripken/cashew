@@ -25,3 +25,14 @@ function frac() {
  print(2.2250738585072014e-308);
 }
 
+function doIf() {
+ do if ((N | 0) > -1) if ((O | 0) > (2147483647 - N | 0)) {
+  c[(Ya() | 0) >> 2] = 75;
+  R = -1;
+  break;
+ } else {
+  R = O + N | 0;
+  break;
+ } else R = N while (0);
+}
+

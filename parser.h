@@ -759,12 +759,18 @@ class Parser {
 
   NodeRef parseMaybeBracketed(char*& src, const char *seps) {
     src = skipSpace(src);
-    return *src == '{' ? parseBracketedBlock(src) : parseElement(src, seps);
+    NodeRef ret = *src == '{' ? parseBracketedBlock(src) : parseElement(src, seps);
+    src = skipSpace(src);
+    if (*src == ';') src++;
+    return ret;
   }
 
   NodeRef parseMaybeBracketedBlock(char*& src, const char *seps, IString keywordSep=IString()) {
     src = skipSpace(src);
-    return *src == '{' ? parseBracketedBlock(src) : parseBlock(src, nullptr, seps, keywordSep);
+    NodeRef ret = *src == '{' ? parseBracketedBlock(src) : parseBlock(src, nullptr, seps, keywordSep);
+    src = skipSpace(src);
+    if (*src == ';') src++;
+    return ret;
   }
 
   NodeRef parseParenned(char*& src) {
