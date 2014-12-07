@@ -400,15 +400,18 @@
               ]
             ],
             [
-              "assign",
-              true,
+              "stat",
               [
-                "name",
-                "R"
-              ],
-              [
-                "name",
-                "N"
+                "assign",
+                true,
+                [
+                  "name",
+                  "R"
+                ],
+                [
+                  "name",
+                  "N"
+                ]
               ]
             ]
           ]

@@ -423,7 +423,6 @@ class Parser {
       // find all cases and possibly a default
       src = skipSpace(src);
       if (*src == '}') break;
-      // TODO: handle ';' here
       Frag next(src);
       if (next.type == KEYWORD) {
         if (next.str == CASE) {
@@ -735,12 +734,7 @@ class Parser {
         Frag next(src);
         if (next.type == KEYWORD && next.str == keywordSep) break;
       }
-      NodeRef element = parseElement(src, seps);
-      src = skipSpace(src);
-      if (*src && *src == ';') {
-        element = Builder::makeStatement(element);
-        src++;
-      }
+      NodeRef element = parseElementOrStatement(src, seps);
       Builder::appendToBlock(block, element);
     }
     return block;
@@ -757,20 +751,24 @@ class Parser {
     return block;
   }
 
+  NodeRef parseElementOrStatement(char*& src, const char *seps) {
+    NodeRef ret = parseElement(src, seps);
+    src = skipSpace(src);
+    if (*src == ';') {
+      ret = Builder::makeStatement(ret);
+      src++;
+    }
+    return ret;
+  }
+
   NodeRef parseMaybeBracketed(char*& src, const char *seps) {
     src = skipSpace(src);
-    NodeRef ret = *src == '{' ? parseBracketedBlock(src) : parseElement(src, seps);
-    src = skipSpace(src);
-    if (*src == ';') src++;
-    return ret;
+    return *src == '{' ? parseBracketedBlock(src) : parseElementOrStatement(src, seps);
   }
 
   NodeRef parseMaybeBracketedBlock(char*& src, const char *seps, IString keywordSep=IString()) {
     src = skipSpace(src);
-    NodeRef ret = *src == '{' ? parseBracketedBlock(src) : parseBlock(src, nullptr, seps, keywordSep);
-    src = skipSpace(src);
-    if (*src == ';') src++;
-    return ret;
+    return *src == '{' ? parseBracketedBlock(src) : parseBlock(src, nullptr, seps, keywordSep);
   }
 
   NodeRef parseParenned(char*& src) {

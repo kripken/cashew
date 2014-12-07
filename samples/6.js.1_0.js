@@ -33,6 +33,6 @@ function doIf() {
  } else {
   R = O + N | 0;
   break;
- } else R = N while (0);
+ } else R = N; while (0);
 }
 
