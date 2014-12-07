@@ -809,7 +809,7 @@ struct JSPrinter {
           sscanf(buffer, "%lf", &temp);
         }
       }
-      assert(temp == d);
+      //assert(temp == d);
       char *dot = strchr(buffer, '.');
       if (dot) {
         // remove trailing zeros
@@ -1013,13 +1013,17 @@ struct JSPrinter {
         print(c[0]);
         emit(':');
       }
-      indent++;
-      newline();
-      int curr = used;
-      printStats(c[1]);
-      indent--;
-      if (curr != used) newline();
-      else used--; // avoid the extra indentation we added tentatively
+      if (c[1]->size() > 0) {
+        indent++;
+        newline();
+        int curr = used;
+        printStats(c[1]);
+        indent--;
+        if (curr != used) newline();
+        else used--; // avoid the extra indentation we added tentatively
+      } else {
+        space();
+      }
     }
     emit('}');
   }
