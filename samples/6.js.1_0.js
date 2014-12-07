@@ -21,3 +21,7 @@ function sub() {
  a
 }
 
+function frac() {
+ print(2.2250738585072014e-308);
+}
+

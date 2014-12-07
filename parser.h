@@ -423,6 +423,7 @@ class Parser {
       // find all cases and possibly a default
       src = skipSpace(src);
       if (*src == '}') break;
+      // TODO: handle ';' here
       Frag next(src);
       if (next.type == KEYWORD) {
         if (next.str == CASE) {

@@ -22,4 +22,7 @@ function sub() {
   x[40] = 50;
   ;a;
 }
+function frac() {
+  print(2.2250738585072014e-308);
+}
 

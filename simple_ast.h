@@ -774,6 +774,7 @@ struct JSPrinter {
     // try to emit the fewest necessary characters
     bool integer = fmod(d, 1) == 0;
     static char storage_f[50], storage_e[50]; // f is normal, e is scientific for float, x for integer
+    double err_f, err_e;
     for (int e = 0; e <= 1; e++) {
       char *buffer = e ? storage_e : storage_f;
       double temp;
@@ -794,6 +795,7 @@ struct JSPrinter {
           }
           snprintf(buffer, 45, format, d);
           sscanf(buffer, "%lf", &temp);
+          //errv("%.18f, %.18e   =>   %s   =>   %.18f, %.18e   (%d), ", d, d, buffer, temp, temp, temp == d);
           if (temp == d) break;
         }
       } else {
@@ -809,6 +811,7 @@ struct JSPrinter {
           sscanf(buffer, "%lf", &temp);
         }
       }
+      (e ? err_e : err_f) = fabs(temp - d);
       //assert(temp == d);
       char *dot = strchr(buffer, '.');
       if (dot) {
@@ -823,6 +826,7 @@ struct JSPrinter {
           } while (*copy++ != 0);
           end--;
         }
+        //errv("%.18f  =>   %s", d, buffer);
         // remove preceding zeros
         while (*buffer == '0') {
           char *copy = buffer;
@@ -830,6 +834,7 @@ struct JSPrinter {
             copy[0] = copy[1];
           } while (*copy++ != 0);
         }
+        //errv("%.18f ===>  %s", d, buffer);
       } else if (!integer || !e) {
         // no dot. try to change 12345000 => 12345e3
         char *end = strchr(buffer, 0);
@@ -854,7 +859,11 @@ struct JSPrinter {
     }
     //fprintf(stderr, "options:\n%s\n%s\n", storage_e, storage_f);
     if (neg) emit('-');
-    emit(strlen(storage_e) < strlen(storage_f) ? storage_e : storage_f);
+    if (err_e == err_f) {
+      emit(strlen(storage_e) < strlen(storage_f) ? storage_e : storage_f);
+    } else {
+      emit(err_e < err_f ? storage_e : storage_f);
+    }
   }
 
   void printString(Ref node) {
