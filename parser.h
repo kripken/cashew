@@ -80,6 +80,7 @@ extern IString TOPLEVEL,
                OPEN_PAREN,
                OPEN_BRACE,
                OPEN_CURLY,
+               CLOSE_CURLY,
                COMMA,
                QUESTION,
                COLON,
@@ -361,10 +362,10 @@ class Parser {
 
   NodeRef parseReturn(Frag& frag, char*& src, const char* seps) {
     src = skipSpace(src);
-    NodeRef value = *src != ';' ? parseElement(src, ";") : nullptr;
+    NodeRef value = !hasChar(seps, *src) ? parseElement(src, seps) : nullptr;
     src = skipSpace(src);
-    assert(*src == ';');
-    src++;
+    assert(hasChar(seps, *src));
+    if (*src == ';') src++;
     return Builder::makeReturn(value);
   }
 
@@ -791,11 +792,14 @@ class Parser {
     */
     printf("%s:\n==========\n", where);
     int newlinesLeft = 2;
+    int charsLeft = 200;
     while (*curr) {
       if (*curr == '\n') {
         newlinesLeft--;
         if (newlinesLeft == 0) break;
       }
+      charsLeft--;
+      if (charsLeft == 0) break;
       printf("%c", *curr++);
     }
     printf("\n\n");
