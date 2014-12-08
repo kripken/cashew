@@ -814,6 +814,7 @@ struct JSPrinter {
         //errv("%.18f, %.18e   =>   %s   =>   %.18f, %.18e, %llu   (%d)\n", d, d, buffer, temp, temp, uu, temp == d);
       }
       (e ? err_e : err_f) = fabs(temp - d);
+      //errv("current attempt: %.18f  =>  %s", d, buffer);
       //assert(temp == d);
       char *dot = strchr(buffer, '.');
       if (dot) {
@@ -852,12 +853,13 @@ struct JSPrinter {
             test[2] = 0;
           } else {
             assert(num < 100);
-            test[1] = '1';
-            test[2] = '0' + (num - 10);
+            test[1] = '0' + (num / 10);
+            test[2] = '0' + (num % 10);
             test[3] = 0;
           }
         }
       }
+      //errv("..current attempt: %.18f  =>  %s", d, buffer);
     }
     //fprintf(stderr, "options:\n%s\n%s\n (first? %d)\n", storage_e, storage_f, strlen(storage_e) < strlen(storage_f));
     if (neg) emit('-');
