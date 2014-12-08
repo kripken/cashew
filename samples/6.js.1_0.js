@@ -18,7 +18,7 @@ function sub() {
  x[y + 20]
  x[30]();
  x[40] = 50;
- a
+ a;
 }
 
 function frac() {
