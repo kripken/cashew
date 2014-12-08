@@ -34,5 +34,6 @@ function doIf() {
   R = O + N | 0;
   break;
  } else R = N; while (0);
+ $7 = 5 >= +1 ? ($5 > +0 ? 5 : 5 >>> 0) : 0;
 }
 

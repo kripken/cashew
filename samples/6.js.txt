@@ -415,6 +415,75 @@
               ]
             ]
           ]
+        ],
+        [
+          "stat",
+          [
+            "assign",
+            true,
+            [
+              "name",
+              "$7"
+            ],
+            [
+              "conditional",
+              [
+                "binary",
+                ">=",
+                [
+                  "num",
+                  5
+                ],
+                [
+                  "unary-prefix",
+                  "+",
+                  [
+                    "num",
+                    1
+                  ]
+                ]
+              ],
+              [
+                "conditional",
+                [
+                  "binary",
+                  ">",
+                  [
+                    "name",
+                    "$5"
+                  ],
+                  [
+                    "unary-prefix",
+                    "+",
+                    [
+                      "num",
+                      0
+                    ]
+                  ]
+                ],
+                [
+                  "num",
+                  5
+                ],
+                [
+                  "binary",
+                  ">>>",
+                  [
+                    "num",
+                    5
+                  ],
+                  [
+                    "num",
+                    0
+                  ]
+                ]
+              ],
+              [
+                "num",
+                0
+              ]
+            ]
+          ]
         ]
       ]
     ]
