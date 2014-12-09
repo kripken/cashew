@@ -1,5 +1,5 @@
 function mymodule(stdlib, foreign, heap) {
- "use asm"
+ "use asm";
  var H32 = new stdlib.Int32Array(heap);
  var HU32 = new stdlib.Uint32Array(heap);
  var log = foreign.consoleDotLog;

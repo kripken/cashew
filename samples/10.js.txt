@@ -11,8 +11,11 @@
       ],
       [
         [
-          "string",
-          "use asm"
+          "stat",
+          [
+            "string",
+            "use asm"
+          ]
         ],
         [
           "var",
