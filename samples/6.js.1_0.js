@@ -36,5 +36,6 @@ function doIf() {
  } else R = N; while (0);
  $7 = 5 >= +1 ? ($5 > +0 ? 5 : 5 >>> 0) : 0;
  print(1e22);
+ $call126 = SIMD_float32x4(Math_fround(Math_fround(+-9)), Math_fround(Math_fround(+0)), Math_fround(Math_fround(+4)), Math_fround(Math_fround(+9))).signMaskPolyfill;
 }
 
