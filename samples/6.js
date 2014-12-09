@@ -37,5 +37,9 @@ function doIf() {
  $7 = 5 >= +1 ? $5 > +0 ? 5 : 5 >>> 0 : 0;
  print(1.0E+22);
  $call126 = SIMD_float32x4(Math_fround(Math_fround(+-9)),Math_fround(Math_fround(+0)),Math_fround(Math_fround(+4)),Math_fround(Math_fround(+9))).signMaskPolyfill;
+ switch (x) {
+  case 5: break;
+  default: break;
+ }
 }
 
