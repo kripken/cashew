@@ -91,6 +91,7 @@ extern IString TOPLEVEL,
                NEW,
                ARRAY,
                OBJECT,
+               THROW,
                SET;
 
 extern IStringSet keywords, allOperators;
