@@ -203,7 +203,7 @@ class Parser {
         type = NUMBER;
       } else if (hasChar(OPERATOR_INITS, *src)) {
         switch (*src) {
-          case '!': str = src[1] == '=' ? str = NE : str = L_NOT; break;
+          case '!': str = src[1] == '=' ? NE : L_NOT; break;
           case '%': str = MOD; break;
           case '&': str = AND; break;
           case '*': str = MUL; break;
