@@ -306,8 +306,12 @@ class Parser {
 
   NodeRef parseFunction(Frag& frag, char*& src, const char* seps) {
     Frag name(src);
-    assert(name.type == IDENT);
-    src += name.size;
+    if (name.type == IDENT) {
+      src += name.size;
+    } else {
+      assert(name.type == SEPARATOR && name.str[0] == '(');
+      name.str = IString();
+    }
     NodeRef ret = Builder::makeFunction(name.str);
     src = skipSpace(src);
     assert(*src == '(');
