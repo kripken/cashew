@@ -671,7 +671,7 @@ class Parser {
       ExpressionParts& parts = expressionPartsStack.back(); // |parts| may have been invalidated by that call
       // we are the toplevel. sort it all out
       // collapse right to left, highest priority first
-      //dumpParts(parts);
+      //dumpParts(parts, 0);
       for (auto ops : operatorClasses) {
         if (ops.rtl) {
           // right to left
