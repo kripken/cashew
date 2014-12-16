@@ -75,7 +75,7 @@ struct IString {
     return str != other.str; // fast!
   }
   bool operator<(const IString& other) const {
-    return strcmp(str, other.str) < 0;
+    return strcmp(str ? str : "", other.str ? other.str : "") < 0;
   }
 
   char operator[](int x) {
