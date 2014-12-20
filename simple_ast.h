@@ -829,8 +829,15 @@ struct JSPrinter {
         assert(d >= 0);
         unsigned long long uu = (unsigned long long)d;
         if (uu == d) {
-          snprintf(buffer, BUFFERSIZE-1, (e && !finalize) ? "0x%llx" : "%llu", uu);
-          sscanf(buffer, "%lf", &temp);
+          bool asHex = e && !finalize;
+          snprintf(buffer, BUFFERSIZE-1, asHex ? "0x%llx" : "%llu", uu);
+          if (asHex) {
+            unsigned long long tempULL;
+            sscanf(buffer, "%llx", &tempULL);
+            temp = (double)tempULL;
+          } else {
+            sscanf(buffer, "%lf", &temp);
+          }
         } else {
           // too large for a machine integer, just use floats
           snprintf(buffer, BUFFERSIZE-1, e ? "%e" : "%.0f", d); // even on integers, e with a dot is useful, e.g. 1.2e+200
@@ -868,7 +875,8 @@ struct JSPrinter {
         char *end = strchr(buffer, 0);
         end--;
         char *test = end;
-        while (*test == '0' && test > buffer) test--;
+        // remove zeros, and also doubles can use at most 24 digits, we can truncate any extras even if not zero
+        while ((*test == '0' || test - buffer > 24) && test > buffer) test--;
         int num = end - test;
         if (num >= 3) {
           test++;
@@ -876,11 +884,16 @@ struct JSPrinter {
           if (num < 10) {
             test[1] = '0' + num;
             test[2] = 0;
-          } else {
-            assert(num < 100);
+          } else if (num < 100) {
             test[1] = '0' + (num / 10);
             test[2] = '0' + (num % 10);
             test[3] = 0;
+          } else {
+            assert(num < 1000);
+            test[1] = '0' + (num / 100);
+            test[2] = '0' + (num % 100) / 10;
+            test[3] = '0' + (num % 10);
+            test[4] = 0;
           }
         }
       }
