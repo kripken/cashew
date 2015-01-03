@@ -1300,7 +1300,7 @@ public:
                            .push_back(&arena.alloc()->setNumber(num));
   }
   static Ref makeInt(uint32_t num) {
-    makeDouble(double(num));
+    return makeDouble(double(num));
   }
 
   static Ref makeBinary(Ref left, IString op, Ref right) {
