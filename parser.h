@@ -778,7 +778,7 @@ class Parser {
         Frag next(src);
         if (next.type == KEYWORD && next.str == keywordSep2) break;
       }
-      NodeRef element = parseElementOrStatement(src, seps);
+      NodeRef element = parseMaybeBracketed(src, seps);
       Builder::appendToBlock(block, element);
     }
     return block;
