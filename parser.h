@@ -85,6 +85,7 @@ extern IString TOPLEVEL,
                COMMA,
                QUESTION,
                COLON,
+               SEMICOLON,
                CASE,
                DEFAULT,
                DOT,
@@ -295,6 +296,7 @@ class Parser {
         if (frag.str == OPEN_PAREN) return parseExpression(parseAfterParen(src), src, seps);
         if (frag.str == OPEN_BRACE) return parseExpression(parseAfterBrace(src), src, seps);
         if (frag.str == OPEN_CURLY) return parseExpression(parseAfterCurly(src), src, seps);
+        if (frag.str == SEMICOLON) return Builder::makeBlock();
         assert(0);
       }
       case OPERATOR: {
