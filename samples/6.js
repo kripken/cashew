@@ -42,4 +42,7 @@ function doIf() {
   default: break;
  }
 }
+function labeledBlock() {
+  a:{ break a; }
+}
 

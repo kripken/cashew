@@ -45,3 +45,9 @@ function doIf() {
  }
 }
 
+function labeledBlock() {
+ a : {
+  break a;
+ }
+}
+
