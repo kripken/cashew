@@ -45,4 +45,5 @@ function doIf() {
 function labeledBlock() {
   a:{ break a; }
 }
+if (waka) { y() } else ;
 

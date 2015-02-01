@@ -51,3 +51,6 @@ function labeledBlock() {
  }
 }
 
+if (waka) {
+ y()
+} else {}
