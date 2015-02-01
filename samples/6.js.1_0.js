@@ -54,3 +54,6 @@ function labeledBlock() {
 if (waka) {
  y()
 } else {}
+if (waka) {} else {
+ y()
+}
