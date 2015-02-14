@@ -1366,7 +1366,7 @@ public:
     func[2]->push_back(makeRawString(arg));
   }
 
-  static Ref makeVar() {
+  static Ref makeVar(bool is_const) {
     return &makeRawArray()->push_back(makeRawString(VAR))
                            .push_back(makeRawArray());
   }
